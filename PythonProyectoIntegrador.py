@@ -194,4 +194,6 @@ while y < 0 and y > ejes:
 
 while ()
 
+#print("")
+
 
