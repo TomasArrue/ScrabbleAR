@@ -51,21 +51,24 @@ def pintarTablero(matriz,g):
 
 tam_celda =15
 
-button = lambda name : sg.Button(name)
+button = lambda name : sg.Button(name,key = name)
 
 layout = [
          [sg.T(' ' * 5)],
          [sg.Graph((500,500),(0,232),(235,0), key='_GRAPH_', background_color='gainsboro',change_submits=True, drag_submits=False)],
          [sg.Text("Tus Fichas: ")],[button(i) for i in bolsa_jugador],
          [sg.Text("FICHAS DE LA MAQUINA: ")],[button(i) for i in bolsa_maquina],
-         [sg.Button("Evaluar")]                   ]
+         [sg.Button("Evaluar"),sg.Button("Cancelar")]                   ]
 
 window = sg.Window('Ejercicio1', ).Layout(layout).Finalize()
 g = window.FindElement('_GRAPH_')
 
 matriz=[]
 elegido=[]
+
+#en texto se guardan las letras que voy eligiendo
 texto=[]
+
 for i in range(0,15):
     matriz.append([0]*15)
     elegido.append([False]*15)
@@ -73,12 +76,17 @@ for i in range(0,15):
 #ACA DIBUJAMOS EL TABLERO
 pintarTablero(matriz,g)
 
+#cancelados es para poder crear una lista de fichas para hacer un rollback
+cancelados = []
+
+#marque es un boolean que me permite escribir en el tablero solo cuando se activa,se deberia activar si el evento es alguno de los botones
 marque_una_letra = False
+
 while True:
-    f = texto
+    f = matriz
     event, values = window.Read()
-    print(event)
-    print(values)
+    #print(event)
+    #print(values)
     if event is None or 'tipo' == 'Exit':
         break
     if event == '_GRAPH_':
@@ -88,10 +96,19 @@ while True:
         box_x = mouse[0]//tam_celda
         box_y = mouse[1]//tam_celda
         print(box_x,box_y)
-    else: 
-         marque_una_letra = True
-         letra = event
-    if marque_una_letra:
-        texto[box_x][box_y] = g.DrawText(letra, (box_x * tam_celda + 18, box_y * tam_celda + 17))
-        print(letra)
-        marque_una_letra = False
+    elif event in bolsa_jugador:
+        letra = event
+        marque_una_letra = True
+        if marque_una_letra:
+            texto[box_x][box_y] = g.DrawText(letra, (box_x * tam_celda + 13, box_y * tam_celda + 10))
+            print(bolsa_jugador)
+            print(letra)
+            cancelados.append(letra)
+            bolsa_jugador.remove(letra)    
+            print(bolsa_jugador)
+            window.Element(letra).Update(visible=False)
+            marque_una_letra = False
+    elif event=="Cancelar":
+        for letra in cancelados:
+            window.Element(letra).Update(visible=True)
+        matriz = f
