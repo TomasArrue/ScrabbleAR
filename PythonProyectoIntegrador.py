@@ -52,41 +52,41 @@ class Celda: #clase celda, parte de la version de dani modificandola
         ok = False
         cont = 0
         lista_1 = ["A","E","O","S","I","U","N","L","R","T"] 
-        while cont <= len(lista_1) and ok == False:         # 1 punto: A, E, O, S, I, U, N, L, R, T
-            if lista_1[cont] == self.get_letra:
+        while cont < len(lista_1) and ok == False:         # 1 punto: A, E, O, S, I, U, N, L, R, T
+            if lista_1[cont] == self.letra:
                 ok = True
                 return 1
             cont = cont +1  
         cont=0                                   
         lista_2 = ["C","D","G"]                                        
-        while cont <= len(lista_2) and ok == False:         # 2 puntos: C, D, G
-            if lista_2[cont] == self.get_letra:
+        while cont < len(lista_2) and ok == False:         # 2 puntos: C, D, G
+            if lista_2[cont] == self.letra:
                 ok = True
                 return 2
             cont = cont +1  
         cont=0                                                         
         lista_3 = ["M","B","P"]                                        
-        while cont <= len(lista_3) and ok == False:        # 3 puntos: M, B, P
-            if lista_3[cont] == self.get_letra:
+        while cont < len(lista_3) and ok == False:        # 3 puntos: M, B, P
+            if lista_3[cont] == self.letra:
                 ok = True
                 return 3
             cont = cont +1  
         cont=0                                                         
         lista_4 = ["F","H","V","Y"]                                        
-        while cont <= len(lista_4) and ok == False:        # 4 puntos: F, H, V, Y
-            if lista_4[cont] == self.get_letra:
+        while cont < len(lista_4) and ok == False:        # 4 puntos: F, H, V, Y
+            if lista_4[cont] == self.letra:
                 ok = True
                 return 4
             cont = cont +1  
         cont=0  
         lista_5 = ["K","Ñ","Q", "W", "X","LL","RR"]  
-        while cont <= len(lista_5) and ok == False:        # 8 puntos: K, LL, Ñ, Q, RR, W, X
-            if lista_5[cont] == self.get_letra:
+        while cont < len(lista_5) and ok == False:        # 8 puntos: K, LL, Ñ, Q, RR, W, X
+            if lista_5[cont] == self.letra:
                 ok = True
                 return 8
             cont = cont +1                                      
         if ok != True:
-            if self.get_letra == "J":                          # 6 puntos: J                          
+            if self.letra == "J":                          # 6 puntos: J                          
                 return 6
             else:                                         # 10 puntos: Z
                 return 10
@@ -102,9 +102,7 @@ class Celda: #clase celda, parte de la version de dani modificandola
         elif self.multiplicador[0] == "**": # operador de multiplicacion de palabra
             puntos = puntos + self.valor_base()
             mult = mult + self.multiplicador[1]
-        else: 
-            print("ERROR --->   NO SE RECONOSE CARACTER")
-        return
+        return (puntos, mult)
 
     #def devolver_una_letra(self):
     #    return self.letra               # cumple la funcion del setter de letra
@@ -172,28 +170,102 @@ imprimir(tablero)
 print("vacio el tablero")
 tablero[1][1].set_letra(" ")
 imprimir(tablero)
+
+
+
+
 # ahora trabajaremos con un ejemplo para procesar los puntos de una palabra sin multiplicadores en las celdas
 
-print("Ingrese una letra //'LL' y 'RR' cuentan como un letra //  no voy a verificar la letra asi que no te equivoques; NO MANDES ALGO QUE NO SEA UNA LETRA")
-print("si  letra es 'None' la palabra termina")
-letra = str(input())
+#######  este metodo resulta util sea objeto o no  ########################
+def validar_letra(letra): # este metodo valida la letra para no cargar un carcter que no sea una letra
+    cararteres_habilitados = ["A","B","C","D","E","F","G","H","I","J","K","L","N","M","O","P","Q","R","S","T","U","V","W","X","Y","Z","LL","RR"] # no hay decicion tomada sobre "LL" y "RR" se los agrega por ahora
+    ok = False
+    cont = 0
+    while cont <= len(cararteres_habilitados) and ok == False:
+        if cararteres_habilitados[cont] == letra:
+            ok = True
+        cont = cont +1
+    return ok
+##########################################################################
 
-print("Ingrese la coordenada X entre: 1 y " + ejes)
-x = int(input()) - 1
-while x < 0 and x > ejes:
-    print("ERROR")
-    print("Por favor ingrese un un numero entre 1 y " + ejes)
-    x = int(input()) - 1
+def ingresar_letra():
+    print("Ingrese una letra //'LL' y 'RR' cuentan como un letra ")
+    print("si la letra es 'None' la palabra termina")
+    letra = str(input()).upper()    
+    if(letra != "None"):   # descarta "None" para saber si es el fin
+        while not validar_letra(letra):   # en caso de ingresar un caracter in valido
+            print("ERROR  ---> LETRA INVALIDA")
+            print("Ingrese una letra //'LL' y 'RR' cuentan como un letra ")
+            print("si la letra es 'None' la palabra termina")
+            letra = str(input()).upper() 
+        return letra
+    else:
+        return letra
 
-print("Ingrese la coordenada Y entre: 1 y " + ejes)
-y = int(input()) - 1
-while y < 0 and y > ejes:
-    print("ERROR")
-    print("Por favor ingrese un un numero entre 1 y " + ejes)
-    y = int(input()) - 1
+def ingresar_coordenada (eje):
+    print("Ingrese la coordenada entre: 1 y " + str(eje))
+    coord = int(input()) - 1
+    while coord < eje  and cood >= 0: # en caso de ingresar una coordenada invalida 
+        print("ERROR  ---> COORDENADA INVALIDA")
+        print("Por favor ingrese un un numero entre 1 y " + str(eje))
+        coord = input()
+    return coord
 
-while ()
+letra = ingresar_letra()
+print("===============================================================================")
+print("Coordenada Eje X " , end= "")
+x = ingresar_coordenada(ejes)
+print("===============================================================================")
+print("Coordenada Eje Y " , end= "")
+y = ingresar_coordenada(ejes)
 
-#print("")
+puntas_totales = 0        # almacena los puntos totales que obtiene la palabra
+multiplicar_palabra = 1   # en caso de un modificador que multiplique el total de puntos de la palabra
+lista_caracteres = []     # nuestra lista de caracteres es nuestro backroll
+while letra != "None":
+    while tablero[x][y].letra != " ": # este while verifica que la las coordenadas del tablero esten disponibles
+        print("===============================================================================")
+        print("ERROR  ---> ESPACIO NO DISPONIBLE")
+        print("Por favor ingrese coordenadas que no esten ocupadas")
+        print("Coordenada Eje X" , end= "")
+        x = ingresar_coordenada(ejes)
+        print("Coordenada Eje Y" , end= "")
+        y = ingresar_coordenada(ejes)
+
+    tablero[x][y].set_letra(letra) #carga la letra en el tablero
+
+    tupla_carcter = (x,y,letra) ###### no estoy seguro de guardar la letra todavia
+    lista_caracteres.append(tupla_carcter) 
+    tupla_result = tablero[x][y].procesar_celda(puntas_totales,multiplicar_palabra) # esta tupla duvuelve el resultado de puntos hasta el momento y en caso de encontrar un multiplicador de palabra lo suma
+    
+    puntas_totales = tupla_result[0]
+    multiplicar_palabra = tupla_result[1]
+
+    print("===============================================================================")
+    print("Cnatidad de puntos hasta el momento: " + str(puntas_totales))
+    print("Multiplicar puntos por: " + str(multiplicar_palabra))
+    imprimir(tablero)
+
+    print("===============================================================================")
+    print("Siguiente letra")
+    letra = ingresar_letra()
+    if letra != "None":
+        print("===============================================================================")
+        print("Coordenada Eje X" , end= "")
+        x = ingresar_coordenada(ejes)
+        print("Coordenada Eje Y" , end= "")
+        y = ingresar_coordenada(ejes)
 
 
+print("===============================================================================")
+print("El resultado final es: " + str(puntas_totales * multiplicar_palabra))
+
+
+# ahora trabajaremos con un ejemplo para procesar los puntos de una palabra sin multiplicadores en las celdas
+print("===============================================================================")
+print("Limpia el tablero")
+
+for x,y,_ in lista_caracteres:
+    tablero[x][y].letra = " "
+
+imprimir(tablero)
