@@ -1,4 +1,17 @@
 import PySimpleGUI as sg
+import funciones as f
+
+bolsa_letras = f.bolsa_de_letras
+
+bolsa_jugador = []
+
+bolsa_maquina = []
+
+f.crear_bolsas(bolsa_letras,bolsa_jugador,bolsa_maquina)
+
+
+print(bolsa_jugador)
+
 
 
 def pintarTablero(matriz,g):
@@ -36,52 +49,16 @@ def pintarTablero(matriz,g):
                                                         fill_color='indianred',line_color='white')  
 
 
-def cargar_Fichas(fichas):
-    for i in range (11):
-        fichas.append('A')
-        fichas.append('E')
-    for i in range (8): 
-        fichas.append('O') 
-    for i in range (7):     
-        fichas.append('S')
-    for i in range (6):  
-        fichas.append('I')   
-        fichas.append('U')     
-    for i in range (5):  
-        fichas.append('N') 
-    for i in range(4):
-        fichas.append('L')
-        fichas.append('R')
-        fichas.append('T')
-        fichas.append('C')  
-        fichas.append('D')  
-    for i in range(3):
-        fichas.append('M') 
-        fichas.append('B')    
-    for i in range(2):
-        fichas.append('G') 
-        fichas.append('P')  
-        fichas.append('F') 
-        fichas.append('H') 
-        fichas.append('V')   
-        fichas.append('J')         
-    fichas.append('Y')
-    fichas.append('K') 
-    fichas.append('LL') 
-    '''fichas.append('Ñ')''' 
-    fichas.append('Q') 
-    fichas.append('RR') 
-    fichas.append('W') 
-    fichas.append('X') 
-    fichas.append('Z') 
-
-    
-fichas=[]
 tam_celda =15
+
+button = lambda name : sg.Button(name)
+
 layout = [
          [sg.T(' ' * 5)],
          [sg.Graph((500,500),(0,232),(235,0), key='_GRAPH_', background_color='gainsboro',change_submits=True, drag_submits=False)],
+         [button(i) for i in bolsa_jugador],[button(i) for i in bolsa_maquina],
          [sg.Button("Evaluar")]]
+
 window = sg.Window('Ejercicio1', ).Layout(layout).Finalize()
 g = window.FindElement('_GRAPH_')
 
@@ -94,10 +71,7 @@ for i in range(0,15):
     text_box.append([""]*15)
 #ACA DIBUJAMOS EL TABLERO
 pintarTablero(matriz,g)
-#CARGAMOS LA LISTA DE LETRAS Q USAMOS COMO FICHAS
-cargar_Fichas(fichas)
-fichas.sort()
-print(fichas)
+
 
 while True:
     event, values = window.Read()
