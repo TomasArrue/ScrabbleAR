@@ -10,10 +10,6 @@ bolsa_maquina = []
 f.crear_bolsas(bolsa_letras,bolsa_jugador,bolsa_maquina)
 
 
-print(bolsa_jugador)
-
-
-
 def pintarTablero(matriz,g):
     #ACA DIBUJAMOS EL TABLERO
     rango=15
@@ -51,6 +47,7 @@ def pintarTablero(matriz,g):
 
 tam_celda =15
 
+#un lambda robado que crea botones del nombre que le llega como parametro
 button = lambda name : sg.Button(name,key = name)
 
 layout = [
@@ -58,12 +55,14 @@ layout = [
          [sg.Graph((500,500),(0,232),(235,0), key='_GRAPH_', background_color='gainsboro',change_submits=True, drag_submits=False)],
          [sg.Text("Tus Fichas: ")],[button(i) for i in bolsa_jugador],
          [sg.Text("FICHAS DE LA MAQUINA: ")],[button(i) for i in bolsa_maquina],
-         [sg.Button("Evaluar"),sg.Button("Cancelar")]                   ]
+         [sg.Button("Evaluar"),sg.Button("Cancelar"),sg.Button("borrar")]                   ]
 
 window = sg.Window('Ejercicio1', ).Layout(layout).Finalize()
 g = window.FindElement('_GRAPH_')
 
 matriz=[]
+
+#son las casillas ocupadas,deberia usarse antes de escribir
 elegido=[]
 
 #en texto se guardan las letras que voy eligiendo
@@ -84,11 +83,13 @@ marque_una_letra = False
 
 while True:
     f = matriz
+    f2 = g
     event, values = window.Read()
-    #print(event)
-    #print(values)
+    print(event)
+    print(values)
     if event is None or 'tipo' == 'Exit':
         break
+    #si el evento es graph deberia ser una casilla del tablero
     if event == '_GRAPH_':
         if values['_GRAPH_'] == (None,None):
             continue
@@ -96,19 +97,31 @@ while True:
         box_x = mouse[0]//tam_celda
         box_y = mouse[1]//tam_celda
         print(box_x,box_y)
+    #sino el evento puede ser algun boton de las letras del jugador
     elif event in bolsa_jugador:
+        #guardo el evento como letra,nose bien xq hice esto
         letra = event
+        #solo puede escribir en el tablero cuando cambie marcado
         marque_una_letra = True
         if marque_una_letra:
+            #en la coordenada x,y dibujo la letra
             texto[box_x][box_y] = g.DrawText(letra, (box_x * tam_celda + 13, box_y * tam_celda + 10))
             print(bolsa_jugador)
             print(letra)
+            #guardo las fichas que fui usando
             cancelados.append(letra)
+            #borro de la bolsa del jugador la que use
             bolsa_jugador.remove(letra)    
             print(bolsa_jugador)
+            #cambio la visibilidad del boton para simular que la use
             window.Element(letra).Update(visible=False)
+            #lo devuelvo a false para que no siga escribieno
             marque_una_letra = False
+    #pensaba borrar la ultima letra pero nose como
+    elif event == "borrar":
+        texto[box_x][box_y] = g.DrawText("esto esta borrado", (box_x * tam_celda + 13, box_y * tam_celda + 10))
+    #cancelar deberia reccorrer una lista con las letras que puse y devolver su correspondiente boton a visible
     elif event=="Cancelar":
         for letra in cancelados:
             window.Element(letra).Update(visible=True)
-        matriz = f
+        #matriz = f queria volver el tablero a vacio pero nose como
