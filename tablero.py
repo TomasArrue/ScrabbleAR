@@ -56,25 +56,42 @@ button = lambda name : sg.Button(name)
 layout = [
          [sg.T(' ' * 5)],
          [sg.Graph((500,500),(0,232),(235,0), key='_GRAPH_', background_color='gainsboro',change_submits=True, drag_submits=False)],
-         [button(i) for i in bolsa_jugador],[button(i) for i in bolsa_maquina],
-         [sg.Button("Evaluar")]]
+         [sg.Text("Tus Fichas: ")],[button(i) for i in bolsa_jugador],
+         [sg.Text("FICHAS DE LA MAQUINA: ")],[button(i) for i in bolsa_maquina],
+         [sg.Button("Evaluar")]                   ]
 
 window = sg.Window('Ejercicio1', ).Layout(layout).Finalize()
 g = window.FindElement('_GRAPH_')
 
 matriz=[]
-selected=[]
-text_box=[]
+elegido=[]
+texto=[]
 for i in range(0,15):
     matriz.append([0]*15)
-    selected.append([False]*15)
-    text_box.append([""]*15)
+    elegido.append([False]*15)
+    texto.append([""]*15)
 #ACA DIBUJAMOS EL TABLERO
 pintarTablero(matriz,g)
 
-
+marque_una_letra = False
 while True:
+    f = texto
     event, values = window.Read()
+    print(event)
     print(values)
     if event is None or 'tipo' == 'Exit':
         break
+    if event == '_GRAPH_':
+        if values['_GRAPH_'] == (None,None):
+            continue
+        mouse = values["_GRAPH_"]
+        box_x = mouse[0]//tam_celda
+        box_y = mouse[1]//tam_celda
+        print(box_x,box_y)
+    else: 
+         marque_una_letra = True
+         letra = event
+    if marque_una_letra:
+        texto[box_x][box_y] = g.DrawText(letra, (box_x * tam_celda + 18, box_y * tam_celda + 17))
+        print(letra)
+        marque_una_letra = False
