@@ -55,12 +55,11 @@ while True:
     else:
          if type(event) is tuple:
              lugar = event
-
-             #pinto el lugar que estoy seleccionando
-             window[lugar].update(button_color=('white','skyblue'))
-
+             #pinto el lugar que estoy seleccionando,hago esa pregunta para que no trate de marcar un casillero que ya tiene una letra
+             if lugar not in disponibles:
+                 window[lugar].update(button_color=('white','skyblue'))
              #digo que si anterior tiene algo que despinte lo anterior
-             if (ant):
+             if (ant) and (ant not in disponibles):
                  window[ant].update(button_color=('grey','white'))
              ant = lugar
          #print(type(event))
@@ -83,9 +82,6 @@ while True:
                      usados.append(letra)
                      #cargo el lugar que ya use
                      disponibles.append(lugar)
-                 else:
-                     #puede ser que toque un boton que ya tenia algo entonces lo dejo como esta
-                     window[lugar].update(button_color=('white','green'))
          if event == "PEDIR FICHAS":
              a = letrasRandom()
              #ZIP lo que hace es crear una lista de tuplas con las listas que le pasas
@@ -108,6 +104,3 @@ while True:
          print(letra2)
          print(values)
 window.close() 
-
-    
-    
