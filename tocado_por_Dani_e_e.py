@@ -9,10 +9,19 @@ a=letrasRandom()
 def asignarValores(window):
     for i in range(max_Cant_Filas):
         for j in range(max_Cant_Columnas):
-            if (i+j==14)|(i==j):#PINTA EN DIAGONAL
-                window[i,j].update(button_color=('grey','red')) 
+            if (i==0 or i==7 or i==14)and(j==0 or j==7 or j==14):#PINTA EN DIAGONAL
+                window[i,j].update(button_color=('goldenrod','goldenrod')) 
             if (i==7)&(j==7):#PINTA EL CENTRO
-                window[i,j].update(button_color=('grey','blue'))    
+                window[i,j].update(button_color=('grey','grey'))
+            if ((i==1 or i==13)and(j==5 or j==9))or((i==5 or i==9)and(j==1 or j==13))or ((i==6 or i==8) and (j==6 or j==8)):
+                window[i,j].update(button_color=('skyblue','skyblue'))
+            if ((i==0 or i==14 or i==7)and(j==3 or j==11))or((i==3 or i==11)and(j==0 or j==14 or j==7))or((i==6 or i==8) and (j==2 or j==12))or((i==2 or i==12) and (j==6 or j==8)):
+                window[i,j].update(button_color=('mediumseagreen','mediumseagreen'))  
+            if (i in range (1,6))or(i in range(9,14)):
+                if (i==j):
+                    window[i,j].update(button_color=('indianred','indianred')) 
+                    window[i,(max_Cant_Filas-1)-i].update(button_color=('indianred','indianred')) 
+
 
                 
 
@@ -30,7 +39,7 @@ layout =  [[sg.Button('',button_color=('grey','white'),size=(2, 2), key=(i,j), p
           ]
 layout.append([sg.Text("Tus Fichas: ")])          
 layout.append([botones_De_Fichas(i) for i in a])
-layout.append([sg.Button('borrar',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button('SALIR',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("PEDIR FICHAS")])
+layout.append([sg.Button('borrar',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button('SALIR',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("PEDIR FICHAS"),sg.Button("pintar")])
 
 window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2), auto_size_buttons=False)
 
@@ -90,7 +99,7 @@ while True:
              for elem in mezcla:
                  #busco la letra que use,en en ese lugar hago visible el boton y actualizo su texto
                  window[elem[0]].update(elem[1],visible=True)
-         elif 'borrar' == event : #queria agregar la funcion de borrar pero anda medio mal
+         elif event == "borrar" : #queria agregar la funcion de borrar pero anda medio mal
                      # event, values = window.read()
                      #window[a[0]].update('sh', button_color=('white','blue'))
                      #asignarValores(window)
@@ -99,8 +108,6 @@ while True:
                      usados.remove(letra)
                      disponibles.remove(lugar)
                      window[letra].update(visible=True)
-         print(event)
-         letra2 = event
-         print(letra2)
-         print(values)
+         elif event == "pintar":
+             asignarValores(window)
 window.close() 
