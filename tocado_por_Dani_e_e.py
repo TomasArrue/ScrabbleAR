@@ -30,7 +30,7 @@ layout =  [[sg.Button('',button_color=('grey','white'),size=(2, 2), key=(i,j), p
           ]
 layout.append([sg.Text("Tus Fichas: ")])          
 layout.append([botones_De_Fichas(i) for i in a])
-layout.append([sg.Button('COMENZAR',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button('SALIR',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("PEDIR FICHAS")])
+layout.append([sg.Button('borrar',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button('SALIR',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("PEDIR FICHAS")])
 
 window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2), auto_size_buttons=False)
 
@@ -44,7 +44,9 @@ disponibles = []
 
 #para despintar la casilla anterior cuando toco una nueva
 ant = ()
+lugar = ()
 
+layout2 = layout
 while True:
     event, values = window.read()
     
@@ -92,10 +94,15 @@ while True:
              for elem in mezcla:
                  #busco la letra que use,en en ese lugar hago visible el boton y actualizo su texto
                  window[elem[0]].update(elem[1],visible=True)
-         elif 'COMENZAR' == event :
+         elif 'borrar' == event : #queria agregar la funcion de borrar pero anda medio mal
                      # event, values = window.read()
-                     window[a[0]].update('sh', button_color=('white','blue'))
-                     asignarValores(window)
+                     #window[a[0]].update('sh', button_color=('white','blue'))
+                     #asignarValores(window)
+                     window[lugar].update("",button_color=('grey','white'))
+                     a.append(letra)
+                     usados.remove(letra)
+                     disponibles.remove(lugar)
+                     window[letra].update(visible=True)
          print(event)
          letra2 = event
          print(letra2)
