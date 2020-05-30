@@ -9,15 +9,15 @@ a=letrasRandom()
 def asignarValores(window):
     for i in range(max_Cant_Filas):
         for j in range(max_Cant_Columnas):
-            if (i==0 or i==7 or i==14)and(j==0 or j==7 or j==14):#PINTA EN DIAGONAL
+            if (i==0 or i==int(max_Cant_Filas/2) or i==(max_Cant_Filas-1))and(j==0 or j==int(max_Cant_Filas/2) or j==(max_Cant_Filas-1)):#PINTA EN DIAGONAL
                 window[i,j].update(button_color=('goldenrod','goldenrod')) 
-            if (i==7)&(j==7):#PINTA EL CENTRO
+            if (i==int(max_Cant_Filas/2))&(j==int(max_Cant_Filas/2)):#PINTA EL CENTRO
                 window[i,j].update(button_color=('grey','grey'))
-            if ((i==1 or i==13)and(j==5 or j==9))or((i==5 or i==9)and(j==1 or j==13))or ((i==6 or i==8) and (j==6 or j==8)):
+            if ((i==1 or i==int(max_Cant_Filas-2))and(j==(int(max_Cant_Filas/2)-2) or j==(int(max_Cant_Filas/2)+2)))or((i==(int(max_Cant_Filas/2)-2) or i==(int(max_Cant_Filas/2)+2))and(j==1 or j==int(max_Cant_Filas-2)))or ((i==(int(max_Cant_Filas/2)-1) or i==(int(max_Cant_Filas/2)+1)) and (j==(int(max_Cant_Filas/2)-1) or j==(int(max_Cant_Filas/2)+1))):
                 window[i,j].update(button_color=('skyblue','skyblue'))
-            if ((i==0 or i==14 or i==7)and(j==3 or j==11))or((i==3 or i==11)and(j==0 or j==14 or j==7))or((i==6 or i==8) and (j==2 or j==12))or((i==2 or i==12) and (j==6 or j==8)):
+            if ((i==0 or i==(max_Cant_Filas-1) or i==int(max_Cant_Filas/2))and(j==3 or j==int(max_Cant_Filas-4)))or((i==3 or i==int(max_Cant_Filas-4))and(j==0 or j==(max_Cant_Filas-1) or j==int(max_Cant_Filas/2)))or((i==(int(max_Cant_Filas/2)-1) or i==(int(max_Cant_Filas/2)+1)) and (j==2 or j==int(max_Cant_Filas-3)))or((i==2 or i==int(max_Cant_Filas-3)) and (j==(int(max_Cant_Filas/2)-1) or j==(int(max_Cant_Filas/2)+1))):
                 window[i,j].update(button_color=('mediumseagreen','mediumseagreen'))  
-            if (i in range (1,6))or(i in range(9,14)):
+            if (i in range (1,(int(max_Cant_Filas/2)-1)))or(i in range((int(max_Cant_Filas/2)+2),(max_Cant_Filas-1))):
                 if (i==j):
                     window[i,j].update(button_color=('indianred','indianred')) 
                     window[i,(max_Cant_Filas-1)-i].update(button_color=('indianred','indianred')) 
@@ -39,7 +39,7 @@ layout =  [[sg.Button('',button_color=('grey','white'),size=(2, 2), key=(i,j), p
           ]
 layout.append([sg.Text("Tus Fichas: ")])          
 layout.append([botones_De_Fichas(i) for i in a])
-layout.append([sg.Button('borrar',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button('SALIR',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("PEDIR FICHAS"),sg.Button("pintar")])
+layout.append([sg.Button('borrar',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button('SALIR',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("PEDIR FICHAS",button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("pintar",button_color=color_De_Boton,size=tamanio_Boton_De_Control)])
 
 window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2), auto_size_buttons=False)
 
@@ -50,6 +50,9 @@ usados = []
 
 #lleva la cuenta de los lugares que ya escribi
 disponibles = []
+
+palabraCargada=[]#para cargar la palabra que vamos cargando y verificar si es horizontal o vertical
+
 
 #para despintar la casilla anterior cuando toco una nueva
 ant = ()
@@ -79,18 +82,81 @@ while True:
                  letra = event
                  #si el lugar no lo use
                  if lugar not in disponibles:
-                     #pinto de verde
-                     window[lugar].update(letra, button_color=('white','green'))
+                     
                      print(a)
-                     #saco la letra de la bolsa
-                     a.remove(letra)
-                     print(a)
-                     #saco el boton de esa letra
-                     window[letra].update(visible = False)
-                     #lo agrega a mi lista de usados
-                     usados.append(letra)
-                     #cargo el lugar que ya use
-                     disponibles.append(lugar)
+                     palabraCargada.append(letra)
+                     if len(palabraCargada)==1: #vemos si es la primera letra, seteamos la orientacion de la palabra
+                        vertical=False
+                        horizontal=False
+                        window[lugar].update(letra, button_color=('white','green'))#pinto de verde
+                        box_X_vertical=box_X_horizontal=lugar[1]#estas variables sirven para guardar la cord X horizontal y vertical anterior
+                        box_Y_vertical=box_Y_horizontal=lugar[0]#estas variables sirven para guardar la cord Y horizontal y vertical anterior
+                        a.remove(letra) #saco la letra de la bolsa
+                        #print(a) #PARA TESTEO
+                        window[letra].update(visible = False) #saco el boton de esa letra
+                        usados.append(letra) #lo agrega a mi lista de usados
+                        disponibles.append(lugar)#cargo el lugar que ya use
+                     elif len(palabraCargada)==2: #vemos si es la primera letra, seteamos la orientacion de la palabra    
+                         if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
+                            print('es horizontal')  
+                            horizontal=True 
+                            window[lugar].update(letra, button_color=('white','green'))#pinto de verde
+                            box_X_horizontal=lugar[1]
+                            box_Y_horizontal=lugar[0]
+                            a.remove(letra)#saco la letra de la bolsa
+                            #print(a) #PARA TESTEO
+                            window[letra].update(visible = False)#saco el boton de esa letra
+                            usados.append(letra)#lo agrega a mi lista de usados
+                            disponibles.append(lugar) #cargo el lugar que ya use
+                         else:
+                            if box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
+                                print('es vertical')  
+                                vertical=True 
+                                window[lugar].update(letra, button_color=('white','green'))#pinto de verde
+                                box_X_vertical=lugar[1]
+                                box_Y_vertical=lugar[0]
+                                a.remove(letra)#saco la letra de la bolsa
+                                
+                                window[letra].update(visible = False)#saco el boton de esa letra
+                                usados.append(letra)  #lo agrega a mi lista de usados
+                                disponibles.append(lugar)  #cargo el lugar que ya use
+                     elif vertical:
+                        #print('es verti')  #PARA TESTEO
+                        #print( box_Y_vertical+1 ,' y ',lugar[0])#PARA TESTEO
+                        if box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
+                            #print( box_Y_vertical+1 ,' y ',lugar[0])#PARA TESTEO
+                            #print(letra)#PARA TESTEO
+                            window[lugar].update(letra, button_color=('white','green'))#pinto de verde
+                            box_X_vertical=lugar[1]
+                            box_Y_vertical=lugar[0]
+                            a.remove(letra) #saco la letra de la bolsa
+                            #print(a) #PARA TESTEO
+                            window[letra].update(visible = False) #saco el boton de esa letra
+                            usados.append(letra)  #lo agrega a mi lista de usados
+                            disponibles.append(lugar)  #cargo el lugar que ya use
+                        else:
+                            sg.Popup('Lugar Invalido')     
+                     elif horizontal:
+                            #print('es hori') #PARA TESTEO
+                            #print( 'A',box_X_horizontal+1 ,' y ',lugar[1])#PARA TESTEO
+                            if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
+                                #print( 'B',box_X_horizontal+1 ,' y ',lugar[1])#PARA TESTEO
+                                #print(letra)#PARA TESTEO
+                                window[lugar].update(letra, button_color=('white','green'))#pinto de verde
+                                box_X_horizontal=lugar[1]
+                                box_Y_horizontal=lugar[0]
+                                a.remove(letra)#saco la letra de la bolsa
+                                #print(a)#PARA TESTEO
+                                window[letra].update(visible = False)#saco el boton de esa letra
+                                usados.append(letra)#lo agrega a mi lista de usados
+                                disponibles.append(lugar) #cargo el lugar que ya use
+                            else:
+                                sg.Popup('Lugar Invalido')     
+                     else:
+                         sg.Popup('Lugar Invalido')   
+                                
+                                
+            
          if event == "PEDIR FICHAS":
              a = letrasRandom()
              #ZIP lo que hace es crear una lista de tuplas con las listas que le pasas
