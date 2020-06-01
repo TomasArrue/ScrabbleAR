@@ -1,3 +1,4 @@
+  
 import PySimpleGUI as sg
 from random import randint
 from string import ascii_uppercase as up
@@ -7,8 +8,11 @@ from pattern.text.es import lexicon,spelling,verbs
 letrasRandom = lambda : [choice(up) for i in range(7)] #Genero 7 letras , serian las que van a la ficha
 a=letrasRandom() 
 
+
+
 #Prueba de pintado de tablero
 def asignarValores(window):
+
     for i in range(max_Cant_Filas):
         for j in range(max_Cant_Columnas):
             if (i==0 or i==int(max_Cant_Filas/2) or i==(max_Cant_Filas-1))and(j==0 or j==int(max_Cant_Filas/2) or j==(max_Cant_Filas-1)):#PINTA EN DIAGONAL
@@ -37,7 +41,7 @@ def verificar_palabra(palabra):
 color_De_Boton=('Black','white')
 tamanio_Boton_De_Fichas = 2,2 #tamanio de botones que seran las fichas
 tamanio_Boton_De_Control = 9,1 #tamanio de botones de comenzar y salir
-max_Cant_Filas = max_Cant_Columnas = 15 #tamanio de las matrices
+max_Cant_Filas = max_Cant_Columnas = 11 #tamanio de las matrices
 botones_De_Fichas = lambda name : sg.Button(name,button_color=color_De_Boton,size=tamanio_Boton_De_Fichas)
 
 # cambie la key a i + j, solo para que no sea una tupla
@@ -46,7 +50,7 @@ layout =  [[sg.Button('',button_color=('grey','white'),size=(2, 2), key=(i,j), p
 layout.append([sg.Text("Tus Fichas: ")])          
 layout.append([botones_De_Fichas(i) for i in a])
 layout.append([sg.Button('borrar',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button('SALIR',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("PEDIR FICHAS",button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("pintar",button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("Evaluar")])
-
+#w, h = sg.Window.get_screen_size()
 window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2), auto_size_buttons=False)
 
 #event, values = window.read()
@@ -150,14 +154,33 @@ while True:
                  #busco la letra que use,en en ese lugar hago visible el boton y actualizo su texto
                  window[elem[0]].update(elem[1],visible=True)
          elif event == "borrar" : #queria agregar la funcion de borrar pero anda medio mal
-                     # event, values = window.read()
+                     
+                     #event, values = window.read()
                      #window[a[0]].update('sh', button_color=('white','blue'))
                      #asignarValores(window)
-                     window[lugar].update("",button_color=('grey','white'))
-                     a.append(letra)
-                     usados.remove(letra)
-                     disponibles.remove(lugar)
-                     window[letra].update(visible=True)
+                     if len(usados)>0:
+                     
+                        print('A antes',a)
+                        aux2=usados.pop(len(usados) - 1)
+                        a.append(aux2)
+                        print('A despues',a)
+                        print('usados antes',usados)
+                        #usados.remove(letra)
+                        #usados.pop(len(usados) - 1)
+                        print('usados despues',usados)
+                        print('disponibles antes',disponibles)
+                        aux=disponibles.pop(len(disponibles) - 1)
+                        #disponibles.remove(lugar)
+                        print('disponibles despues',disponibles)
+                        print(aux,' ',box_X_horizontal,' ',box_Y_horizontal)
+                        print('palcargada antes',palabraCargada)
+                        palabraCargada.remove(aux2)
+                        print('palcargada despues',palabraCargada)
+                        #palabraCargada.remove(letra)
+                        window[aux].update("",button_color=('grey','white'))
+                        window[aux2].update(visible=True)
+                     else:
+                         sg.Popup('No hay fichas para borrar')   
          elif event == "pintar":
              asignarValores(window)
          elif event == "Evaluar": #aca va evaluar,evalua la palabra y resetea las orientaciones
@@ -184,4 +207,4 @@ window.close()
      -lo de asignar valores deberia venir en un json ya con los valores y ejecutarlo desde aca,osea crear un json y un modulo que ejecute funciones del tablero 
    -borrar hay que terminar de corregirlo se bugea y no te deja tocar otras letras
   -verificar palabra,pedir fichas y borrar  deberia estar dentro de un modulo funciones
- -el atril de letras,por lo que vi es mejor ponerlo dentro de una estructura columna se que esta en gui pero no la pude hacer andar"""
+ -el atril de letras,por lo que vi es mejor ponerlo dentro de una estructura columna se que esta en gui pero no la pude hacer andar""" 
