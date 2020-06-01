@@ -178,3 +178,10 @@ while True:
                      #busco la letra que use,en en ese lugar hago visible el boton y actualizo su texto
                      window[elem[0]].update(elem[1],visible=True)
 window.close()
+
+"""cosas pendientes: 
+     -hay que terminar de probar el evaluar
+     -lo de asignar valores deberia venir en un json ya con los valores y ejecutarlo desde aca,osea crear un json y un modulo que ejecute funciones del tablero 
+   -borrar hay que terminar de corregirlo se bugea y no te deja tocar otras letras
+  -verificar palabra,pedir fichas y borrar  deberia estar dentro de un modulo funciones
+ -el atril de letras,por lo que vi es mejor ponerlo dentro de una estructura columna se que esta en gui pero no la pude hacer andar"""
