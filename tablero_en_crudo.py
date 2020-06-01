@@ -5,7 +5,14 @@ from random import choice
 from pattern.text.es import lexicon,spelling,verbs
 
 letrasRandom = lambda : [choice(up) for i in range(7)] #Genero 7 letras , serian las que van a la ficha
-a=letrasRandom() 
+atril_jugador=letrasRandom() 
+
+def pedir_letras(atril):
+    max = 7 - len(atril)
+    print(max)
+    for i in range(max):
+        atril.append(choice(up))
+
 
 #Prueba de pintado de tablero
 def asignarValores(window):
@@ -44,7 +51,7 @@ botones_De_Fichas = lambda name : sg.Button(name,button_color=color_De_Boton,siz
 layout =  [[sg.Button('',button_color=('grey','white'),size=(2, 2), key=(i,j), pad=(0,0)) for j in range(max_Cant_Columnas)] for i in range(max_Cant_Filas)#botones matriz
           ]
 layout.append([sg.Text("Tus Fichas: ")])          
-layout.append([botones_De_Fichas(i) for i in a])
+layout.append([botones_De_Fichas(i) for i in atril_jugador])
 layout.append([sg.Button('borrar',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button('SALIR',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("PEDIR FICHAS",button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("pintar",button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("Evaluar")])
 
 window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2), auto_size_buttons=False)
@@ -55,7 +62,7 @@ window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2), auto_s
 usados = []
 
 #lleva la cuenta de los lugares que ya escribi
-disponibles = []
+no_disponible = []
 
 palabraCargada=[]#para cargar la palabra que vamos cargando y verificar si es horizontal o vertical
 
@@ -74,22 +81,22 @@ while True:
          if type(event) is tuple:
              lugar = event
              #pinto el lugar que estoy seleccionando,hago esa pregunta para que no trate de marcar un casillero que ya tiene una letra
-             if lugar not in disponibles:
+             if lugar not in no_disponible:
                  window[lugar].update(button_color=('white','skyblue'))
              #digo que si anterior tiene algo que despinte lo anterior
-             if (ant) and (ant not in disponibles):
+             if (ant) and (ant not in no_disponible):
                  window[ant].update(button_color=('grey','white'))
              ant = lugar
          #print(type(event))
          #print(event) #aca puedes ver que objeto esta recibiendo event, antes recibia una tupla
          #si el evento seria una letra y lugar tiene algo es xq marque algo del tabler
-         if event in a and lugar:
+         if event in atril_jugador and lugar:
                  #asigno la letra del evento
                  letra = event
                  #si el lugar no lo use
-                 if lugar not in disponibles:
+                 if lugar not in no_disponible:
                      
-                     print(a)
+                     print(atril_jugador)
                      palabraCargada.append(letra)
                      if len(palabraCargada)==1: #vemos si es la primera letra, seteamos la orientacion de la palabra
                         vertical=False
@@ -97,11 +104,12 @@ while True:
                         window[lugar].update(letra, button_color=('white','green'))#pinto de verde
                         box_X_vertical=box_X_horizontal=lugar[1]#estas variables sirven para guardar la cord X horizontal y vertical anterior
                         box_Y_vertical=box_Y_horizontal=lugar[0]#estas variables sirven para guardar la cord Y horizontal y vertical anterior
-                        a.remove(letra) #saco la letra de la bolsa
+                        atril_jugador.remove(letra) #saco la letra de la bolsa
                         #print(a) #PARA TESTEO
                         window[letra].update(visible = False) #saco el boton de esa letra
                         usados.append(letra) #lo agrega a mi lista de usados
-                        disponibles.append(lugar)#cargo el lugar que ya use
+                        no_disponible.append(lugar)#cargo el lugar que ya use
+                        print(atril_jugador)
                      elif len(palabraCargada)>=2: #vemos si es la primera letra, seteamos la orientacion de la palabra    
                          if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
                             print('es horizontal')  
@@ -118,11 +126,12 @@ while True:
                                  window[lugar].update(letra, button_color=('white','green'))#pinto de verde
                                  box_X_vertical=lugar[1]
                                  box_Y_vertical=lugar[0]
-                                 a.remove(letra) #saco la letra de la bolsa
+                                 atril_jugador.remove(letra) #saco la letra de la bolsa
                                  #print(a) #PARA TESTEO
                                  window[letra].update(visible = False) #saco el boton de esa letra
                                  usados.append(letra)  #lo agrega a mi lista de usados
-                                 disponibles.append(lugar)  #cargo el lugar que ya use
+                                 no_disponible.append(lugar)  #cargo el lugar que ya use
+                                 print(atril_jugador)
                              else:
                                  sg.Popup('Lugar Invalido')     
                          elif horizontal:
@@ -134,49 +143,55 @@ while True:
                                 window[lugar].update(letra, button_color=('white','green'))#pinto de verde
                                 box_X_horizontal=lugar[1]
                                 box_Y_horizontal=lugar[0]
-                                a.remove(letra)#saco la letra de la bolsa
+                                atril_jugador.remove(letra)#saco la letra de la bolsa
                                 #print(a)#PARA TESTEO
                                 window[letra].update(visible = False)#saco el boton de esa letra
                                 usados.append(letra)#lo agrega a mi lista de usados
-                                disponibles.append(lugar) #cargo el lugar que ya use
+                                no_disponible.append(lugar) #cargo el lugar que ya use
+                                print(atril_jugador)
                             else:
                                 sg.Popup('Lugar Invalido')        
          if event == "PEDIR FICHAS":
-             a = letrasRandom()
+             print(atril_jugador)
+             pedir_letras(atril_jugador)
              #ZIP lo que hace es crear una lista de tuplas con las listas que le pasas
-             mezcla = zip(usados,a)
+             mezcla = zip(usados,atril_jugador)
              print(mezcla)
              for elem in mezcla:
                  #busco la letra que use,en en ese lugar hago visible el boton y actualizo su texto
-                 window[elem[0]].update(elem[1],visible=True)
+                 # window[elem[0]].update(elem[1],visible=True)
+                 window.Element(elem[0]).Update(elem[1],visible=True)
+             vertical = False
+             horizontal = False
+             print(atril_jugador)
          elif event == "borrar" : #queria agregar la funcion de borrar pero anda medio mal
                      # event, values = window.read()
                      #window[a[0]].update('sh', button_color=('white','blue'))
                      #asignarValores(window)
                      window[lugar].update("",button_color=('grey','white'))
-                     a.append(letra)
+                     atril_jugador.append(letra)
                      usados.remove(letra)
-                     disponibles.remove(lugar)
+                     no_disponible.remove(lugar)
                      window[letra].update(visible=True)
          elif event == "pintar":
              asignarValores(window)
          elif event == "Evaluar": #aca va evaluar,evalua la palabra y resetea las orientaciones
              vertical = False
              horizontal = False
-             ok = verificar_palabra("".join(palabraCargada))
-             if not ok:
-                 for letra in usados:
-                     window[letra ].update(visible=True)
-                     usados.remove(letra )
-                     a.append(letra)
-             else: 
-                 a = letrasRandom()
+             #ok = verificar_palabra("".join(palabraCargada))
+             #if not ok:
+              #   for letra in usados:
+              #       window[letra ].update(visible=True)
+              #       usados.remove(letra )
+              #       a.append(letra)
+             #else: 
+             #    a = letrasRandom()
                  #ZIP lo que hace es crear una lista de tuplas con las listas que le pasas
-                 mezcla = zip(usados,a)
-                 print(mezcla)
-                 for elem in mezcla:
+              #   mezcla = zip(usados,a)
+              #   print(mezcla)
+               #  for elem in mezcla:
                      #busco la letra que use,en en ese lugar hago visible el boton y actualizo su texto
-                     window[elem[0]].update(elem[1],visible=True)
+               #      window[elem[0]].update(elem[1],visible=True)
 window.close()
 
 """cosas pendientes: 
