@@ -1,3 +1,5 @@
+from Clase_Celda import Celda
+
 def imprimir(matriz):               # funcion para imprimir el tablero mostrando solo la letra
     for x in range(len(matriz)):
         for y in range(len(matriz[x])):
@@ -10,7 +12,7 @@ def imprimir(matriz):               # funcion para imprimir el tablero mostrando
 #    valor = kwargs[letra]*multiplier
 #    return valor
 ########################### calcular_puntos tom #################################
-# mi ideas es guardar todos los modificadores (tuplas) en una lista e ir sumando el valor de la letra 
+# mi ideas es guardar todos los modificadores (tuplas) en una lista e ir sumando el valor de la letra
 
 
 ########################## NO APLICA A UNA MATRIZ DE OBJETOS CELDA ################################################
@@ -39,7 +41,7 @@ tablero= [[None] * ejes for i in range(ejes)] # carga el tablero en "null" ---> 
 
 for x in range(len(tablero)):
     for y in range(len(tablero[x])):
-        tablero[x][y] = Celda()       # pisa el objeto None con un objeto celda //cada uno deberia tener su propia 
+        tablero[x][y] = Celda()       # pisa el objeto None con un objeto celda //cada uno deberia tener su propia
 
 #imprimir
 
@@ -75,13 +77,13 @@ def validar_letra(letra): # este metodo valida la letra para no cargar un carcte
 def ingresar_letra():
     print("Ingrese una letra //'LL' y 'RR' cuentan como un letra ")
     print("si la letra es 'None' la palabra termina")
-    letra = str(input()).upper()    
+    letra = str(input()).upper()
     if(letra != "None"):   # descarta "None" para saber si es el fin
         while not validar_letra(letra):   # en caso de ingresar un caracter in valido
             print("ERROR  ---> LETRA INVALIDA")
             print("Ingrese una letra //'LL' y 'RR' cuentan como un letra ")
             print("si la letra es 'None' la palabra termina")
-            letra = str(input()).upper() 
+            letra = str(input()).upper()
         return letra
     else:
         return letra
@@ -89,7 +91,7 @@ def ingresar_letra():
 def ingresar_coordenada (eje):
     print("Ingrese la coordenada entre: 1 y " + str(eje))
     coord = int(input()) - 1
-    while coord < eje  and cood >= 0: # en caso de ingresar una coordenada invalida 
+    while coord < eje  and cood >= 0: # en caso de ingresar una coordenada invalida
         print("ERROR  ---> COORDENADA INVALIDA")
         print("Por favor ingrese un un numero entre 1 y " + str(eje))
         coord = input()
@@ -119,9 +121,9 @@ while letra != "None":
     tablero[x][y].set_letra(letra) #carga la letra en el tablero
 
     tupla_carcter = (x,y,letra) ###### no estoy seguro de guardar la letra todavia
-    lista_caracteres.append(tupla_carcter) 
+    lista_caracteres.append(tupla_carcter)
     tupla_result = tablero[x][y].procesar_celda(puntas_totales,multiplicar_palabra) # esta tupla duvuelve el resultado de puntos hasta el momento y en caso de encontrar un multiplicador de palabra lo suma
-    
+
     puntas_totales = tupla_result[0]
     multiplicar_palabra = tupla_result[1]
 
