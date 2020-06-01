@@ -2,6 +2,8 @@ import PySimpleGUI as sg
 from random import randint
 from string import ascii_uppercase as up
 from random import choice
+from pattern.text.es import lexicon,spelling,verbs
+
 letrasRandom = lambda : [choice(up) for i in range(7)] #Genero 7 letras , serian las que van a la ficha
 a=letrasRandom() 
 
@@ -24,7 +26,11 @@ def asignarValores(window):
 
 
                 
-
+def verificar_palabra(palabra):
+    if palabra in lexicon and spelling or palabra in verbs:
+        return True
+    else:
+        return False
 
 
 
@@ -39,7 +45,7 @@ layout =  [[sg.Button('',button_color=('grey','white'),size=(2, 2), key=(i,j), p
           ]
 layout.append([sg.Text("Tus Fichas: ")])          
 layout.append([botones_De_Fichas(i) for i in a])
-layout.append([sg.Button('borrar',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button('SALIR',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("PEDIR FICHAS",button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("pintar",button_color=color_De_Boton,size=tamanio_Boton_De_Control)])
+layout.append([sg.Button('borrar',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button('SALIR',button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("PEDIR FICHAS",button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("pintar",button_color=color_De_Boton,size=tamanio_Boton_De_Control),sg.Button("Evaluar")])
 
 window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2), auto_size_buttons=False)
 
@@ -96,47 +102,30 @@ while True:
                         window[letra].update(visible = False) #saco el boton de esa letra
                         usados.append(letra) #lo agrega a mi lista de usados
                         disponibles.append(lugar)#cargo el lugar que ya use
-                     elif len(palabraCargada)==2: #vemos si es la primera letra, seteamos la orientacion de la palabra    
+                     elif len(palabraCargada)>=2: #vemos si es la primera letra, seteamos la orientacion de la palabra    
                          if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
                             print('es horizontal')  
                             horizontal=True 
-                            window[lugar].update(letra, button_color=('white','green'))#pinto de verde
-                            box_X_horizontal=lugar[1]
-                            box_Y_horizontal=lugar[0]
-                            a.remove(letra)#saco la letra de la bolsa
-                            #print(a) #PARA TESTEO
-                            window[letra].update(visible = False)#saco el boton de esa letra
-                            usados.append(letra)#lo agrega a mi lista de usados
-                            disponibles.append(lugar) #cargo el lugar que ya use
-                         else:
-                            if box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
-                                print('es vertical')  
-                                vertical=True 
-                                window[lugar].update(letra, button_color=('white','green'))#pinto de verde
-                                box_X_vertical=lugar[1]
-                                box_Y_vertical=lugar[0]
-                                a.remove(letra)#saco la letra de la bolsa
-                                
-                                window[letra].update(visible = False)#saco el boton de esa letra
-                                usados.append(letra)  #lo agrega a mi lista de usados
-                                disponibles.append(lugar)  #cargo el lugar que ya use
-                     elif vertical:
-                        #print('es verti')  #PARA TESTEO
-                        #print( box_Y_vertical+1 ,' y ',lugar[0])#PARA TESTEO
-                        if box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
-                            #print( box_Y_vertical+1 ,' y ',lugar[0])#PARA TESTEO
-                            #print(letra)#PARA TESTEO
-                            window[lugar].update(letra, button_color=('white','green'))#pinto de verde
-                            box_X_vertical=lugar[1]
-                            box_Y_vertical=lugar[0]
-                            a.remove(letra) #saco la letra de la bolsa
-                            #print(a) #PARA TESTEO
-                            window[letra].update(visible = False) #saco el boton de esa letra
-                            usados.append(letra)  #lo agrega a mi lista de usados
-                            disponibles.append(lugar)  #cargo el lugar que ya use
-                        else:
-                            sg.Popup('Lugar Invalido')     
-                     elif horizontal:
+                         elif box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
+                            print('es vertical')  
+                            vertical=True 
+                         if vertical:
+                             #print('es verti')  #PARA TESTEO
+                             #print( box_Y_vertical+1 ,' y ',lugar[0])#PARA TESTEO
+                             if box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
+                                 #print( box_Y_vertical+1 ,' y ',lugar[0])#PARA TESTEO
+                                 #print(letra)#PARA TESTEO
+                                 window[lugar].update(letra, button_color=('white','green'))#pinto de verde
+                                 box_X_vertical=lugar[1]
+                                 box_Y_vertical=lugar[0]
+                                 a.remove(letra) #saco la letra de la bolsa
+                                 #print(a) #PARA TESTEO
+                                 window[letra].update(visible = False) #saco el boton de esa letra
+                                 usados.append(letra)  #lo agrega a mi lista de usados
+                                 disponibles.append(lugar)  #cargo el lugar que ya use
+                             else:
+                                 sg.Popup('Lugar Invalido')     
+                         elif horizontal:
                             #print('es hori') #PARA TESTEO
                             #print( 'A',box_X_horizontal+1 ,' y ',lugar[1])#PARA TESTEO
                             if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
@@ -151,12 +140,7 @@ while True:
                                 usados.append(letra)#lo agrega a mi lista de usados
                                 disponibles.append(lugar) #cargo el lugar que ya use
                             else:
-                                sg.Popup('Lugar Invalido')     
-                     else:
-                         sg.Popup('Lugar Invalido')   
-                                
-                                
-            
+                                sg.Popup('Lugar Invalido')        
          if event == "PEDIR FICHAS":
              a = letrasRandom()
              #ZIP lo que hace es crear una lista de tuplas con las listas que le pasas
@@ -176,4 +160,21 @@ while True:
                      window[letra].update(visible=True)
          elif event == "pintar":
              asignarValores(window)
-window.close() 
+         elif event == "Evaluar": #aca va evaluar,evalua la palabra y resetea las orientaciones
+             vertical = False
+             horizontal = False
+             ok = verificar_palabra("".join(palabraCargada))
+             if not ok:
+                 for letra in usados:
+                     window[letra ].update(visible=True)
+                     usados.remove(letra )
+                     a.append(letra)
+             else: 
+                 a = letrasRandom()
+                 #ZIP lo que hace es crear una lista de tuplas con las listas que le pasas
+                 mezcla = zip(usados,a)
+                 print(mezcla)
+                 for elem in mezcla:
+                     #busco la letra que use,en en ese lugar hago visible el boton y actualizo su texto
+                     window[elem[0]].update(elem[1],visible=True)
+window.close()
