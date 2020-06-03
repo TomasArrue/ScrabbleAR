@@ -1,9 +1,9 @@
 class Celda: #clase celda, parte de la version de dani modificandola
 
-    def __init__(self,letra=" ",multiplicador = ("+",0)):
+    def __init__(self,letra=" ",modificador = ("+",0)):
         self.letra = letra      # si no usamos el parametro "letra" simepre hubiera cargado  "vacio"
-        self.multiplicador = multiplicador # si no usamos el parametro "multiplicador" simepre hubiera cargado  "1" #
-                                           # modifico el "multiplicador" como tupla para darle mas versatilidad al modificador
+        self.modificador = modificador # si no usamos el parametro "modificador" simepre hubiera cargado  "1" #
+                                           # modifico el "modificador" como tupla para darle mas versatilidad al modificador
                                            # un tupla conformada por un operador que pueda sumar "+", restar "-" o multiplicar "*".etc.. y el operando que indica la cantidad 1,2,3...ect
                                                                                                                                 #incluso podria estar presente un codigo para multiplicar el valor de la letra y en su defecto de la palabra completa
 
@@ -16,16 +16,16 @@ class Celda: #clase celda, parte de la version de dani modificandola
     def set_letra(self,letra):
         self.letra = letra
 
-    # este Getter modifica el multiplicador de puntos
-    def get_multiplicador(self):
-        return self.multiplicador # multiplicador es una tupla
+    # este Getter modifica el modificador de puntos
+    def get_modificador(self):
+        return self.modificador # modificador es una tupla
 
-    # devuelve el valor de multiplicador
-    def set_multiplicador(self,multiplicador): # multiplicador es una tupla
-        self.multiplicador = multiplicador
+    # devuelve el valor de modificador
+    def set_modificador(self,modificador): # modificador es una tupla
+        self.modificador = modificador
 
     def devolver_valores(self):
-        return (self.letra,self.multiplicador) # se eliminaron los elementos que no se usan: fila, columna y ocupado
+        return (self.letra,self.modificador) # se eliminaron los elementos que no se usan: fila, columna y ocupado
 
     def validar_letra(self,letra): # este metodo valida la letra para no cargar un carcter que no sea una letra
         cararteres_habilitados = ["A","B","C","D","E","F","G","H","I","J","K","L","N","M","O","P","Q","R","S","T","U","V","W","X","Y","Z","LL","RR"] # no hay decicion tomada sobre "LL" y "RR" se los agrega por ahora
@@ -82,28 +82,28 @@ class Celda: #clase celda, parte de la version de dani modificandola
                 return 8
             cont = cont +1
         if ok != True:
-            if self.get_letra() == "J":                          # 6 puntos: J                          
+            if self.get_letra() == "J":                          # 6 puntos: J
                 return 6
             else:                                         # 10 puntos: Z
                 return 10
 
     def procesar_celda (self,puntos, mult): # los puntos representan la cantidad total de puntos sumados por las letras de la palabra hasta el momento y el mult la cantidad de veces que los puntos totales de la palabra se multiplican
 
-        if self.get_multiplicador()[0] == "+":    # operador de suma
-            puntos = puntos + self.get_multiplicador()[1] + self.valor_base()
-        elif self.get_multiplicador()[0] == "-":  # operador de resta
-            puntos = puntos - self.get_multiplicador()[1] + self.valor_base()
-        elif self.get_multiplicador()[0] == "*":  # operador de multiplicacion de letra
-            puntos = puntos + (self.valor_base() * self.get_multiplicador()[1])
-        elif self.get_multiplicador()[0] == "**": # operador de multiplicacion de palabra
+        if self.get_modificador()[0] == "+":    # operador de suma
+            puntos = puntos + self.get_modificador()[1] + self.valor_base()
+        elif self.get_modificador()[0] == "-":  # operador de resta
+            puntos = puntos - self.get_modificador()[1] + self.valor_base()
+        elif self.get_modificador()[0] == "*":  # operador de multiplicacion de letra
+            puntos = puntos + (self.valor_base() * self.get_modificador()[1])
+        elif self.get_modificador()[0] == "**": # operador de multiplicacion de palabra
             puntos = puntos + self.valor_base()
-            mult = mult + self.get_multiplicador()[1]
+            mult = mult + self.get_modificador()[1]
         return (puntos, mult)
 
 ######################### FIN DE LA CLASE CELDA #########################################
 
     def color(self):
-        if self.multiplicador == ("+",0) :
+        if self.modificador == ("+",0) :
             return "blanco"
         else:
             return "negro"
