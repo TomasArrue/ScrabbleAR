@@ -1,3 +1,31 @@
+from celda import Celda
+
+class Tablero(): # tablero es un objeto donde se guardan objetos celdes y sus metodos realizan las operaciones logicas de procesar la informacion
+    def __init__(self, ejes = 15):
+        self.matriz = [[None] * ejes for i in range(ejes)] # carga el tablero vacio ---> None
+        for x in range(len(tablero)):
+            for y in range(len(tablero[x])):
+                self.matriz[x][y] = Celda()       # pisa el objeto None con un objeto celda, cada celda esta vacia
+    #getter y setter
+    def get_letra(self, x, y):
+        return matriz[x][y].get_letra()
+
+    def set_letra(self, x , y, letra):
+        matriz[x][y].set_letra(letra)
+
+    def get_modificador(self, x, y):
+        return matriz[x][y].get_modificador()
+
+    def set_modificador(self, x , y, modificador):
+        matriz[x][y].set_modificador(modificador)
+
+    def ultima_letra(self):
+        return
+
+    def set_letra(self, x , y, letra):
+        matriz[x][y].set_letra(letra)
+
+#####################################################################################
 import PySimpleGUI as sg
 import funciones as f
 
@@ -16,33 +44,33 @@ def pintarTablero(matriz,g):
     for row in range(rango):
             for col in range(rango):
                 #EN ESTA PARTE HACEMOS LAS DIVISIONES DE LAS CELDAS CON UNA LINEA BLANCA
-                matriz[row][col]=g.DrawRectangle((col * tam_celda + 5, row * tam_celda + 3), 
+                matriz[row][col]=g.DrawRectangle((col * tam_celda + 5, row * tam_celda + 3),
                                                 (col * tam_celda + tam_celda + 5, row * tam_celda + tam_celda + 3),
                                                 line_color='white')
-                #ACA PINTAMOS LAS CELDAS COLOR DORADO                                
+                #ACA PINTAMOS LAS CELDAS COLOR DORADO
                 if (row==0 or row==7 or row==14)and(col==0 or col==7 or col==14):
                         matriz[row][col]=g.DrawRectangle((col * tam_celda + 5, row * tam_celda + 3),
                                                         (col * tam_celda + tam_celda + 5, row * tam_celda + tam_celda + 3),
                                                         fill_color='goldenrod',line_color='white')
-                #ACA PINTAMOS LAS CELDAS COLOR CELESTE                                
+                #ACA PINTAMOS LAS CELDAS COLOR CELESTE
                 if ((row==1 or row==13)and(col==5 or col==9))or((row==5 or row==9)and(col==1 or col==13))or ((row==6 or row==8) and (col==6 or col==8)):
                         matriz[row][col]=g.DrawRectangle((col * tam_celda + 5, row * tam_celda + 3),
                                                         (col * tam_celda + tam_celda + 5, row * tam_celda + tam_celda + 3),
                                                         fill_color='skyblue',line_color='white')
-                #ACA PINTAMOS LAS CELDAS COLOR VERDE                                
+                #ACA PINTAMOS LAS CELDAS COLOR VERDE
                 if ((row==0 or row==14 or row==7)and(col==3 or col==11))or((row==3 or row==11)and(col==0 or col==14 or col==7))or((row==6 or row==8) and (col==2 or col==12))or((row==2 or row==12) and (col==6 or col==8)):
                         matriz[row][col]=g.DrawRectangle((col * tam_celda + 5, row * tam_celda + 3),
                                                         (col * tam_celda + tam_celda + 5, row * tam_celda + tam_celda + 3),
                                                         fill_color='mediumseagreen',line_color='white')
                 #ACA PINTAMOS LAS CELDAS COLOR ROJO
                 if (row in range (1,6))or(row in range(9,14)):
-                    if (row==col):  
+                    if (row==col):
                         matriz[row][col]=g.DrawRectangle((col * tam_celda + 5, row * tam_celda + 3),
                                                         (col * tam_celda + tam_celda + 5, row * tam_celda + tam_celda + 3),
-                                                         fill_color='indianred',line_color='white')                                 
+                                                         fill_color='indianred',line_color='white')
                         matriz[row][((rango-1)-row)]=g.DrawRectangle((((rango-1)-row) * tam_celda + 5, row * tam_celda + 3),
                                                         (((rango-1)-row) * tam_celda + tam_celda + 5, row * tam_celda + tam_celda + 3),
-                                                        fill_color='indianred',line_color='white')  
+                                                        fill_color='indianred',line_color='white')
 
 
 tam_celda =15
@@ -111,7 +139,7 @@ while True:
             #guardo las fichas que fui usando
             cancelados.append(letra)
             #borro de la bolsa del jugador la que use
-            bolsa_jugador.remove(letra)    
+            bolsa_jugador.remove(letra)
             print(bolsa_jugador)
             #cambio la visibilidad del boton para simular que la use
             window.Element(letra).Update(visible=False)
