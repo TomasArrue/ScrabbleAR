@@ -1,71 +1,65 @@
 class Palabra:
     def __init__(self):
+        self.multiplicador_palabra = 1  # indica la cantidad por la cual hay que multiplicar los puntos
+        self.lista_coord = []           # una lista de coord de la palabra que cargo actualmente
+        self.sentido_horizontal = None             # sentido_horizontal es un boolean que indica si el sentido de la palabra es sentido horizontal true o vertical false
+        self.puntos = 0                 # guarda los puntos que que va sumando la Palabra
 
-        self.coordenadas = []       # una lista de coord de la palabra que cargo actualmente
-        self.letras = []            # un diccionario keys coord dato caracter; las keys estan guardadas den coord_letras
-        self.sentido = None         # sentido es un boolean que indica si el sentido de la palabra es sentido horizontal true o vertical false
-        self.puntos_total = 0       # guarda los puntos que que va sumando la Palabra
-        self.puntos_actual = 0      # guarda los puntos de la ultima letra ingresada
-        #en duda
-        self.lugar_valido = None   # tupla de coord del espacio habilitado
-        self.pos_inicial = None    # la pos_inicial se compone de una tupla para manejar el lugar de la primera letra en la matriz del tablero
+    # getter y setter
+    def get_puntos(self):
+        return self.puntos
 
-    def get_puntos_total(self):
-        return self.puntos_total
+    def set_puntos(self, puntos):
+        self.puntos = puntos
 
-    def set_puntos_total(self, puntos):
-        self.puntos_total = puntos
+    def get_sentido_horizontal(self):                        # devuelve el sentido de la palabra true horizontal / false vertical /o None no definido
+        return self.sentido_horizontal
 
-    def get_puntos_actual(self):
-        return self.puntos_actual
+    def set_sentido_horizontal(self, sentido):               # carga el sentido de la palabra
+        self.sentido_horizontal = sentido
 
-    def set_puntos_actual(self, puntos):
-        self.puntos_actual = puntos
+    def get_lista_coord(self, x):                       # muestra una tupla de coord en una pos
+        return self.lista_coord[x]
 
-    def sumar_puntos(self):
-        self.set_puntos_total(self.get_puntos_total() + self.get_puntos_actual())      # suma los puntos de la letra que se esta procesando
+    def set_lista_coord(self, x, coord):                       # muestra una tupla de coord en una pos
+        return self.lista_coord[x] = coord
 
-    def restar_puntos(self):
-        self.set_puntos_total(self.get_puntos_total() - self.get_puntos_actual())      #!!! resta la letra de la ultima letra procesada util para borrar // IMPORTANTE!!! ESTO AUN PRESENTA ERRORES PARA BORRAR VARIAS VECES SEGUIDASA
+    def get_multiplicador_palabra(self):
+        return self.multiplicador_palabra
 
-    def get_sentido(self):                        # devuelve el sentido de la palabra true horizontal / false vertical /o None no definido
-        return self.sentido
+    def set_multiplicador_palabra(self, mul):
+        self.multiplicador_palabra = mul
 
-    def set_sentido(self, sentido):               # carga el sentido de la palabra
-        self.sentido = sentido
+    # otros metodos
+    def tamnio_lista_coord(self):
+    """ devuelve el tamaño de la lista de coordenadas """
+        return len(self.lista_coord)
 
-    def get_letra(self, x):                       # muestra un letra en una pos
-        return self.letras[x]
+    def cargar_lista_coord(self, tupla_coord, pos):
+    """ carga una tupla de coordenadas en una posicion """
+        self.lista_coord[pos] = tupla_coord
 
-    def agregar_letra_final(self, letra):         # agrega letra al final
-        self.letras.append8(letra)
+    def borrar_lista_coord(self, pos):
+    """ borra y devuelve un elemento de la lista de tupla de coordenadas """
+        return self.lista_coord.pop(pos)
 
-    def borar_letra_final(self):                  # borra una letra al final y la devuelve
-        return self.letras.pop()
-
-    def cant_letras(self):                        # te devuelve la cantidad de letras cargadas
-        return len(self.letras())
-
-    def get_coord(self, x):                       # muestra una tupla de coord en una pos
-        return self.coordenadas[x]
-
-    def ult_coord(self):                          # muestra la ultima coord
-        return self.coordenadas[len(self.coordenadas)]
-
-    def agregar_coord_final(self, coord):         # agrega una tupla de coord al final
+    def agregar_coord_final(self, coord):
+    """ carga una tupla de coordenadas en la ultima posicion """
         self.coordenadas.append(coord)
 
-    def borrar_coord_final(self):                 # borra una tupla de coord al final y la devuelve
+    def borrar_coord_final(self):
+    """ borra y devuelve el ultimo elemento de la lista de tupla de coordenadas """
         return self.coordenadas.pop()
 
     def validar_sentido(self, pos):
+    """  """
         if pos[1] - self.ult_coord()[1] = 1:      #!!! ejemplo: la ultima letra guardada esta en (1,3) y y la sig (1,4)   se 4 - 3 = da 1 la palabra se carga en horizontal. IMPORTANTE!!! LA VALIDACION DE LA CELDAS Y SENTIDO NO ESTA TERMINADO DE DEFINIR PERO ES UNA RESPONSABILIDAD COMPARTIDA ENTRE EL OBJ TABLERO Y EL OBJ PALABRA PARA QUE LOS MOVIMIENTOS DE LA IA TRABAJE USANDO TABLERO Y PALABRA.
-            self.set_sentido(True)          # sentido horizontal
+            self.set_sentido_horizontal(True)          # sentido horizontal
         else:
-            self.set_sentido(False)         # sentido vertical
+            self.set_sentido_horizontal(False)         # sentido vertical
 
     def validar_lugar(self, pos):
-        if self.get_sentido = True:
+        if self.get_sentido_horizontal = True:
             if pos[1] - self.ult_coord()[1] = 1:
                 return True
             else:
@@ -86,7 +80,7 @@ class Palabra:
         if self.cant_letras() == 0:                             # si mo hay nada entra de una por que es la primera letra
             self.agregar_letra_final(letra)                     # guarda la letra en la lista de letras
             self.agregar_coord_final(tupla)                     # guarda la coor en la lista de coord
-            self.set_sentido(None)                              # pone el sentido en none en caso de borrar y cambiar el sentido de la palabra
+            self.set_sentido_horizontal(None)                              # pone el sentido en none en caso de borrar y cambiar el sentido de la palabra
         elif self.cant_letras() == 1 and validar_lugar(pos):    # si hay una entra y valida el sentido
             self.validar_sentido(pos)
             self.agregar_letra_final(letra)
