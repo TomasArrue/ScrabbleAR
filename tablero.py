@@ -1,7 +1,9 @@
 from celda import Celda
+from palabra import Palabra
 
 class Tablero: # tablero es un objeto donde se guardan objetos celdes y sus metodos realizan las operaciones logicas de procesar la informacion
     def __init__(self, ejes = 15):
+        self.palabra = Palabra()
         self.multiplicador_palabra = 1                              # indica la cantidad por la cual hay que multiplicar los puntos
         self.puntos = 0                                     # guarda los puntos de la palabra que se esta procesando
         self.lista_coord = []
@@ -36,8 +38,6 @@ class Tablero: # tablero es un objeto donde se guardan objetos celdes y sus meto
         self.puntos = puntos
 
     # otros metodos
-    def
-
     def tamnio_lista_coord(self):
         return len(self.lista_coord)
 
