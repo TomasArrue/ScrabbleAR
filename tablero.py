@@ -1,92 +1,49 @@
 from celda import Celda
-from palabra import Palabra
 
 class Tablero: # tablero es un objeto donde se guardan objetos celdes y sus metodos realizan las operaciones logicas de procesar la informacion
     def __init__(self, ejes = 15):
-        self.palabra = Palabra()
-        self.multiplicador_palabra = 1                              # indica la cantidad por la cual hay que multiplicar los puntos
-        self.puntos = 0                                     # guarda los puntos de la palabra que se esta procesando
-        self.lista_coord = []
         self.matriz = [[None] * ejes for i in range(ejes)]  # carga el tablero vacio ---> None
         for x in range(len(tablero)):
             for y in range(len(tablero[x])):
                 self.matriz[x][y] = Celda()       # pisa el objeto None con un objeto celda, cada celda esta vacia
 
     #getter y setter
-    def get_lista_coord(self, pos):
-        return self.lista_coord[pos]
-
-    def set_lista_coord(self, dato, pos):
-        self.lista_coord[pos] = dato
-
     def get_letra(self, x, y):
         return matriz[x][y].get_letra()
 
     def set_letra(self, x , y, letra):
         matriz[x][y].set_letra(letra)
 
-    def get_multiplicador_palabra(self):
-        return self.multiplicador_palabra
-
-    def set_multiplicador_palabra(self, x , y, modificador):
-        self.multiplicador_palabra = modificador
-
-    def get_puntos(self):
-        return self.puntos
-
-    def set_puntos(self, puntos):
-        self.puntos = puntos
-
     # otros metodos
-    def tamnio_lista_coord(self):
-        return len(self.lista_coord)
-
-    def cargar_lista_coord(self, tupla_coord):   # carga en la ultima pos
-    """ help """
-        self.lista_coord.append(tupla_coord)
-
-    def borrar_lista_coord(self):
-        return self.lista_coord.pop()
-
-    def celda_vacia(self, x, y):                # devuelve un boolean si la celda tiene letra o no
+    """ devuelve un boolean si la celda tiene letra o no """
+    def celda_vacia(self, x, y):
         if self.get_letra(x, y) == " ":
             return True
         else:
             return False
 
     def sumar(self, x, y):
+    """ devuelve los puntos y el multiplicador de palabra en una tupla """
         tupla = self.matriz[x][y].calcular_puntos()
-        self.set_puntos(self.get_puntos + tupla[0])
-        self.set_multiplicador(self.get_multiplicador_palabra + tupla[1])
+        return tupla
 
     def restar(self, x, y):
+    """ devuelve (negativos) los puntos y el multiplicador de palabra en una tupla """# !!! puede ser descartado en un futuro
         tupla = self.matriz[x][y].calcular_puntos()
-        self.set_puntos(self.get_puntos - tupla[0])
-        self.set_multiplicador(self.get_multiplicador_palabra - tupla[1])
-
-    def cargar_letra(self, letra, x, y):
-        self.set_letra(x, y, letra)
-        self.cargar_lista_coord((x,y))
-
-    def borrar_ultima_letra(self):
-        tupla_coord = self.borrar_lista_coord()
-        letra = self.matriz[tupla_coord[0]][tupla_coord[1]]
-        tupla_final = (letra, tupla_coord)
-        return tupla_final
-
-    def validar_palabra(self):
-        palabra = ""
-        for tupla_cordenadas_letras in self.tamnio_lista_coord():
-            self.sumar(tupla_cordenadas_letras[0], tupla_cordenadas_letras[1])
-            palabra = palabra + self.get_letra(tupla_cordenadas_letras[0], tupla_cordenadas_letras[1])
-        if pattern :
-            tupla = (self.get_puntos(), True)
-        else:
-            tupla = (self.get_puntos(), False)
-        self.multiplicador_palabra = 1
-        self.puntos = 0
-        self.lista_coord = []
+        tupla[0] = tupla[0] * -1
         return tupla
+
+    def cargar_letra(self, x, y, letra):
+    """ recurres al set_letra """
+        self.set_letra(x, y, letra)
+
+    def borrar_letra(self, x, y):
+    """ borra la ultima letra """
+        self.set_letra(x, y, " ")
+
+
+
+
 
 #####################################################################################
 import PySimpleGUI as sg

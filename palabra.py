@@ -51,6 +51,28 @@ class Palabra:
     """ borra y devuelve el ultimo elemento de la lista de tupla de coordenadas """
         return self.coordenadas.pop()
 
+    def reset(self):
+    """ vuelve vacia al objeto de datos """
+        self.multiplicador_palabra = 1
+        self.lista_coord = []
+        self.sentido_horizontal = None
+        self.puntos = 0
+
+    def sumar(self, tupla):
+    """ suma los puntos y el multiplicador que recibe de una celda """
+        self.set_puntos(self.get_puntos() + tupla[0])
+        self.set_multiplicador_palabra(self.get_multiplicador_palabra() + tupla[1])
+
+
+
+
+
+
+
+
+
+
+
     def validar_sentido(self, pos):
     """  """
         if pos[1] - self.ult_coord()[1] = 1:      #!!! ejemplo: la ultima letra guardada esta en (1,3) y y la sig (1,4)   se 4 - 3 = da 1 la palabra se carga en horizontal. IMPORTANTE!!! LA VALIDACION DE LA CELDAS Y SENTIDO NO ESTA TERMINADO DE DEFINIR PERO ES UNA RESPONSABILIDAD COMPARTIDA ENTRE EL OBJ TABLERO Y EL OBJ PALABRA PARA QUE LOS MOVIMIENTOS DE LA IA TRABAJE USANDO TABLERO Y PALABRA.
@@ -70,10 +92,7 @@ class Palabra:
             else:
                 return False
 
-    def borrar_puntos(self):
-        self.restar_puntos()    # este borrar puntos solo funciona una vez
-        self.borrar_coord_final()
-        self.borrar_letra_final()
+
 
     def cargar_letra(self, letra, x, y, puntos):                #carga a la letra su coord para procesar la letra
         pos = (x,y)                                             #combierte los ejes de coordenadas en una tupla para trabajar
@@ -86,3 +105,14 @@ class Palabra:
             self.agregar_letra_final(letra)
             self.agregar_coord_final(tupla)
             self.sumar_puntos()
+
+
+
+################################################################################
+    def validar_palabra(self, palabra):
+    """ valida la palabra segun pattern """
+        if pattern :
+            return True
+        else:
+            return False
+################################################################################
