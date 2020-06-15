@@ -1,4 +1,4 @@
-  
+
 import PySimpleGUI as sg
 import random
 from string import ascii_uppercase as up
@@ -7,9 +7,9 @@ from pattern.text.es import lexicon,spelling,verbs
 
 letras=["A","B","C","D","E","F","G","H","I","A",]
 letrasRandom = lambda : [choice(up) for i in range(7)] #Genero 7 letras , serian las que van a la ficha
-#a=letrasRandom() 
-aa=letrasRandom() 
-b=letrasRandom() 
+#a=letrasRandom()
+aa=letrasRandom()
+b=letrasRandom()
 
 #Lista para guardar las coordenadas de de las casillas con color
 coordenadas_rojo=[]
@@ -24,7 +24,7 @@ def asignarValores(window):
     for i in range(max_Cant_Filas):
         for j in range(max_Cant_Columnas):
             if (i==0 or i==int(max_Cant_Filas/2) or i==(max_Cant_Filas-1))and(j==0 or j==int(max_Cant_Filas/2) or j==(max_Cant_Filas-1)):#PINTA EN DIAGONAL
-                window[i,j].update(button_color=('goldenrod','goldenrod')) 
+                window[i,j].update(button_color=('goldenrod','goldenrod'))
                 aux_cord=(i,j)
                 coordenadas_dorado.append(aux_cord)
             if (i==int(max_Cant_Filas/2))&(j==int(max_Cant_Filas/2)):#PINTA EL CENTRO
@@ -36,13 +36,13 @@ def asignarValores(window):
                 aux_cord=(i,j)
                 coordenadas_azul.append(aux_cord)
             if ((i==0 or i==(max_Cant_Filas-1) or i==int(max_Cant_Filas/2))and(j==3 or j==int(max_Cant_Filas-4)))or((i==3 or i==int(max_Cant_Filas-4))and(j==0 or j==(max_Cant_Filas-1) or j==int(max_Cant_Filas/2)))or((i==(int(max_Cant_Filas/2)-1) or i==(int(max_Cant_Filas/2)+1)) and (j==2 or j==int(max_Cant_Filas-3)))or((i==2 or i==int(max_Cant_Filas-3)) and (j==(int(max_Cant_Filas/2)-1) or j==(int(max_Cant_Filas/2)+1))):
-                window[i,j].update(button_color=('mediumseagreen','mediumseagreen')) 
+                window[i,j].update(button_color=('mediumseagreen','mediumseagreen'))
                 aux_cord=(i,j)
-                coordenadas_verde.append(aux_cord) 
+                coordenadas_verde.append(aux_cord)
             if (i in range (1,(int(max_Cant_Filas/2)-1)))or(i in range((int(max_Cant_Filas/2)+2),(max_Cant_Filas-1))):
                 if (i==j):
-                    window[i,j].update(button_color=('indianred','indianred')) 
-                    window[i,(max_Cant_Filas-1)-i].update(button_color=('indianred','indianred')) 
+                    window[i,j].update(button_color=('indianred','indianred'))
+                    window[i,(max_Cant_Filas-1)-i].update(button_color=('indianred','indianred'))
                     aux_cord=(i,j)
                     aux_cord2=(i,(max_Cant_Filas-1)-i)
                     coordenadas_rojo.append(aux_cord)
@@ -69,39 +69,41 @@ def cargar_juego(window,timer_running):
 
 
 def volverAPintar(cord,window):
-    if cord in coordenadas_rojo: window[cord].update(button_color=('indianred','indianred')) 
-    elif cord in coordenadas_dorado: window[cord].update(button_color=('goldenrod','goldenrod')) 
+    if cord in coordenadas_rojo: window[cord].update(button_color=('indianred','indianred'))
+    elif cord in coordenadas_dorado: window[cord].update(button_color=('goldenrod','goldenrod'))
     elif cord in coordenadas_verde: window[cord].update(button_color=('mediumseagreen','mediumseagreen'))
     elif cord in coordenadas_azul: window[cord].update(button_color=('skyblue','skyblue'))
-    elif cord in coordenadas_gris: window[cord].update(button_color=('grey','grey')) 
-    else: window[cord].update(button_color=('grey','white')) 
+    elif cord in coordenadas_gris: window[cord].update(button_color=('grey','grey'))
+    else: window[cord].update(button_color=('grey','white'))
 
-                
+
 def verificar_palabra(palabra):
     if palabra in lexicon and spelling or palabra in verbs:
         return True
     else:
-        return False   
+        return False
 
 
 def obtener_fichas(window,nro_de_boton:str,a:list):
     letra=random.choice(up)
     a.append(letra)
     print(letra)
-    window[nro_de_boton].update(letra)    
-    window.Refresh()         
+    window[nro_de_boton].update(letra)
+    window.Refresh()
 
 
-def repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas:int,a:list): 
+def repartir_fichas_de_nuevo(window,c
+
+antidad_de_veces_Repartidas:int,a:list):
     a=[]
     if (cantidad_de_veces_Repartidas < 3):
         cantidad_de_veces_Repartidas=cantidad_de_veces_Repartidas+1
-        for i in range(7):#carga de las 7 fichas 
+        for i in range(7):#carga de las 7 fichas
             nro_de_boton='Boton_'+str(i+1)
             obtener_fichas(window,nro_de_boton,a)
     else:
-        sg.Popup('Ya hiciste el maximo de cambios de mano')    
-    return cantidad_de_veces_Repartidas    
+        sg.Popup('Ya hiciste el maximo de cambios de mano')
+    return cantidad_de_veces_Repartidas
 
 
 def quitar_fichas(window,usados:list,botones_usados:list,no_disponibles:list):
@@ -115,7 +117,7 @@ def quitar_fichas(window,usados:list,botones_usados:list,no_disponibles:list):
         window[coord_a_liberar].update("")
         window[boton_a_recuperar].update(visible=True)
     else:
-        sg.Popup('No hay fichas para borrar')   
+        sg.Popup('No hay fichas para borrar')
 
 
 def pedir_fichas(window,usados:list):
@@ -147,10 +149,10 @@ botones_De_Fichas_rival = lambda name : sg.Button('?',button_color='color_De_Bot
 sg.ChangeLookAndFeel('DarkGrey6')
 
 opciones_de_inicio = [ [sg.Button("Comenzar",size=tamanio_Boton_De_Control)],
-                       [sg.Button("Cargar Partida",size=tamanio_Boton_De_Control)], 
+                       [sg.Button("Cargar Partida",size=tamanio_Boton_De_Control)],
                        [sg.InputCombo(dificultad,default_value='Facil', size=(10, 10),key='dificultad')],
-                       [sg.Button('Guardar Partida',size=tamanio_Boton_De_Control,visible=False)],      
-                       [sg.Button('Salir',size=tamanio_Boton_De_Control)] 
+                       [sg.Button('Guardar Partida',size=tamanio_Boton_De_Control,visible=False)],
+                       [sg.Button('Salir',size=tamanio_Boton_De_Control)]
                      ]
 
 opciones_de_juego = [ [sg.Button('Borrar',size=tamanio_Boton_De_Control),
@@ -158,7 +160,7 @@ opciones_de_juego = [ [sg.Button('Borrar',size=tamanio_Boton_De_Control),
                       sg.Button("Evaluar",size=tamanio_Boton_De_Control),
                       sg.Button("Repartir De Nuevo",size=tamanio_Boton_De_Control),
                       sg.Button("TOP",size=tamanio_Boton_De_Control)]
-                    ]                     
+                    ]
 
 fichas=[ [sg.Text("Tus Fichas: ",font=("Chalkboard", 15))],
          [sg.Button('',button_color=('grey','white'),size=(tamanio_Boton_De_Fichas),key="Boton_1",pad=(5,5)),
@@ -168,28 +170,27 @@ fichas=[ [sg.Text("Tus Fichas: ",font=("Chalkboard", 15))],
           sg.Button('',button_color=('grey','white'),size=(tamanio_Boton_De_Fichas),key="Boton_5",pad=(5,5)),
           sg.Button('',button_color=('grey','white'),size=(tamanio_Boton_De_Fichas),key="Boton_6",pad=(5,5)),
           sg.Button('',button_color=('grey','white'),size=(tamanio_Boton_De_Fichas),key="Boton_7",pad=(5,5))
-         ]]  
+         ]]
 
 fichas_rival =[ [sg.Text("Fichas CPU: ",font=("Chalkboard", 15))],
                 [botones_De_Fichas_rival(j) for j in b]
-              ]  
+              ]
 
 tablero=[ [sg.Button('',button_color=('grey','white'),size=(1, 1), key=(i,j), pad=(0,0)) for j in range(max_Cant_Columnas)] for i in range(max_Cant_Filas)]#botones matriz
 
 puntaje_y_tiempo=[ [sg.Text('TU PUNTAJE: 0',font=("Chalkboard", 15))],
-                   [sg.Text('PUNTAJE PC: 0',font=("Chalkboard", 15))], 
+                   [sg.Text('PUNTAJE PC: 0',font=("Chalkboard", 15))],
                    [sg.Text('Tiempo',font=('Chalkboard', 15))],
                    [sg.Text('00:00',font=('Chalkboard', 15), key='-OUTPUT-')],#
                    [sg.T(' ' * 5)]
                  ]
 
 layout=[
-       [sg.Text("Scrabble", size=(8, 1), justification='left', font=("Chalkboard", 25), relief=sg.RELIEF_RIDGE)],
-       [sg.Column(fichas_rival,key='atrilFichasRival',justification='center',visible=False)],
-       [sg.Column(opciones_de_inicio,key='opcionesComienzo',justification='left'), sg.Column(tablero),sg.Column(puntaje_y_tiempo,key='puntaje',visible=False)],
-       #[sg.Column(fichas,key='atrilFichas',justification='center',visible=False)],
-       [sg.Column(fichas,key='atrilFichas',justification='center',visible=False)],
-       [sg.Column(opciones_de_juego,key='opcionesJuego',justification='center',visible=False)],   
+       [sg.Text("Scrabble", size=(8, 1), font=("Chalkboard", 25), relief=sg.RELIEF_RIDGE)],
+       [sg.Column(fichas_rival,key='atrilFichasRival',visible=False)],
+       [sg.Column(opciones_de_inicio,key='opcionesComienzo'), sg.Column(tablero),sg.Column(puntaje_y_tiempo,key='puntaje',visible=False)],
+       [sg.Column(fichas,key='atrilFichas',visible=False)],
+       [sg.Column(opciones_de_juego,key='opcionesJuego',visible=False)],
        ]
 
 window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2),finalize=True, resizable=True,  auto_size_buttons=True)
@@ -203,7 +204,7 @@ ant = ()#para despintar la casilla anterior cuando toco una nueva
 lugar = ()
 layout2 = layout
 cantidad_de_veces_Repartidas=0#cantidad de veces de pedidos para hacer el cambio de fichas totales
-timer_running, counter = False, 0 #seteos para el timer, 
+timer_running, counter = False, 0 #seteos para el timer,
 
 while True:
     event, values = window.read(timeout=10)
@@ -218,7 +219,7 @@ while True:
              if (ant) and (ant not in no_disponibles): #digo que si anterior tiene algo que despinte lo anterior
                  volverAPintar(lugar,window)
              ant = lugar,
-         
+
          if event in  ("Boton_1","Boton_2","Boton_3","Boton_4","Boton_5","Boton_6","Boton_7") and lugar:#si el evento seria una letra y lugar tiene algo es xq marque algo del tabler
                  letra = window[event].GetText()  #asigno la letra del evento
                  if lugar not in no_disponibles: #si el lugar no lo use
@@ -228,58 +229,58 @@ while True:
                         vertical=horizontal=False
                         box_X_vertical=box_X_horizontal=lugar[1]#estas variables sirven para guardar la cord X horizontal y vertical anterior
                         box_Y_vertical=box_Y_horizontal=lugar[0]#estas variables sirven para guardar la cord Y horizontal y vertical anterior
-                     elif len(usados)==1: #vemos si es la primera letra, seteamos la orientacion de la palabra    
+                     elif len(usados)==1: #vemos si es la primera letra, seteamos la orientacion de la palabra
                          if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
                             horizontal=True
                             letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
                             box_X_horizontal=lugar[1]
                             box_Y_horizontal=lugar[0]
                          elif box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
-                            vertical=True 
+                            vertical=True
                             letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
                             box_X_vertical=lugar[1]
                             box_Y_vertical=lugar[0]
-                     elif len(usados)>1:      
+                     elif len(usados)>1:
                          if vertical:
                                 if box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
                                     letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
                                     box_X_vertical=lugar[1]
                                     box_Y_vertical=lugar[0]
                                 else:
-                                    sg.Popup('Lugar Invalido') 
+                                    sg.Popup('Lugar Invalido')
                          elif horizontal:
                                 if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
                                     letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
                                     box_X_horizontal=lugar[1]
-                                    box_Y_horizontal=lugar[0]     
+                                    box_Y_horizontal=lugar[0]
                                 else:
-                                    sg.Popup('Lugar Invalido')  
+                                    sg.Popup('Lugar Invalido')
                      print('Letras de atril despues de cargar:',a)
-                     print(len(usados),' ',len(no_disponibles))              
+                     print(len(usados),' ',len(no_disponibles))
 
          if event == "Pedir Fichas": #NO FUNCIONA , pide fichas hasta llegar a 7 en la mano
             pedir_fichas(window,usados)
-            
+
          elif event == "Repartir De Nuevo": #pide 7 fichas nuevas en la mano
-            cantidad_de_veces_Repartidas=repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,a) 
-            
-         elif event == "Borrar" : #quita elementos del tablero, desde el ultimo al primero  
+            cantidad_de_veces_Repartidas=repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,a)
+
+         elif event == "Borrar" : #quita elementos del tablero, desde el ultimo al primero
             quitar_fichas(window,usados,botones_usados,no_disponibles)
-       
+
          elif event == "Comenzar": # para inicializar el juego
              timer_running=cargar_juego(window,timer_running)
 
          elif event == "TOP":
-            tab1_layout = [[sg.T('This is inside tab 1')]]    
-            tab2_layout = [[sg.T('This is inside tab 2')],[sg.In(key='in')]]    
-            tab3_layout = [[sg.T('This is inside tab 3')]]    
-            tab4_layout = [[sg.T('This is inside tab 4')]]   
+            tab1_layout = [[sg.T('This is inside tab 1')]]
+            tab2_layout = [[sg.T('This is inside tab 2')],[sg.In(key='in')]]
+            tab3_layout = [[sg.T('This is inside tab 3')]]
+            tab4_layout = [[sg.T('This is inside tab 4')]]
             layout2 = [
                         [sg.Text('RANKING'), sg.Text('', key='_OUTPUT_')],
                         [sg.TabGroup([
-                                        [sg.Tab('Ranking General', tab1_layout, tooltip='tip'), 
-                                         sg.Tab('Ranking Facil', tab2_layout, tooltip='tip2'),   
-                                         sg.Tab('Ranking Medio', tab3_layout, tooltip='tip3'),  
+                                        [sg.Tab('Ranking General', tab1_layout, tooltip='tip'),
+                                         sg.Tab('Ranking Facil', tab2_layout, tooltip='tip2'),
+                                         sg.Tab('Ranking Medio', tab3_layout, tooltip='tip3'),
                                          sg.Tab('Ranking Medio', tab4_layout,tooltip='tip4')]
                                     ])],
                         [sg.Button('Exit')]
@@ -290,7 +291,7 @@ while True:
                 if event2 == 'Exit':
                     break
 
-            window2.Close()  
+            window2.Close()
 
          elif timer_running: #esto es para que corra el tiempo
              #  window['-OUTPUT-'].update('{:02d}:{:02d}'.format((counter // 100) // 60, (counter // 100) % 60, counter % 100))
@@ -299,7 +300,7 @@ while True:
              print(counter)
              if counter==6000:#6000 equivale a 1 minuto, 60000 a 10 minutos
                 timer_running = not timer_running
-                sg.Popup('termino el tiempo')        
+                sg.Popup('termino el tiempo')
 
          elif event == "Evaluar": #aca va evaluar,evalua la palabra y resetea las orientaciones
              vertical = False
@@ -322,9 +323,9 @@ while True:
                      #window[letra].update(visible=True)
                      #usados.remove(letra)
                      #a.append(letra)
-             else: 
+             else:
                  a = letrasRandom()
-                 for r in range(len(a),7): 
+                 for r in range(len(a),7):
                     a.append(choice(up))
                  #ZIP lo que hace es crear una lista de tuplas con las listas que le pasas
                  mezcla = zip(usados,a)
@@ -335,13 +336,13 @@ while True:
 
 
 
-    window.Refresh()         
+    window.Refresh()
     #window.Size=window.Size
 #update(atrilNuevo[i])
 window.close()
 
-"""cosas pendientes: 
+"""cosas pendientes:
      -hay que terminar de probar el evaluar
-     -lo de asignar valores deberia venir en un json ya con los valores y ejecutarlo desde aca,osea crear un json y un modulo que ejecute funciones del tablero 
+     -lo de asignar valores deberia venir en un json ya con los valores y ejecutarlo desde aca,osea crear un json y un modulo que ejecute funciones del tablero
      -verificar palabra,pedir fichas y borrar  deberia estar dentro de un modulo funciones
-     -el atril de letras,por lo que vi es mejor ponerlo dentro de una estructura columna se que esta en gui pero no la pude hacer andar""" 
+     -el atril de letras,por lo que vi es mejor ponerlo dentro de una estructura columna se que esta en gui pero no la pude hacer andar"""

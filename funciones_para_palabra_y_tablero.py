@@ -9,7 +9,7 @@ y = 0                   #coord
 letra = "a"             #letra
 
 def cargar_letra(palabra, tablero, x, y, letra):
-""" realiza todas la operaciones de cargar una letra y sumarlos puntos asociados """
+#""" realiza todas la operaciones de cargar una letra y sumarlos puntos asociados """
 # esta funcion ya toma como valido el espacio de celda,
 # ejemplo:
 # if var_tablero.celda_vacia(x, y):
@@ -24,7 +24,7 @@ def cargar_letra(palabra, tablero, x, y, letra):
     palabra.agregar_coord_final(coord)          # carga la coordenada al objeto palabra
 
 def borrar_letra(palabra, tablero):
-""" borra la ultima letra cargada en el tablero y resta sus respectivos puntos"""
+#""" borra la ultima letra cargada en el tablero y resta sus respectivos puntos"""
     coord = palabra.borrar_coord_final()                    # guarda la coordenada de la ultima letra en la Palabra
     tupla_puntos = tablero.puntos_celda(coord[0], coord[1]) # guarda los puntos de la celda en una tupla
     tablero.restar(tupla_puntos)                            # resta los puntos de la celda

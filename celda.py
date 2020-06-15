@@ -22,18 +22,18 @@ class Celda: #clase celda, parte de la version de dani modificandola
 
     # otros metodos
     def cargar_una_letra(self,letra):
-    """ carga una letra si no hay nade previamente """
+    #""" carga una letra si no hay nade previamente """
         if self.valida_espacio:
             self.set_letra(letra)
 
     def borrar_letra(self):
-    """ borra y devuelve la letra borrada """
+    #""" borra y devuelve la letra borrada """
         letra = self.get_letra()
         self.set_letra(" ")
         return letra
 
     def valor_base(self):
-    """ busca obtener el valor base propio de la letra """
+    #""" busca obtener el valor base propio de la letra """
         ok = False
         cont = 0
         lista_1 = ["A","E","O","S","I","U","N","L","R","T"]
@@ -77,7 +77,7 @@ class Celda: #clase celda, parte de la version de dani modificandola
                 return 10
 
     def calcular_puntos(self):
-    """ devuelve una tupla donde el primer elemento son los puntos de la celda y el segundo es la cantantidad de multiplicador para puntos de la palabra """
+    #""" devuelve una tupla donde el primer elemento son los puntos de la celda y el segundo es la cantantidad de multiplicador para puntos de la palabra """
         mult = 0
         if self.get_modificador()[0] == "+":    # operador de suma
             puntos = self.valor_base() + self.get_modificador()[1]
