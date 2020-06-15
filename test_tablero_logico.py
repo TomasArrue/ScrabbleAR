@@ -50,7 +50,7 @@ def ingresar_coordenada (eje = 15):
     print("Ingresar coordenada")
     print("Ingrese la coordenada entre: 1 y " + str(eje))
     coord = int(input())
-    coord = coord - 1
+    coord = coord
 #    while validar_coord(coord): # en caso de ingresar una coordenada invalida
 #        print("ERROR  ---> COORDENADA INVALIDA")
 #        print("Por favor ingrese un un numero entre 1 y " + str(eje))
@@ -87,12 +87,12 @@ def cargar_dato():# !!!!! esto lo dan los botones luqui
     print("")
     print("Segundo cargamos las coordenadas")
     x = ingresar_coordenada()
-    print("coord x: " + str(x+1))
+    print("coord x: " + str(x))
     print("")
     y = ingresar_coordenada()
-    print("coord y: " + str(y+1))
+    print("coord y: " + str(y))
     print("")
-    print("la letra es "+str(letra)+" y las coordenadas son ("+str(x+1)+","+str(y+1)+")")
+    print("la letra es "+str(letra)+" y las coordenadas son ("+str(x)+","+str(y)+")")
     return (letra,x,y)
 
 # variables ejemplificadoras
@@ -101,6 +101,7 @@ var_palabra = Palabra() #objeto palabra
 x = 0                   #coord
 y = 0                   #coord
 letra = ""              #letra
+var_tablero.cargar_colores()
 
 var_tablero.imprimir()
 print("==========================================================================================")

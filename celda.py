@@ -1,7 +1,8 @@
 class Celda: #clase celda, parte de la version de dani modificandola
 
-    def __init__(self,letra=" ",modificador = ("+",0)):
+    def __init__(self,letra=" ",modificador = ("+",0), color = " "):
         self.letra = letra      # si no usamos el parametro "letra" simepre hubiera cargado  "vacio"
+        self.color = color
         self.modificador = modificador # si no usamos el parametro "modificador" simepre hubiera cargado  "1" #
                                            # modifico el "modificador" como tupla para darle mas versatilidad al modificador
                                            # un tupla conformada por un operador que pueda sumar "+", restar "-" o multiplicar "*".etc.. y el operando que indica la cantidad 1,2,3...ect
@@ -13,6 +14,12 @@ class Celda: #clase celda, parte de la version de dani modificandola
 
     def set_letra(self,letra):
         self.letra = letra
+
+    def get_color(self):
+        return self.color
+
+    def set_color(self, color):
+        self.color = color
 
     def get_modificador(self):
         return self.modificador
