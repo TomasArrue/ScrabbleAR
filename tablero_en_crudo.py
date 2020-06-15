@@ -18,7 +18,7 @@ coordenadas_verde=[]
 coordenadas_azul=[]
 coordenadas_gris=[]
 
-#Prueba de pintado de tablero
+#carga de nickname previa a jugar, solo para guardar el dato en el ranking y que muestre su puntaje
 def carga_nombre():
     layout3=[[sg.Text('Ingresa tu nombre:')],
             [sg.Input('',key='name')],
@@ -32,7 +32,7 @@ def carga_nombre():
     window3.close() 
     return nombre         
 
-
+#Prueba de pintado de tablero
 def asignarValores(window):
 
     for i in range(max_Cant_Filas):
