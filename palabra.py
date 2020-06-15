@@ -45,11 +45,11 @@ class Palabra:
 
     def agregar_coord_final(self, coord):
     #""" carga una tupla de coordenadas en la ultima posicion """
-        self.coordenadas.append(coord)
+        self.lista_coord.append(coord)
 
     def borrar_coord_final(self):
     #""" borra y devuelve el ultimo elemento de la lista de tupla de coordenadas """
-        return self.coordenadas.pop()
+        return self.lista_coord.pop()
 
     def reset(self):
     #""" vuelve vacia al objeto de datos """

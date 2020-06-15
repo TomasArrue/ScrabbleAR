@@ -1,12 +1,12 @@
-from tablero import Tablero
+from tablero_logico import Tablero
 from palabra import Palabra
 
 # variables ejemplificadoras
-var_tablero = Tablero() #objeto tablero
-var_palabra = Palabra() #objeto palabra
-x = 0                   #coord
-y = 0                   #coord
-letra = "a"             #letra
+#var_tablero = Tablero() #objeto tablero
+#var_palabra = Palabra() #objeto palabra
+#x = 0                   #coord
+#y = 0                   #coord
+#letra = "a"             #letra
 
 def cargar_letra(palabra, tablero, x, y, letra):
 #""" realiza todas la operaciones de cargar una letra y sumarlos puntos asociados """

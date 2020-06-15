@@ -3,16 +3,16 @@ from celda import Celda
 class Tablero: # tablero es un objeto donde se guardan objetos celdes y sus metodos realizan las operaciones logicas de procesar la informacion
     def __init__(self, ejes = 15):
         self.matriz = [[None] * ejes for i in range(ejes)]  # carga el tablero vacio ---> None
-        for x in range(len(tablero)):
-            for y in range(len(tablero[x])):
+        for x in range(len(self.matriz)):
+            for y in range(len(self.matriz[x])):
                 self.matriz[x][y] = Celda()       # pisa el objeto None con un objeto celda, cada celda esta vacia
 
     #getter y setter
     def get_letra(self, x, y):
-        return matriz[x][y].get_letra()
+        return self.matriz[x][y].get_letra()
 
     def set_letra(self, x , y, letra):
-        matriz[x][y].set_letra(letra)
+        self.matriz[x][y].set_letra(letra)
 
     # otros metodos
     #""" devuelve un boolean si la celda tiene letra o no """
@@ -38,9 +38,9 @@ class Tablero: # tablero es un objeto donde se guardan objetos celdes y sus meto
 
     def imprimir(self):
     #""" imprime desde la terminar el tablero """
-        for x in range(len(tablero)):
-            for y in range(len(tablero[x])):
-                print("|",end="")
-                print(str(self.get_letra(x, y)),end="")
+        for x in range(len(self.matriz)):
+            print("|",end="")
+            for y in range(len(self.matriz[x])):
+                print(self.get_letra(x, y),end="")
                 print("|",end="")
             print("")
