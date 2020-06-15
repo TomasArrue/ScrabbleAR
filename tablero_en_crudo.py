@@ -1,4 +1,4 @@
-
+import json
 import PySimpleGUI as sg
 import random
 from string import ascii_uppercase as up
@@ -288,10 +288,25 @@ while True:
              timer_running=cargar_juego(window,timer_running,nombre)
 
          elif event == "TOP":
+            with open ('ranking.json','r') as r:
+                dicc = json.load(r)
+
+            print(dicc.keys())
+            print(dicc.values())
+
+            rank_facil = list(dicc['facil'])
+            print('valores en facil',rank_facil)
+
+            rank_medio = list(dicc['medio'])
+            print('valores en medio',rank_medio)
+
+            rank_dif = list(dicc['dificil'])
+            print('valores en dificil',rank_dif)
+
             tab1_layout = [[sg.T('This is inside tab 1')]]
-            tab2_layout = [[sg.T('This is inside tab 2')],[sg.In(key='in')]]
-            tab3_layout = [[sg.T('This is inside tab 3')]]
-            tab4_layout = [[sg.T('This is inside tab 4')]]
+            tab2_layout = [[sg.Listbox(values=rank_facil, size=(30,10))]]
+            tab3_layout = [[sg.Listbox(values=rank_medio, size=(30,10))]]
+            tab4_layout = [[sg.Listbox(values=rank_dif, size=(30,10))]]
             layout2 = [
                         [sg.Text('RANKING'), sg.Text('', key='_OUTPUT_')],
                         [sg.TabGroup([
