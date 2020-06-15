@@ -32,6 +32,19 @@ def carga_nombre():
     window3.close() 
     return nombre         
 
+def asignarValores2(window,dificultad):
+    with open('tab.json','r') as t:
+        dic = json.load(t)
+        
+    if dificultad=='Facil':    
+         tablero_config = dic["tab_facil"]
+
+    for colores in tablero_config.keys():
+        lista_de_cord = tablero_config[colores]
+        for par_de_cord in lista_de_cord:
+            x,y = par_de_cord 
+            window[x,y].update(button_color=(colores,colores))
+
 #Prueba de pintado de tablero
 def asignarValores(window):
 
@@ -64,7 +77,8 @@ def asignarValores(window):
 
 
 def cargar_juego(window,timer_running,nombre):
-    asignarValores(window)
+    very_dificult=values['dificultad']
+    asignarValores2(window,very_dificult)
     window['opcionesJuego'].update(visible=True)
     window['Comenzar'].update(visible=False)
     window['Cargar Partida'].update(visible=False)
