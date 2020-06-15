@@ -19,6 +19,20 @@ coordenadas_azul=[]
 coordenadas_gris=[]
 
 #Prueba de pintado de tablero
+def carga_nombre():
+    layout3=[[sg.Text('Ingresa tu nombre:')],
+            [sg.Input('',key='name')],
+            [sg.Button('Listo')]]
+    window3=sg.Window('Ingresa datos',layout3)
+    while True:
+         event,values=window3.read()   
+         if event=='Listo' :
+             nombre=values['name']
+             break         
+    window3.close() 
+    return nombre         
+
+
 def asignarValores(window):
 
     for i in range(max_Cant_Filas):
@@ -49,13 +63,14 @@ def asignarValores(window):
                     coordenadas_rojo.append(aux_cord2)
 
 
-def cargar_juego(window,timer_running):
+def cargar_juego(window,timer_running,nombre):
     asignarValores(window)
     window['opcionesJuego'].update(visible=True)
     window['Comenzar'].update(visible=False)
     window['Cargar Partida'].update(visible=False)
     window['Guardar Partida'].update(visible=True)
     window['Salir'].update(visible=True)
+    window['puntaje_propio'].update("PUNTAJE DE {0} ES :0".format(nombre))
     window['puntaje'].update(visible=True)
     window['atrilFichasRival'].update(visible=True)
     window['atrilFichas'].update(visible=True)
@@ -92,9 +107,7 @@ def obtener_fichas(window,nro_de_boton:str,a:list):
     window.Refresh()
 
 
-def repartir_fichas_de_nuevo(window,c
-
-antidad_de_veces_Repartidas:int,a:list):
+def repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas:int,a:list):
     a=[]
     if (cantidad_de_veces_Repartidas < 3):
         cantidad_de_veces_Repartidas=cantidad_de_veces_Repartidas+1
@@ -120,15 +133,15 @@ def quitar_fichas(window,usados:list,botones_usados:list,no_disponibles:list):
         sg.Popup('No hay fichas para borrar')
 
 
-def pedir_fichas(window,usados:list):
-    a = letrasRandom()
-    #ZIP lo que hace es crear una lista de tuplas con las listas que le pasas
-    mezcla = zip(usados,a)
-    print(mezcla)
-    for elem in mezcla:
-        #busco la letra que use,en en ese lugar hago visible el boton y actualizo su texto
-        window[elem[0]].update(elem[1],visible=True)
-
+def pedir_fichas(window,botones_usados:list,a:list):
+    for i in botones_usados:
+        obtener_fichas(window,i,a)
+        letra=a[len(a)-1]
+        print(letra)
+        window[i].update(letra,visible = True)
+    for i in range (len(botones_usados)):
+        botones_usados.pop()
+        
 
 def letra_al_tablero(window,usados,botones_usados,a,no_disponibles):
     usados.append(letra) #lo agrega a mi lista de usados
@@ -178,23 +191,22 @@ fichas_rival =[ [sg.Text("Fichas CPU: ",font=("Chalkboard", 15))],
 
 tablero=[ [sg.Button('',button_color=('grey','white'),size=(1, 1), key=(i,j), pad=(0,0)) for j in range(max_Cant_Columnas)] for i in range(max_Cant_Filas)]#botones matriz
 
-puntaje_y_tiempo=[ [sg.Text('TU PUNTAJE: 0',font=("Chalkboard", 15))],
-                   [sg.Text('PUNTAJE PC: 0',font=("Chalkboard", 15))],
+puntaje_y_tiempo=[ [sg.Text('TU PUNTAJE: 0',key='puntaje_propio',font=("Chalkboard", 5))],
+                   [sg.Text('PUNTAJE PC: 0',font=("Chalkboard", 15))], 
                    [sg.Text('Tiempo',font=('Chalkboard', 15))],
                    [sg.Text('00:00',font=('Chalkboard', 15), key='-OUTPUT-')],#
                    [sg.T(' ' * 5)]
                  ]
 
 layout=[
-       [sg.Text("Scrabble", size=(8, 1), font=("Chalkboard", 25), relief=sg.RELIEF_RIDGE)],
-       [sg.Column(fichas_rival,key='atrilFichasRival',visible=False)],
-       [sg.Column(opciones_de_inicio,key='opcionesComienzo'), sg.Column(tablero),sg.Column(puntaje_y_tiempo,key='puntaje',visible=False)],
-       [sg.Column(fichas,key='atrilFichas',visible=False)],
-       [sg.Column(opciones_de_juego,key='opcionesJuego',visible=False)],
+       [sg.Text("Scrabble", size=(8, 1), justification='left', font=("Chalkboard", 25), relief=sg.RELIEF_RIDGE)],
+       [sg.Column(fichas_rival,key='atrilFichasRival',justification='center',visible=False)],
+       [sg.Column(opciones_de_inicio,key='opcionesComienzo',justification='left'), sg.Column(tablero),sg.Column(puntaje_y_tiempo,key='puntaje',visible=False)],
+       [sg.Column(fichas,key='atrilFichas',justification='center',visible=False)],
+       [sg.Column(opciones_de_juego,key='opcionesJuego',justification='center',visible=False)],   
        ]
 
 window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2),finalize=True, resizable=True,  auto_size_buttons=True)
-
 
 a=[]#letras que voy usando
 usados = []#lleva las letras que ya use
@@ -259,16 +271,21 @@ while True:
                      print(len(usados),' ',len(no_disponibles))
 
          if event == "Pedir Fichas": #NO FUNCIONA , pide fichas hasta llegar a 7 en la mano
-            pedir_fichas(window,usados)
 
+            pedir_fichas(window,botones_usados,a)
+            
          elif event == "Repartir De Nuevo": #pide 7 fichas nuevas en la mano
-            cantidad_de_veces_Repartidas=repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,a)
-
-         elif event == "Borrar" : #quita elementos del tablero, desde el ultimo al primero
+             if not botones_usados:
+                cantidad_de_veces_Repartidas=repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,a) 
+             else:
+                sg.Popup('Estas en medio de una mano, tenes q tener 7 fichas para cambiar')   
+            
+         elif event == "Borrar" : #quita elementos del tablero, desde el ultimo al primero  
             quitar_fichas(window,usados,botones_usados,no_disponibles)
 
          elif event == "Comenzar": # para inicializar el juego
-             timer_running=cargar_juego(window,timer_running)
+             nombre=carga_nombre()
+             timer_running=cargar_juego(window,timer_running,nombre)
 
          elif event == "TOP":
             tab1_layout = [[sg.T('This is inside tab 1')]]
@@ -278,10 +295,12 @@ while True:
             layout2 = [
                         [sg.Text('RANKING'), sg.Text('', key='_OUTPUT_')],
                         [sg.TabGroup([
-                                        [sg.Tab('Ranking General', tab1_layout, tooltip='tip'),
-                                         sg.Tab('Ranking Facil', tab2_layout, tooltip='tip2'),
-                                         sg.Tab('Ranking Medio', tab3_layout, tooltip='tip3'),
-                                         sg.Tab('Ranking Medio', tab4_layout,tooltip='tip4')]
+
+                                        [sg.Tab('Ranking General', tab1_layout, tooltip='tip'), 
+                                         sg.Tab('Ranking Facil', tab2_layout, tooltip='tip2'),   
+                                         sg.Tab('Ranking Medio', tab3_layout, tooltip='tip3'),  
+                                         sg.Tab('Ranking Dificil', tab4_layout,tooltip='tip4')]
+
                                     ])],
                         [sg.Button('Exit')]
                       ]
@@ -290,6 +309,7 @@ while True:
                 event2, values2 = window2.Read()
                 if event2 == 'Exit':
                     break
+        
 
             window2.Close()
 
@@ -297,7 +317,7 @@ while True:
              #  window['-OUTPUT-'].update('{:02d}:{:02d}'.format((counter // 100) // 60, (counter // 100) % 60, counter % 100))
              window['-OUTPUT-'].update('{:02d}:{:02d}'.format((counter // 100) // 60, (counter // 100) % 60))
              counter += 1
-             print(counter)
+             
              if counter==6000:#6000 equivale a 1 minuto, 60000 a 10 minutos
                 timer_running = not timer_running
                 sg.Popup('termino el tiempo')
