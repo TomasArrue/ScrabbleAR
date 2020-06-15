@@ -28,4 +28,6 @@ def borrar_letra(palabra, tablero):
     coord = palabra.borrar_coord_final()                    # guarda la coordenada de la ultima letra en la Palabra
     tupla_puntos = tablero.puntos_celda(coord[0], coord[1]) # guarda los puntos de la celda en una tupla
     tablero.restar(tupla_puntos)                            # resta los puntos de la celda
+    letra = tablero.get_letra(coord[0], coord[1])           # guarda la letra para devolverla al atril
     tablero.borrar_letra(coord[0], coord[1])                # borra finalmente la letra del tablero
+    return letras                                           # retorna la letra para devolverla en el atril
