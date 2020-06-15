@@ -63,6 +63,12 @@ class Palabra:
         self.set_puntos(self.get_puntos() + tupla[0])
         self.set_multiplicador_palabra(self.get_multiplicador_palabra() + tupla[1])
 
+    def restar(self, tupla):
+    """ resta los puntos y el multiplicador que recibe de una celda """
+        puntos = tupla[0] * -1
+        mult = tupla[1] * -1
+        self.set_puntos(self.get_puntos() + puntos)
+        self.set_multiplicador_palabra(self.get_multiplicador_palabra() + mult)
 
 
 

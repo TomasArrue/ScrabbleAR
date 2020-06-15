@@ -22,15 +22,9 @@ class Tablero: # tablero es un objeto donde se guardan objetos celdes y sus meto
         else:
             return False
 
-    def sumar(self, x, y):
+    def puntos_celda(self, x, y):
     """ devuelve los puntos y el multiplicador de palabra en una tupla """
         tupla = self.matriz[x][y].calcular_puntos()
-        return tupla
-
-    def restar(self, x, y):
-    """ devuelve (negativos) los puntos y el multiplicador de palabra en una tupla """# !!! puede ser descartado en un futuro
-        tupla = self.matriz[x][y].calcular_puntos()
-        tupla[0] = tupla[0] * -1
         return tupla
 
     def cargar_letra(self, x, y, letra):
