@@ -189,6 +189,8 @@ def puntos_de_letra(letra,dificultad,coord):
         return f
     elif list(coord) not in tablero_actual["mediumseagreen"] and list(coord) not in tablero_actual["skyblue"]:
         return valor_de_letra[letra]
+    else:
+        return 0
 
 
 bolsa_total = crear_bolsita_total()
