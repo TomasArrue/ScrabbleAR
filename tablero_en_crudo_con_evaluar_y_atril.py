@@ -197,7 +197,7 @@ bolsa_total = crear_bolsita_total()
 #print(bolsa_total)
 
 f = crear_atril(**bolsa_total)
-aa = f[0] #nuestro atril
+#aa = f[0] #nuestro atril
 b = f[1]  #el de la maquina
 #print(aa)
 #print(b)
