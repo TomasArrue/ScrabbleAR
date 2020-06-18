@@ -17,6 +17,8 @@ coordenadas_verde=[]
 coordenadas_azul=[]
 coordenadas_gris=[]
 
+
+
 def crear_atril(**bolsa_total):
     atril_player = []
     atril_cpu = []
@@ -101,7 +103,8 @@ def volverAPintar(cord,window):
 
     with open ('config.json','r') as p:
         dicc = json.load(p)
-    tablero_actual = dicc["tab_facil"]
+    #la dific tiene que vernir como parametro para saber que tablero abrir
+    tablero_actual = dicc["Facil"]
     if list(cord) in tablero_actual["indianred"]: window[cord].update(button_color=('indianred','indianred'))
     elif list(cord) in tablero_actual["goldenrod"]: window[cord].update(button_color=('goldenrod','goldenrod'))
     elif list(cord) in tablero_actual["mediumseagreen"]: window[cord].update(button_color=('mediumseagreen','mediumseagreen'))
@@ -175,7 +178,7 @@ def puntos_de_letra(letra,dificultad,coord):
     with open ('config.json','r') as p:
         dicc = json.load(p)
     valor_de_letra = dicc["valor_por_letra"]
-    tablero_actual = dicc["tab_facil"]
+    tablero_actual = dicc["Facil"]
 
     #lo tengo que castear a lista porque asi quedo grabado en el json
     if list(coord) in tablero_actual["indianred"]:
@@ -189,13 +192,13 @@ def puntos_de_letra(letra,dificultad,coord):
 
 
 bolsa_total = crear_bolsita_total()
-print(bolsa_total)
+#print(bolsa_total)
 
 f = crear_atril(**bolsa_total)
 aa = f[0] #nuestro atril
 b = f[1]  #el de la maquina
-print(aa)
-print(b)
+#print(aa)
+#print(b)
 
 
 color_De_Boton=('Black','seagreen')
@@ -285,7 +288,7 @@ while True:
                      print(letra)
                      if len(usados)==0: #vemos si es la primera letra, seteamos la orientacion de la palabra
                         letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
-                        puntos += puntos_de_letra(letra,"facil",lugar)
+                        puntos += puntos_de_letra(letra,"facil",lugar) #hay que declarar una variable dific para enviar en lugar de facil
                         print(puntos)
                         window["puntaje_propio"].update(puntos)
                         vertical=horizontal=False
