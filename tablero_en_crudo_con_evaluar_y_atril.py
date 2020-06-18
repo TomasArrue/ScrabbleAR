@@ -62,12 +62,13 @@ def carga_nombre():
     window3.close()
     return nombre
 
+#pinta el tablero segun la dificultad
 def asignarValores2(window,dificultad):
-    with open('tab.json','r') as t:
+    with open('config.json','r') as t:
         dic = json.load(t)
 
-    if dificultad=='Facil':
-         tablero_config = dic["tab_facil"]
+    print(dificultad)
+    tablero_config = dic[dificultad]
 
     for colores in tablero_config.keys():
         lista_de_cord = tablero_config[colores]
@@ -95,7 +96,7 @@ def cargar_juego(window,timer_running,nombre):
     timer_running = not timer_running
     return timer_running
 
-
+#para volver a colorear una casilla ya usada
 def volverAPintar(cord,window):
 
     with open ('config.json','r') as p:
@@ -108,7 +109,7 @@ def volverAPintar(cord,window):
     #elif list(cord) in tablero_actual["grey"]: window[cord].update(button_color=('grey','grey'))
     else: window[cord].update(button_color=('grey','white'))
 
-
+#verifica si es o no una palabra
 def verificar_palabra(palabra):
     if palabra in lexicon and spelling or palabra in verbs:
         return(True)
@@ -123,7 +124,7 @@ def obtener_fichas(window,nro_de_boton:str,a:list):
     window[nro_de_boton].update(letra)
     window.Refresh()
 
-
+#reparte una mano
 def repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas:int,a:list):
     a=[]
     if (cantidad_de_veces_Repartidas < 3):
@@ -168,6 +169,7 @@ def letra_al_tablero(window,usados,botones_usados,a,no_disponibles):
     window[event].update(visible = False) #saco el boton de esa letra
     no_disponibles.append(lugar)#cargo el lugar que ya use
 
+#calcula el valor de 1 letra
 def puntos_de_letra(letra,dificultad,coord):
 
     with open ('config.json','r') as p:
@@ -251,7 +253,6 @@ layout=[
        ]
 
 window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2),finalize=True, resizable=True,  auto_size_buttons=True)
-
 
 puntos = 0; #puntos del jugdador
 a=[]#letras que voy usando
