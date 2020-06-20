@@ -1,6 +1,7 @@
 import json
 import PySimpleGUI as sg
 import random
+from tablero_logico import Tablero
 from string import ascii_uppercase as up
 from random import choice
 from pattern.text.es import lexicon,spelling,verbs
@@ -18,8 +19,13 @@ coordenadas_verde=[]
 coordenadas_azul=[]
 coordenadas_gris=[]
 
-#carga de nickname previa a jugar, solo para guardar el dato en el ranking y que muestre su puntaje
+
 def carga_nombre():
+    ''' 
+        Cargamos el nombre al ingresar al juego para usarlo luego al cargar los
+        datos de la partida, tambien lo utilizamos para que indique el puntaje 
+        del jugardor activo en el momento
+    '''    
     layout3=[[sg.Text('Ingresa tu nombre:')],
             [sg.Input('',key='name')],
             [sg.Button('Listo')]]
@@ -32,10 +38,17 @@ def carga_nombre():
     window3.close() 
     return nombre         
 
+
 def asignarValores2(window,dificultad):
+    '''
+       Se van a pintar los botones de la matriz que conforman el tablero
+       segun las coordenas que vengan en el archivo json, dependiendo 
+       el nivel que hayamos elegido
+    '''   
+    #PODRIAMOS METER UNA EXCEPCION ACA
     with open('tab.json','r') as t:
         dic = json.load(t)
-        
+
     if dificultad=='Facil':    
          tablero_config = dic["tab_facil"]
 
@@ -45,9 +58,8 @@ def asignarValores2(window,dificultad):
             x,y = par_de_cord 
             window[x,y].update(button_color=(colores,colores))
 
-#Prueba de pintado de tablero
-def asignarValores(window):
 
+def asignarValores(window):
     for i in range(max_Cant_Filas):
         for j in range(max_Cant_Columnas):
             if (i==0 or i==int(max_Cant_Filas/2) or i==(max_Cant_Filas-1))and(j==0 or j==int(max_Cant_Filas/2) or j==(max_Cant_Filas-1)):#PINTA EN DIAGONAL
@@ -77,6 +89,14 @@ def asignarValores(window):
 
 
 def cargar_juego(window,timer_running,nombre):
+    '''
+        iniciamos todo el seteo inicial del juego: 
+            -la dificultad segun la seleccionada en el menu
+            -Pintamos el tablero segun la dificultad
+            -Ocultamos los botones de Comenzar, Cargar Partida
+            -Volvemos visibles los botones de Guardar, Salir
+            -Volvemos visibles las opciones de juego para poder jugar
+    '''    
     very_dificult=values['dificultad']
     asignarValores2(window,very_dificult)
     window['opcionesJuego'].update(visible=True)
@@ -98,6 +118,10 @@ def cargar_juego(window,timer_running,nombre):
 
 
 def volverAPintar(cord,window):
+    '''
+        este modulo nos sirve para volver a pintar un boton de su color inicial 
+        en caso de que tengamos que sacar una ficha que pusimos
+    '''
     if cord in coordenadas_rojo: window[cord].update(button_color=('indianred','indianred'))
     elif cord in coordenadas_dorado: window[cord].update(button_color=('goldenrod','goldenrod'))
     elif cord in coordenadas_verde: window[cord].update(button_color=('mediumseagreen','mediumseagreen'))
@@ -107,6 +131,9 @@ def volverAPintar(cord,window):
 
 
 def verificar_palabra(palabra):
+    '''
+        verificamos si la palabra es valida
+    '''
     if palabra in lexicon and spelling or palabra in verbs:
         return True
     else:
@@ -114,14 +141,24 @@ def verificar_palabra(palabra):
 
 
 def obtener_fichas(window,nro_de_boton:str,a:list):
+    '''
+        Este metodo nos da una ficha "nueva".
+        Generamos una letra random la agregamos a la lista de letras de nuestro atril,
+        luego con la key del boton recibida como parametro actualizamos el valor del 
+        boton con la nueva letra
+    '''
     letra=random.choice(up)
     a.append(letra)
-    print(letra)
+    print(letra)# solo para testeo
     window[nro_de_boton].update(letra)
     window.Refresh()
 
 
 def repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas:int,a:list):
+    '''
+        El repartir de nuevo nos da 7 nuevas fichas cada vez que lo necesitamos,
+        pero hasta un total e 3 veces
+    '''
     a=[]
     if (cantidad_de_veces_Repartidas < 3):
         cantidad_de_veces_Repartidas=cantidad_de_veces_Repartidas+1
@@ -134,6 +171,11 @@ def repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas:int,a:list):
 
 
 def quitar_fichas(window,usados:list,botones_usados:list,no_disponibles:list):
+    '''
+        quitar fichas nos permite scara las fichas ingresadas al tablero en el turno correspondiente.
+        Mientras que la longitud lista de usados del turno sea mayor a 0 vamos a poder retirar fichas
+        que ingresamos, en caso de que no se pueda no podremos quitar mas
+    '''
     #print(len(usados),' ',len(no_disponibles),' ',len(botones_usados))
     if len(usados)>0:# Aca antes de borrar una letra vamos a preguntar si hay letras para borrar, en caso contrario no podras borrar mas letras
         letra_a_borrar=usados.pop(len(usados) - 1)# Saca la ultima letra de la palabra cargada - el pop saca de usados  el elemento de la ultima posicion de la lista de usados
@@ -148,6 +190,11 @@ def quitar_fichas(window,usados:list,botones_usados:list,no_disponibles:list):
 
 
 def pedir_fichas(window,botones_usados:list,a:list):
+    '''
+        el pedir fichas nos permite obtener nuevas fichas hasta completar las 7 
+        Iteramos sobre la lista de botones usados, para poder ir actualizando su valor
+        y hacerlos visibles nuevamente
+    '''
     for i in botones_usados:
         obtener_fichas(window,i,a)
         letra=a[len(a)-1]
@@ -158,21 +205,29 @@ def pedir_fichas(window,botones_usados:list,a:list):
         
 
 def letra_al_tablero(window,usados,botones_usados,a,no_disponibles):
+    '''
+        En letra al tablero representamos el momento de colocar la letra en el tablero
+        , guardamos la letra y el nombre del boton de la ficha , actualizamos el boton 
+        del tablero donde iria la letra, eliminamos la letra de nuestra lista de letras del atril
+        y marcamos la coordenada como no disponible
+    '''
     usados.append(letra) #lo agrega a mi lista de usados
     botones_usados.append(event)#agrego el nombre del boton para luego recuperarlo
     window[lugar].update(letra, button_color=('white','green'))#pinto de verde
     a.remove(letra) #saco la letra de la bolsa
     window[event].update(visible = False) #saco el boton de esa letra
     no_disponibles.append(lugar)#cargo el lugar que ya use
+    #print('pts:',var_tablero.puntos_celda(lugar(0),lugar(1)))
 
 
-color_De_Boton=('Black','seagreen')
+var_tablero = Tablero()
+color_De_Boton=('black','seagreen')
 tamanio_Boton_De_Fichas = 2,2 #tamanio de botones que seran las fichas
 tamanio_Boton_De_Control = 15,1 #tamanio de botones de comenzar y salir
 max_Cant_Filas = max_Cant_Columnas = 15 #tamanio de las matrices
 dificultad = ['Facil','Medio','Dificil']
 botones_De_Fichas = lambda name : sg.Button(name,button_color=color_De_Boton,size=tamanio_Boton_De_Fichas)
-botones_De_Fichas_rival = lambda name : sg.Button('?',button_color='color_De_Boton',size=tamanio_Boton_De_Fichas)
+botones_De_Fichas_rival = lambda name : sg.Button('?',button_color=color_De_Boton,size=tamanio_Boton_De_Fichas)
 sg.ChangeLookAndFeel('DarkGrey6')
 
 opciones_de_inicio = [ [sg.Button("Comenzar",size=tamanio_Boton_De_Control)],
