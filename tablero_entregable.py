@@ -6,6 +6,56 @@ from random import choice
 from pattern.text.es import lexicon,spelling,verbs
 
 
+def configuracion_de_juego():
+    """
+        configuracion del juego inicial,cargamos el config.json, para poder cambiar
+        la cantidades de letras iniciales en la bolsa de fichas y ademas podemos 
+        editar el valor de cada ficha
+    """    
+    with open('config.json','r') as cf:
+        c = json.load(cf)
+
+    diccionario_cantidad_de_letras=c['cantidad_de_letras']
+    diccionario_cantidad_de_puntos=c['valor_por_letra']
+  
+
+    layout3=[
+                [sg.Text("Configuracion", size=(8, 1), justification='left', font=("Chalkboard", 25), relief=sg.RELIEF_RIDGE)],
+                [sg.Text(k,size=(5,1),justification='center')for k,v in diccionario_cantidad_de_letras.items()],
+                [sg.Text('PARA MODIFICAR LA CANTIDAD DE LETRAS POR LETRA CAMBIE EL VALOR A LA LETRA CORRESPONDIENTE :')],
+                [sg.Input(v,size=(5,1),key=(k+'_cant'))for k,v in diccionario_cantidad_de_letras.items()],
+                [sg.Text('PARA MODIFICAR EL VALOR DE LAS LETRAS POR LETRA CAMBIE EL VALOR A LA LETRA CORRESPONDIENTE:')],
+                [sg.Input(v,size=(5,1),key=(k+'_valor'))for k,v in diccionario_cantidad_de_puntos.items()],
+                [sg.Button('GUARDAR CONFIGURACION'),sg.Button('CANCELAR')]
+            ]
+
+    window3 = sg.Window('Configuracion').Layout(layout3)
+    while True:
+        event3, values3 = window3.Read()
+        
+        if event3 == 'CANCELAR':
+            break
+
+        if event3 == 'GUARDAR CONFIGURACION':
+            #with open('config.json','w') as cf:
+
+            for k,v in diccionario_cantidad_de_letras.items():
+                #print('valores: ',values3[k+'_cant'])
+                #print (type(values3[k+'_cant']))  
+                try:
+                    numero_nuevo=int(values3[k+'_cant'])
+                except (ValueError):
+                    numero_nuevo=1   
+                #print(type(numero_nuevo))
+                
+
+    window3.close()    
+
+      
+
+
+
+
 #crear bolsas para maquina y jugador
 def crear_bolsita_total():
     with open('config.json','r') as cf:
@@ -28,6 +78,11 @@ def crear_atril(bolsa_total):
 
 #carga de nickname previa a jugar, solo para guardar el dato en el ranking y que muestre su puntaje
 def carga_nombre():
+    ''' 
+        Cargamos el nombre al ingresar al juego para usarlo luego al cargar los
+        datos de la partida, tambien lo utilizamos para que indique el puntaje 
+        del jugardor activo en el momento
+    '''    
     layout3=[[sg.Text('Ingresa tu nombre:')],
             [sg.Input('',key='name')],
             [sg.Button('Listo')]]
@@ -42,6 +97,11 @@ def carga_nombre():
 
 #pinta el tablero segun la dificultad
 def asignarValores2(window,dificultad):
+    '''
+       Se van a pintar los botones de la matriz que conforman el tablero
+       segun las coordenas que vengan en el archivo json, dependiendo 
+       el nivel que hayamos elegido
+    ''' 
     with open('config.json','r') as t:
         dic = json.load(t)
 
@@ -55,10 +115,19 @@ def asignarValores2(window,dificultad):
             window[x,y].update(button_color=(colores,colores))
 
 def cargar_juego(window,timer_running,nombre,bolsa_total):
+    '''
+        iniciamos todo el seteo inicial del juego: 
+            -la dificultad segun la seleccionada en el menu
+            -Pintamos el tablero segun la dificultad
+            -Ocultamos los botones de Comenzar, Cargar Partida
+            -Volvemos visibles los botones de Guardar, Salir
+            -Volvemos visibles las opciones de juego para poder jugar
+    ''' 
     very_dificult=values['dificultad']
     asignarValores2(window,very_dificult)
     window['opcionesJuego'].update(visible=True)
     window['Comenzar'].update(visible=False)
+    window['Configuracion'].update(visible=False)
     window['Cargar Partida'].update(visible=False)
     window['Guardar Partida'].update(visible=True)
     window['Salir'].update(visible=True)
@@ -79,7 +148,10 @@ def cargar_juego(window,timer_running,nombre,bolsa_total):
 
 #para volver a colorear una casilla ya usada
 def volverAPintar(cord,window):
-
+    '''
+        este modulo nos sirve para volver a pintar un boton de su color inicial 
+        en caso de que tengamos que sacar una ficha que pusimos
+    '''
     with open ('config.json','r') as p:
         dicc = json.load(p)
     #la dific tiene que vernir como parametro para saber que tablero abrir
@@ -93,6 +165,9 @@ def volverAPintar(cord,window):
 
 #verifica si es o no una palabra
 def verificar_palabra(palabra):
+    '''
+        verificamos si la palabra es valida
+    '''
     if palabra in lexicon and spelling or palabra in verbs:
         return(True)
     else:
@@ -100,7 +175,12 @@ def verificar_palabra(palabra):
 
 
 def obtener_fichas(window,nro_de_boton,a,bolsa_total):
-
+    '''
+        Este metodo nos da una ficha "nueva".
+        Generamos una letra random la agregamos a la lista de letras de nuestro atril,
+        luego con la key del boton recibida como parametro actualizamos el valor del 
+        boton con la nueva letra
+    '''
     letra=crear_atril(bolsa_total)
     a.append(letra)
     window[nro_de_boton].update(letra)
@@ -121,6 +201,11 @@ def repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,a):
 
 
 def quitar_fichas(window,usados:list,botones_usados:list,no_disponibles:list):
+    '''
+        quitar fichas nos permite scara las fichas ingresadas al tablero en el turno correspondiente.
+        Mientras que la longitud lista de usados del turno sea mayor a 0 vamos a poder retirar fichas
+        que ingresamos, en caso de que no se pueda no podremos quitar mas
+    '''
     #print(len(usados),' ',len(no_disponibles),' ',len(botones_usados))
     if len(usados)>0:# Aca antes de borrar una letra vamos a preguntar si hay letras para borrar, en caso contrario no podras borrar mas letras
         letra_a_borrar=usados.pop(len(usados) - 1)# Saca la ultima letra de la palabra cargada - el pop saca de usados  el elemento de la ultima posicion de la lista de usados
@@ -208,6 +293,7 @@ sg.ChangeLookAndFeel('DarkGrey6')
 
 opciones_de_inicio = [ [sg.Button("Comenzar",size=tamanio_Boton_De_Control)],
                        [sg.Button("Cargar Partida",size=tamanio_Boton_De_Control)],
+                       [sg.Button('Configuracion',size=tamanio_Boton_De_Control)],
                        [sg.InputCombo(dificultad,default_value='Facil', size=(10, 10),key='dificultad')],
                        [sg.Button('Guardar Partida',size=tamanio_Boton_De_Control,visible=False)],
                        [sg.Button('Salir',size=tamanio_Boton_De_Control)]
@@ -280,6 +366,7 @@ while True:
 
          if event in  ("Boton_1","Boton_2","Boton_3","Boton_4","Boton_5","Boton_6","Boton_7") and lugar:#si el evento seria una letra y lugar tiene algo es xq marque algo del tabler
                  letra = window[event].GetText()  #asigno la letra del evento
+                 
                  if lugar not in no_disponibles: #si el lugar no lo use
                      if len(usados)==0: #vemos si es la primera letra, seteamos la orientacion de la palabra
                         letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
@@ -329,6 +416,7 @@ while True:
                                 else:
                                     sg.Popup('Lugar Invalido')
                      print('Letras de atril despues de cargar:',a)
+                     print('sdcdd', no_disponibles)
                      print(len(usados),' ',len(no_disponibles))
 
          elif event == "Repartir De Nuevo": #pide 7 fichas nuevas en la mano
@@ -345,6 +433,9 @@ while True:
          elif event == "Comenzar": # para inicializar el juego
              nombre=carga_nombre()
              timer_running, dificult=cargar_juego(window,timer_running,nombre,bolsa_total)
+         
+         elif event == "Configuracion":
+             configuracion_de_juego()   
 
          elif event == "TOP":
             with open ('ranking.json','r') as r:
@@ -409,6 +500,7 @@ while True:
              else:
                  puntos = puntos_de_palabra(dificult,no_disponibles,puntos)
                  window["puntaje_propio"].update(puntos)
+                 usados.clear()
                  print(puntos)
                  pedir_fichas(window,botones_usados,a,bolsa_total)
 
