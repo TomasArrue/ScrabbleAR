@@ -2,9 +2,9 @@ import sys  # usamos el import sys para abortar el programa en caso de que los a
 import json
 import PySimpleGUI as sg
 import random
-from string import ascii_uppercase as up
 from random import choice
 from pattern.text.es import lexicon,spelling,verbs
+
 
 
 def configuracion_de_juego():
@@ -53,19 +53,12 @@ def configuracion_de_juego():
                     sg.Popup('El tiempo se cargo de maneara erronea, pero cargamos la partida de 15 minutos')
 
             for k,v in diccionario_cantidad_de_letras.items():
-                # print('valores: ',values3[k+'_cant'])
-                # print (type(values3[k+'_cant']))
                 try:
                     numero_nuevo=int(values3[k+'_cant'])
                 except (ValueError):
                     numero_nuevo=1
-                # print(numero_nuevo)
             sg.Popup('La duracion de la partida sera de: ',num_tiempo,' minutos')
-
-
-
     window3.close()
-
 
 def crear_bolsita_total():
     """
@@ -77,7 +70,6 @@ def crear_bolsita_total():
     bolsa = c['cantidad_de_letras']
     return bolsa
 
-
 def crear_atril(bolsa_total):
     """
         Toma las letras de a una desde el archivo configuracion
@@ -88,7 +80,6 @@ def crear_atril(bolsa_total):
     bolsa_total[letra] -= 1
 
     return letra
-
 
 def carga_nombre():
     """
@@ -108,7 +99,6 @@ def carga_nombre():
     window3.close()
     return nombre
 
-
 def asignar_colores_al_tablero(window,dificultad):
     """
        Se van a pintar los botones de la matriz que conforman el tablero
@@ -118,7 +108,6 @@ def asignar_colores_al_tablero(window,dificultad):
     with open('config.json','r') as t:
         dic = json.load(t)
 
-    #print(dificultad)
     tablero_config = dic[dificultad]
 
     for colores in tablero_config.keys():
@@ -127,8 +116,7 @@ def asignar_colores_al_tablero(window,dificultad):
             x,y = par_de_cord
             window[x,y].update(button_color=(colores,colores))
 
-
-def cargar_juego(window,timer_running,nombre,bolsa_total):
+def cargar_juego(window,timer_running,nombre,letras_atril_jugador,bolsa_total):
     """
         iniciamos todo el seteo inicial del juego:
             -la dificultad segun la seleccionada en el menu
@@ -150,15 +138,14 @@ def cargar_juego(window,timer_running,nombre,bolsa_total):
     window['atrilFichasRival'].update(visible=True)
     window['atrilFichas'].update(visible=True)
     window['dificultad'].update(visible=False)
-    for i in range(7):# carga de las 7 fichas al inicio
+    for i in range(7):  # carga de las 7 fichas al inicio
 
         nro_de_boton='Boton_'+str(i+1)
-        obtener_fichas(window,nro_de_boton,a,bolsa_total)
+        obtener_fichas(window,nro_de_boton,letras_atril_jugador,bolsa_total)
 
     timer_running = not timer_running
 
     return timer_running, very_dificult
-
 
 def volver_a_pintar_la_casilla(cord,window):
     """
@@ -176,7 +163,6 @@ def volver_a_pintar_la_casilla(cord,window):
     # elif list(cord) in tablero_actual["grey"]: window[cord].update(button_color=('grey','grey'))
     else: window[cord].update(button_color=('grey','white'))
 
-
 def verificar_palabra(palabra):
     """
         verificamos si la palabra es valida
@@ -187,48 +173,46 @@ def verificar_palabra(palabra):
         return(True) #cambiar a false
 
 
-def obtener_fichas(window,nro_de_boton,a,bolsa_total):
+def obtener_fichas(window,nro_de_boton,letras_atril_jugador,bolsa_total):
     """
         Este metodo nos da una ficha "nueva".
         Generamos una letra random la agregamos a la lista de letras de nuestro atril,
         luego con la key del boton recibida como parametro actualizamos el valor del
         boton con la nueva letra
     """
-    letra=crear_atril(bolsa_total)
-    a.append(letra)
+    letra = crear_atril(bolsa_total)
+    letras_atril_jugador.append(letra)
     window[nro_de_boton].update(letra)
     window[nro_de_boton].update(button_color=('black','oldlace'))
     window.Refresh()
 
-
-def repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,a):
+def repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,letras_atril_jugador):
     """
         Utilizamos este metodo para poder cambiar la mano de fichas que tenemos,
         y tenemos permitido hacerlo hasta 3 veces
     """
-    a=[]
+
     if (cantidad_de_veces_Repartidas < 3):
-        cantidad_de_veces_Repartidas=cantidad_de_veces_Repartidas+1
+        cantidad_de_veces_Repartidas += 1
         for i in range(7):#carga de las 7 fichas
             nro_de_boton='Boton_'+str(i+1)
-            obtener_fichas(window,nro_de_boton,a,bolsa_total)
+            obtener_fichas(window,nro_de_boton,letras_atril_jugador,bolsa_total)
     else:
         sg.Popup('Ya hiciste el maximo de cambios de mano')
     return cantidad_de_veces_Repartidas
 
-
-def quitar_fichas(window,usados:list,botones_usados:list,no_disponibles:list):
+def quitar_fichas(window,letras_usadas_en_tablero,letras_atril_jugador,botones_usados,lugares_no_disponibles):
     """
         quitar fichas nos permite sacar las fichas ingresadas al tablero en el turno correspondiente.
         Mientras que la longitud lista de usados del turno sea mayor a 0 vamos a poder retirar fichas
         que ingresamos, en caso de que no se pueda no podremos quitar mas
     """
     # print(len(usados),' ',len(no_disponibles),' ',len(botones_usados))
-    if len(usados)>0:                                  # Aca antes de borrar una letra vamos a preguntar si hay letras para borrar, en caso contrario no podras borrar mas letras
-        letra_a_borrar = usados.pop(len(usados) - 1)   # Saca la ultima letra de la palabra cargada - el pop saca de usados  el elemento de la ultima posicion de la lista de usados
-        boton_a_recuperar = botones_usados.pop(len(botones_usados)-1)
-        a.append(letra_a_borrar)                       # vuelve a cargar la letra que sacamos del tablero en el atril de nuestras fichas
-        coord_a_liberar = no_disponibles.pop(len(no_disponibles) - 1) # Saca la ultima coordenada de la palabra cargada - el pop saca de no_disponibles el elemento de la ultima posicion de la lista de no_disponibles
+    if len(letras_usadas_en_tablero)>0:                                  # Aca antes de borrar una letra vamos a preguntar si hay letras para borrar, en caso contrario no podras borrar mas letras
+        letra_a_borrar = letras_usadas_en_tablero.pop()   # Saca la ultima letra de la palabra cargada - el pop saca de usados  el elemento de la ultima posicion de la lista de usados
+        boton_a_recuperar = botones_usados.pop()
+        letras_atril_jugador.append(letra_a_borrar)                       # vuelve a cargar la letra que sacamos del tablero en el atril de nuestras fichas
+        coord_a_liberar = lugares_no_disponibles.pop() # Saca la ultima coordenada de la palabra cargada - el pop saca de no_disponibles el elemento de la ultima posicion de la lista de no_disponibles
         volver_a_pintar_la_casilla(coord_a_liberar,window) # vuelve a pintar la casilla de su color en estado inicial
         window[coord_a_liberar].update("")
         window[boton_a_recuperar].update(button_color=('black','oldlace'),disabled=False)
@@ -236,20 +220,20 @@ def quitar_fichas(window,usados:list,botones_usados:list,no_disponibles:list):
         sg.Popup('No hay fichas para borrar')
 
 
-def pedir_fichas(window,botones_usados,a,bolsa_total):
+def pedir_fichas(window,botones_usados,letras_atril_jugador,bolsa_total):
     """
        El pedir fichas nos permite pedir la cantidad de fichas usadas en el ultimo turno
        hasta llegar a tener 7 nuevamente.
     """
     for i in botones_usados:
-        letra=a[len(a)-1]
+        letra = letras_atril_jugador[len(letras_atril_jugador)-1]
         window[i].update(letra,disabled = False)
-        obtener_fichas(window,i,a,bolsa_total)
+        obtener_fichas(window,i,letras_atril_jugador,bolsa_total)
     for i in range (len(botones_usados)):
         botones_usados.pop()
 
 
-def letra_al_tablero(window,usados,botones_usados,a,no_disponibles):
+def letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,no_disponibles):
     """
        Utilizamos este metodo para graficar el colocar la ficha en el tablero.
        -Guardamos la ficha en una lista de "usados"
@@ -258,10 +242,10 @@ def letra_al_tablero(window,usados,botones_usados,a,no_disponibles):
        -Sacamos la letra de nuestro atril, y la deshabilitamos del atril
        -Para finalizar guardamos las coordenadas del lugar en una lista de lugares no disponibles
     """
-    usados.append(letra)
+    letras_usadas_en_tablero.append(letra)
     botones_usados.append(event)
     window[lugar].update(letra, button_color=('black','oldlace'))
-    a.remove(letra)
+    letras_atril_jugador.remove(letra)
     window[event].update(button_color=('darkgrey','darkgrey'),disabled = True)
     no_disponibles.append(lugar)
 
@@ -311,6 +295,14 @@ def puntos_de_palabra(dificultad,no_disponibles,puntos):
         puntos = puntos + puntos/2
     return puntos
     # print(blue,'conjunto celeste')
+
+def formet(d):
+    l = []
+    for k,v in d.items():
+        variable = '{} {} '.format("Jugador:",k)+'{} {} '.format("Puntaje:",v["Puntos"])+ '{} {}'.format("Fecha:",v["Fecha"])
+        l.append(variable)
+    return l
+
 
 ###### INICIA EL PROGRAMA PRINCIPAL ############################################
 
@@ -384,14 +376,17 @@ layout=[
 
 window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2),finalize=True, resizable=True,  auto_size_buttons=True)
 
-puntos = 0          # puntos del jugdador,(en realidad hay que tener 2)
-a=[]                # letras que voy usando
-usados = []         # lleva las letras que ya use
-botones_usados=[]   # nombre de los botones que voy usando
-no_disponibles = [] # lleva la cuenta de los lugares que ya escribi
-ant = ()            # para despintar la casilla anterior cuando toco una nueva
-lugar = ()          # marca la casilla actual
-layout2 = layout    # esto no se que es
+puntos_jugador = 0            # puntos del jugdador,(en realidad hay que tener 2)
+puntos_jugador_total = 0
+puntos_npc = 0
+puntos_npc_total = 0
+letras_atril_jugador = []     # letras que voy usando
+letras_usadas_en_tablero = [] # lleva las letras que ya use
+botones_usados = []           # nombre de los botones que voy usando
+lugares_no_disponibles = []          # lleva la cuenta de los lugares que ya escribi
+ant = ()                      # para despintar la casilla anterior cuando toco una nueva
+lugar = ()                    # marca la casilla actual
+layout2 = layout              # esto no se que es
 cantidad_de_veces_Repartidas = 0 # cantidad de veces de pedidos para hacer el cambio de fichas totales
 timer_running, counter = False, 0 # seteos para el timer,
 dificult=''         # la dificultad actual que luego sera asignada
@@ -403,59 +398,58 @@ while True:
     else:
          if type(event) is tuple:
              lugar = event
-             if lugar not in no_disponibles: # pinto el lugar que estoy seleccionando,hago esa pregunta para que no trate de marcar un casillero que ya tiene una letra
+             if lugar not in lugares_no_disponibles: # pinto el lugar que estoy seleccionando,hago esa pregunta para que no trate de marcar un casillero que ya tiene una letra
                  window[lugar].update(button_color=('white','darkgrey'))
-             if (ant) and (ant not in no_disponibles): # digo que si anterior tiene algo que despinte lo anterior
+             if (ant) and (ant not in lugares_no_disponibles): # digo que si anterior tiene algo que despinte lo anterior
                  volver_a_pintar_la_casilla(lugar,window)
              ant = lugar,
 
          if event in  ("Boton_1","Boton_2","Boton_3","Boton_4","Boton_5","Boton_6","Boton_7") and lugar:#si el evento seria una letra y lugar tiene algo es xq marque algo del tabler
                  letra = window[event].GetText() # asigno la letra del evento
 
-                 if lugar not in no_disponibles: # si el lugar no lo use
-                     if len(usados) == 0:        # vemos si es la primera letra, seteamos la orientacion de la palabra
-                        letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
+                 if lugar not in lugares_no_disponibles: # si el lugar no lo use
+                     if len(letras_usadas_en_tablero) == 0:        # vemos si es la primera letra, seteamos la orientacion de la palabra
+                        letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
                         #print(dificult)
-                        puntos += puntos_de_letra(letra,dificult,lugar) # hay que declarar una variable dific para enviar en lugar de facil
+                        puntos_jugador += puntos_de_letra(letra,dificult,lugar) # hay que declarar una variable dific para enviar en lugar de facil
                         #print(puntos)
-                        window["puntaje_propio"].update(puntos)
+                        window["puntaje_propio"].update(puntos_jugador)
                         vertical=horizontal=False
                         box_X_vertical=box_X_horizontal=lugar[1]  # estas variables sirven para guardar la cord X horizontal y vertical anterior
                         box_Y_vertical=box_Y_horizontal=lugar[0]  # estas variables sirven para guardar la cord Y horizontal y vertical anterior
-                     elif len(usados)==1: # vemos si es la primera letra, seteamos la orientacion de la palabra
+                     elif len(letras_usadas_en_tablero)==1: # vemos si es la primera letra, seteamos la orientacion de la palabra
                          if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
                             horizontal=True
-                            letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
-                            puntos += puntos_de_letra(letra,dificult,lugar)
+                            letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                            puntos_jugador += puntos_de_letra(letra,dificult,lugar)
                             #print(puntos)
-                            window["puntaje_propio"].update(puntos)
+                            window["puntaje_propio"].update(puntos_jugador)
                             box_X_horizontal=lugar[1]
                             box_Y_horizontal=lugar[0]
                          elif box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
                             vertical=True
-                            letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
-                            puntos += puntos_de_letra(letra,dificult,lugar)
+                            letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                            puntos_jugador += puntos_de_letra(letra,dificult,lugar)
                             #print(puntos)
-                            window["puntaje_propio"].update(puntos)
+                            window["puntaje_propio"].update(puntos_jugador)
                             box_X_vertical=lugar[1]
                             box_Y_vertical=lugar[0]
-                     elif len(usados)>1:
+                     elif len(letras_usadas_en_tablero)>1:
                          if vertical:
                                 if box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
-                                    letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
-                                    puntos += puntos_de_letra(letra,dificult,lugar)
+                                    letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                                    puntos_jugador += puntos_de_letra(letra,dificult,lugar)
                                     #print(puntos)
-                                    window["puntaje_propio"].update(puntos)
+                                    window["puntaje_propio"].update(puntos_jugador)
                                     box_X_vertical=lugar[1]
                                     box_Y_vertical=lugar[0]
                                 else:
                                     sg.Popup('Lugar Invalido')
                          elif horizontal:
                                 if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
-                                    letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
-                                    puntos += puntos_de_letra(letra,dificult,lugar)
-                                    #print(puntos)
-                                    window["puntaje_propio"].update(puntos)
+                                    letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                                    puntos_jugador += puntos_de_letra(letra,dificult,lugar)
+                                    window["puntaje_propio"].update(puntos_jugador)
                                     box_X_horizontal=lugar[1]
                                     box_Y_horizontal=lugar[0]
                                 else:
@@ -463,18 +457,18 @@ while True:
 
          elif event == "Repartir De Nuevo": # pide 7 fichas nuevas en la mano
              if not botones_usados:
-                cantidad_de_veces_Repartidas=repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,a)
+                cantidad_de_veces_Repartidas = repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,letras_atril_jugador)
              else:
                 sg.Popup('Estas en medio de una mano, tenes q tener 7 fichas para cambiar')
 
          elif event == "Borrar" : #quita elementos del tablero, desde el ultimo al primero
-            puntos -= puntos_de_letra(usados[len(usados)-1],dificult,no_disponibles[len(no_disponibles)-1])
-            window["puntaje_propio"].update(puntos)
-            quitar_fichas(window,usados,botones_usados,no_disponibles)
-
+            if puntos_jugador != 0:
+                puntos_jugador -= puntos_de_letra(letras_usadas_en_tablero[len(letras_usadas_en_tablero)-1],dificult,lugares_no_disponibles[len(lugares_no_disponibles)-1])
+                window["puntaje_propio"].update(puntos_jugador)
+                quitar_fichas(window,letras_usadas_en_tablero,letras_atril_jugador,botones_usados,lugares_no_disponibles)
          elif event == "Comenzar": # para inicializar el juego
-             nombre=carga_nombre()
-             timer_running, dificult = cargar_juego(window,timer_running,nombre,bolsa_total)
+             nombre = carga_nombre()
+             timer_running,dificult = cargar_juego(window,timer_running,nombre,letras_atril_jugador,bolsa_total)
 
          elif event == "Configuracion":
              configuracion_de_juego()
@@ -483,17 +477,17 @@ while True:
             with open ('ranking.json','r') as r:
                 dicc = json.load(r)
 
-            #print(dicc.keys())
-            #print(dicc.values())
+            fac = dicc['facil']
+            med = dicc['medio']
+            dif = dicc['dificil']
 
-            rank_facil = list(dicc['facil'].items())
-            #print('valores en facil',rank_facil)
+            f = sorted(fac.items(),key = lambda k : k[1]["Puntos"],reverse = True )
+            m = sorted(med.items(),key = lambda k : k[1]["Puntos"],reverse = True )
+            d = sorted(dif.items(),key = lambda k : k[1]["Puntos"],reverse = True )
 
-            rank_medio = list(dicc['medio'].items())
-            #print('valores en medio',rank_medio)
-
-            rank_dif = list(dicc['dificil'].items())
-            #print('valores en dificil',rank_dif)
+            rank_facil = formet(dict(f))
+            rank_medio = formet(dict(m))
+            rank_dif = formet(dict(d))
 
             tab1_layout = [[sg.T('This is inside tab 1')]]
             tab2_layout = [[sg.Listbox(values=rank_facil, size=(30,10))]]
@@ -516,8 +510,6 @@ while True:
                 event2, values2 = window2.Read()
                 if event2 == 'Exit':
                     break
-
-
             window2.Close()
 
          elif timer_running: #esto es para que corra el tiempo
@@ -530,23 +522,20 @@ while True:
                 sg.Popup('termino el tiempo')
 
          if event == "Evaluar": # aca va evaluar,evalua la palabra y resetea las orientaciones
-             palabra_final = "".join(usados)
-             #print(palabra_final)
+             palabra_final = "".join(letras_usadas_en_tablero)
              vertical = False
              horizontal = False
              ok = verificar_palabra(palabra_final)
              if not ok:
                  for i in range(len(usados)):
-                     quitar_fichas(window,usados,botones_usados,no_disponibles)
+                     quitar_fichas(window,letras_usadas_en_tablero,letras_atril_jugador,botones_usados,lugares_no_disponibles)
                  window["puntaje_propio"].update("00")
              else:
-                 puntos = puntos_de_palabra(dificult,no_disponibles,puntos)
-                 window["puntaje_propio"].update(puntos)
-                 usados.clear()
-                 #print(puntos)
-                 pedir_fichas(window,botones_usados,a,bolsa_total)
+                 puntos_jugador_total = puntos_de_palabra(dificult,lugares_no_disponibles,puntos_jugador)
+                 window["puntaje_propio"].update(puntos_jugador_total)
+                 letras_usadas_en_tablero.clear()
+                 puntos_jugador = 0
+                 pedir_fichas(window,botones_usados,letras_atril_jugador,bolsa_total)
 
     window.Refresh()
-    #window.Size=window.Size
-#update(atrilNuevo[i])
 window.close()
