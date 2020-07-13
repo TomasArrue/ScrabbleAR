@@ -303,6 +303,19 @@ def formet(d):
         l.append(variable)
     return l
 
+def vertical(pos_actual,pos_anterior):
+    print(pos_actual)
+    print(pos_anterior)
+    if pos_anterior[0]+1 == pos_actual[0] and pos_actual[1] == pos_anterior[1]:
+        return True
+    else:
+        return False
+
+def horizontal(pos_actual,pos_anterior):
+    if pos_anterior[0] == pos_actual[0] and pos_actual[1] == pos_anterior[1]+1:
+        return True
+    else:
+        return False
 
 ###### INICIA EL PROGRAMA PRINCIPAL ############################################
 
@@ -406,55 +419,28 @@ while True:
 
          if event in  ("Boton_1","Boton_2","Boton_3","Boton_4","Boton_5","Boton_6","Boton_7") and lugar:#si el evento seria una letra y lugar tiene algo es xq marque algo del tabler
                  letra = window[event].GetText() # asigno la letra del evento
-
                  if lugar not in lugares_no_disponibles: # si el lugar no lo use
                      if len(letras_usadas_en_tablero) == 0:        # vemos si es la primera letra, seteamos la orientacion de la palabra
                         letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
-                        #print(dificult)
                         puntos_jugador += puntos_de_letra(letra,dificult,lugar) # hay que declarar una variable dific para enviar en lugar de facil
-                        #print(puntos)
                         window["puntaje_propio"].update(puntos_jugador)
-                        vertical=horizontal=False
-                        box_X_vertical=box_X_horizontal=lugar[1]  # estas variables sirven para guardar la cord X horizontal y vertical anterior
-                        box_Y_vertical=box_Y_horizontal=lugar[0]  # estas variables sirven para guardar la cord Y horizontal y vertical anterior
                      elif len(letras_usadas_en_tablero)==1: # vemos si es la primera letra, seteamos la orientacion de la palabra
-                         if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
-                            horizontal=True
-                            letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
-                            puntos_jugador += puntos_de_letra(letra,dificult,lugar)
-                            #print(puntos)
-                            window["puntaje_propio"].update(puntos_jugador)
-                            box_X_horizontal=lugar[1]
-                            box_Y_horizontal=lugar[0]
-                         elif box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
-                            vertical=True
-                            letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
-                            puntos_jugador += puntos_de_letra(letra,dificult,lugar)
-                            #print(puntos)
-                            window["puntaje_propio"].update(puntos_jugador)
-                            box_X_vertical=lugar[1]
-                            box_Y_vertical=lugar[0]
+                         h = horizontal(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1])
+                         v = vertical(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1])
+                         letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                         puntos_jugador += puntos_de_letra(letra,dificult,lugar) # hay que declarar una variable dific para enviar en lugar de facil
+                         window["puntaje_propio"].update(puntos_jugador)
                      elif len(letras_usadas_en_tablero)>1:
-                         if vertical:
-                                if box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
-                                    letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
-                                    puntos_jugador += puntos_de_letra(letra,dificult,lugar)
-                                    #print(puntos)
-                                    window["puntaje_propio"].update(puntos_jugador)
-                                    box_X_vertical=lugar[1]
-                                    box_Y_vertical=lugar[0]
-                                else:
-                                    sg.Popup('Lugar Invalido')
-                         elif horizontal:
-                                if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
-                                    letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
-                                    puntos_jugador += puntos_de_letra(letra,dificult,lugar)
-                                    window["puntaje_propio"].update(puntos_jugador)
-                                    box_X_horizontal=lugar[1]
-                                    box_Y_horizontal=lugar[0]
-                                else:
-                                    sg.Popup('Lugar Invalido')
-
+                         if horizontal(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1]) and h:
+                             letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                             puntos_jugador += puntos_de_letra(letra,dificult,lugar)
+                             window["puntaje_propio"].update(puntos_jugador)
+                         elif vertical(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1]) and v:
+                             letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                             puntos_jugador += puntos_de_letra(letra,dificult,lugar)
+                             window["puntaje_propio"].update(puntos_jugador)
+                         else:
+                             sg.Popup('Lugar Invalido')
          elif event == "Repartir De Nuevo": # pide 7 fichas nuevas en la mano
              if not botones_usados:
                 cantidad_de_veces_Repartidas = repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,letras_atril_jugador)
@@ -523,8 +509,8 @@ while True:
 
          if event == "Evaluar": # aca va evaluar,evalua la palabra y resetea las orientaciones
              palabra_final = "".join(letras_usadas_en_tablero)
-             vertical = False
-             horizontal = False
+             v = False
+             h = False
              ok = verificar_palabra(palabra_final)
              if not ok:
                  for i in range(len(usados)):
