@@ -3,8 +3,61 @@ import json
 import PySimpleGUI as sg
 import random
 from random import choice
+from itertools import permutations
 from pattern.text.es import lexicon,spelling,verbs
 
+############# IA ###############
+
+def validar_palabra(permutaciones,permutaciones_validas):
+    '''
+        Valida palabras que esten dentro de las permutaciones
+        pasadas por parametro y las agrega a una lista de palabras 
+        validas
+    '''
+    for pal in permutaciones:
+        if pal in verbs or ((pal in lexicon) and (pal in spelling)):
+            permutaciones_validas.append(pal) # si la palabra es valida va a la lista de permutaciones
+    return permutaciones_validas
+
+def buscar_palabras_rival(letras_atril_rival):
+    '''
+        recibe el las fichas del atril del rival y genera una lista de 
+        palabras validas
+    '''
+    permutaciones_validas=[]# lista para guardar las permutaciones validas
+    for i in range(len(letras_atril_rival)):
+       if (i+1>=2): # este if es para empezar a armar permutaciones de al menos dos caracteres
+            permutaciones_temp={"".join(p) for p in permutations(letras_atril_rival,i+1)} # generamos permutaciones con i+1 caracteres           
+            validar_palabra(permutaciones_temp,permutaciones_validas) # vemos cuales de esas permutaciones son validas, y las vamos guardando en una lista
+    return permutaciones_validas
+
+def buscar_lugar_disponible(window,letras_atril_rival,lugar,lugares_no_disponibles):
+    palabras_posibles=buscar_palabras_rival(letras_atril_rival) # buscamos las posibles palabras
+    try:       
+        palabra_a_colocar=random.choice(palabras_posibles) # obtenemos alguna de las palabras posibles de la lista al azar si es posible
+        ok=False
+        while (not ok):
+            x=random.choice(range(0,14))
+            y=random.choice(range(0,14))
+            lugar=(x,y)
+            if lugar not in lugares_no_disponibles:
+                ok=True
+
+    except (IndexError):  
+        print('no hay palabras validas en la lista')   
+
+
+        
+
+
+
+       
+    
+
+
+
+
+############## fin IA ###################
 
 
 def configuracion_de_juego():
