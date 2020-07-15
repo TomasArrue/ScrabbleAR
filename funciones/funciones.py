@@ -130,7 +130,7 @@ def asignar_colores_al_tablero(window,dificultad):
             window[x,y].update(button_color=(colores,colores))
 
 
-def cargar_juego(window,timer_running,nombre,bolsa_total):
+def cargar_juego(window,values,timer_running,nombre,bolsa_total,a):
     """
         iniciamos todo el seteo inicial del juego:
             -la dificultad segun la seleccionada en el menu
@@ -203,7 +203,7 @@ def obtener_fichas(window,nro_de_boton,a,bolsa_total):
     window.Refresh()
 
 
-def repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,a):
+def repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,a,bolsa_total):
     """
         Utilizamos este metodo para poder cambiar la mano de fichas que tenemos,
         y tenemos permitido hacerlo hasta 3 veces
@@ -219,7 +219,7 @@ def repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,a):
     return cantidad_de_veces_Repartidas
 
 
-def quitar_fichas(window,usados:list,botones_usados:list,no_disponibles:list):
+def quitar_fichas(window,usados:list,botones_usados:list,no_disponibles:list,a):
     """
         quitar fichas nos permite sacar las fichas ingresadas al tablero en el turno correspondiente.
         Mientras que la longitud lista de usados del turno sea mayor a 0 vamos a poder retirar fichas
@@ -251,7 +251,7 @@ def pedir_fichas(window,botones_usados,a,bolsa_total):
         botones_usados.pop()
 
 
-def letra_al_tablero(window,usados,botones_usados,a,no_disponibles):
+def letra_al_tablero(window,usados,botones_usados,a,no_disponibles,letra,event,lugar):
     """
        Utilizamos este metodo para graficar el colocar la ficha en el tablero.
        -Guardamos la ficha en una lista de "usados"

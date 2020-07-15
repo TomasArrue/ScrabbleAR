@@ -111,7 +111,7 @@ while True:
 
                  if lugar not in no_disponibles: # si el lugar no lo use
                      if len(usados) == 0:        # vemos si es la primera letra, seteamos la orientacion de la palabra
-                        funciones.letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
+                        funciones.letra_al_tablero(window,usados,botones_usados,a,no_disponibles,letra,event,lugar)
                         #print(dificult)
                         puntos += funciones.puntos_de_letra(letra,dificult,lugar) # hay que declarar una variable dific para enviar en lugar de facil
                         #print(puntos)
@@ -122,7 +122,7 @@ while True:
                      elif len(usados)==1: # vemos si es la primera letra, seteamos la orientacion de la palabra
                          if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
                             horizontal=True
-                            funciones.letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
+                            funciones.letra_al_tablero(window,usados,botones_usados,a,no_disponibles,letra,event,lugar)
                             puntos += funciones.puntos_de_letra(letra,dificult,lugar)
                             #print(puntos)
                             window["puntaje_propio"].update(puntos)
@@ -130,7 +130,7 @@ while True:
                             box_Y_horizontal=lugar[0]
                          elif box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
                             vertical=True
-                            funciones.letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
+                            funciones.letra_al_tablero(window,usados,botones_usados,a,no_disponibles,letra,event,lugar)
                             puntos += funciones.puntos_de_letra(letra,dificult,lugar)
                             #print(puntos)
                             window["puntaje_propio"].update(puntos)
@@ -139,7 +139,7 @@ while True:
                      elif len(usados)>1:
                          if vertical:
                                 if box_X_vertical==lugar[1] and box_Y_vertical+1==lugar[0]:
-                                    funciones.letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
+                                    funciones.letra_al_tablero(window,usados,botones_usados,a,no_disponibles,letra,event,lugar)
                                     puntos += funciones.puntos_de_letra(letra,dificult,lugar)
                                     #print(puntos)
                                     window["puntaje_propio"].update(puntos)
@@ -149,7 +149,7 @@ while True:
                                     sg.Popup('Lugar Invalido')
                          elif horizontal:
                                 if box_X_horizontal+1==lugar[1] and box_Y_horizontal==lugar[0]:
-                                    funciones.letra_al_tablero(window,usados,botones_usados,a,no_disponibles)
+                                    funciones.letra_al_tablero(window,usados,botones_usados,a,no_disponibles,letra,event,lugar)
                                     puntos += funciones.puntos_de_letra(letra,dificult,lugar)
                                     #print(puntos)
                                     window["puntaje_propio"].update(puntos)
@@ -160,18 +160,18 @@ while True:
 
          elif event == "Repartir De Nuevo": # pide 7 fichas nuevas en la mano
              if not botones_usados:
-                cantidad_de_veces_Repartidas=funciones.repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,a)
+                cantidad_de_veces_Repartidas=funciones.repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,a,bolsa_total)
              else:
                 sg.Popup('Estas en medio de una mano, tenes q tener 7 fichas para cambiar')
 
          elif event == "Borrar" : #quita elementos del tablero, desde el ultimo al primero
             puntos -= funciones.puntos_de_letra(usados[len(usados)-1],dificult,no_disponibles[len(no_disponibles)-1])
             window["puntaje_propio"].update(puntos)
-            funciones.quitar_fichas(window,usados,botones_usados,no_disponibles)
+            funciones.quitar_fichas(window,usados,botones_usados,no_disponibles,a)
 
          elif event == "Comenzar": # para inicializar el juego
              nombre=funciones.carga_nombre()
-             timer_running, dificult = funciones.cargar_juego(window,timer_running,nombre,bolsa_total)
+             timer_running, dificult = funciones.cargar_juego(window,values,timer_running,nombre,bolsa_total,a)
 
          elif event == "Configuracion":
              funciones.configuracion_de_juego()
@@ -234,7 +234,7 @@ while True:
              ok = funciones.verificar_palabra(palabra_final)
              if not ok:
                  for i in range(len(usados)):
-                     funciones.quitar_fichas(window,usados,botones_usados,no_disponibles)
+                     funciones.quitar_fichas(window,usados,botones_usados,no_disponibles,a)
                  window["puntaje_propio"].update("00")
              else:
                  puntos = funciones.puntos_de_palabra(dificult,no_disponibles,puntos)

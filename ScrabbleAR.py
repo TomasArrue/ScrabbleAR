@@ -513,7 +513,7 @@ while True:
              h = False
              ok = verificar_palabra(palabra_final)
              if not ok:
-                 for i in range(len(usados)):
+                 for i in range(len(botones_usados)):
                      quitar_fichas(window,letras_usadas_en_tablero,letras_atril_jugador,botones_usados,lugares_no_disponibles)
                  window["puntaje_propio"].update("00")
              else:
