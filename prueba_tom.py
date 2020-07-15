@@ -1,4 +1,4 @@
-from funciones import prueba_import
+from funciones import prueba_funcion
 
-prueba_import.funcion_1()
-input()
+prueba_funcion.funcion_1()
+input("ENTER PARA TERMINAR")
