@@ -15,7 +15,7 @@ def configuracion_de_juego():
         la cantidades de letras iniciales en la bolsa de fichas y ademas podemos
         editar el valor de cada ficha
     """
-    with open('config.json','r') as cf:
+    with open('./texto/config.json','r') as cf:
         c = json.load(cf)
 
     diccionario_cantidad_de_letras=c['cantidad_de_letras']
@@ -42,7 +42,7 @@ def configuracion_de_juego():
             break
 
         if event3 == 'GUARDAR CONFIGURACION':
-            # with open('config.json','w') as cf:
+            # with open('./texto/config.json','w') as cf:
 
             try:
                 num_tiempo=int(values3['time'])
@@ -74,7 +74,7 @@ def crear_bolsita_total():
         Generamos la bolsas con las fichas totales para usar en el juego,
         las cuales tenemos almacenadas en el config.json
     """
-    with open('config.json','r') as cf:
+    with open('./texto/config.json','r') as cf:
         c = json.load(cf)
     bolsa = c['cantidad_de_letras']
     return bolsa
@@ -117,7 +117,7 @@ def asignar_colores_al_tablero(window,dificultad):
        segun las coordenas que vengan en el archivo json, dependiendo
        el nivel que hayamos elegido
     """
-    with open('config.json','r') as t:
+    with open('./texto/config.json','r') as t:
         dic = json.load(t)
 
     #print(dificultad)
@@ -167,7 +167,7 @@ def volver_a_pintar_la_casilla(cord,window):
         este modulo nos sirve para volver a pintar un boton de su color inicial
         en caso de que tengamos que sacar una ficha que pusimos
     """
-    with open ('config.json','r') as p:
+    with open ('./texto/config.json','r') as p:
         dicc = json.load(p)
     # la dific tiene que vernir como parametro para saber que tablero abrir
     tablero_actual = dicc["Facil"]
@@ -272,7 +272,7 @@ def puntos_de_letra(letra,dificultad,coord):
     """
        calculamos el valor de la letra ingresada en el tablero. accedemos al json para ver su puntaje asociado
     """
-    with open ('config.json','r') as p:
+    with open ('./texto/config.json','r') as p:
         dicc = json.load(p)
     valor_de_letra = dicc["valor_por_letra"]
     tablero_actual = dicc[dificultad]
@@ -296,7 +296,7 @@ def puntos_de_palabra(dificultad,no_disponibles,puntos):
        Segun la dificultad vamos a tener distintos modificadores en cada color
        Si nuestra palabra pasa por casillas con colores el puntaje final se vera afectado
     """
-    with open ('config.json','r') as p:
+    with open ('./texto/config.json','r') as p:
         dicc = json.load(p)
     tablero_actual = dicc[dificultad]
     # conjuntos para hacer la interseccion
