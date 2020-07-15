@@ -9,7 +9,7 @@ from pattern.text.es import lexicon,spelling,verbs
 ################################################################################
 import os
 os.listdir("C:\Users\marce\github\python_facu\funciones")
-
+### testeando el pull de VS Code
 
 ################################################################################
 
