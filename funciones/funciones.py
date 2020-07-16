@@ -130,7 +130,7 @@ def asignar_colores_al_tablero(window,dificultad):
             window[x,y].update(button_color=(colores,colores))
 
 
-def cargar_juego(window,values,timer_running,nombre,bolsa_total,a):
+def cargar_juego(window,values,timer_running,nombre,bolsa_total,a,letras_atril_rival):
     """
         iniciamos todo el seteo inicial del juego:
             -la dificultad segun la seleccionada en el menu
@@ -156,6 +156,8 @@ def cargar_juego(window,values,timer_running,nombre,bolsa_total,a):
 
         nro_de_boton='Boton_'+str(i+1)
         obtener_fichas(window,nro_de_boton,a,bolsa_total)
+        letra_rival = crear_atril(bolsa_total)  #generamos las fichas del rival tambien
+        letras_atril_rival.append(letra_rival)  #Las agregamos a su lista
 
     timer_running = not timer_running
 
@@ -313,3 +315,102 @@ def puntos_de_palabra(dificultad,no_disponibles,puntos):
         puntos = puntos + puntos/2
     return puntos
     # print(blue,'conjunto celeste')
+
+############# IA ###############
+
+def validar_palabra(permutaciones,permutaciones_validas):
+    '''
+        Valida palabras que esten dentro de las permutaciones
+        pasadas por parametro y las agrega a una lista de palabras 
+        validas
+    '''
+    for pal in permutaciones:
+        if pal in verbs or ((pal in lexicon) and (pal in spelling)):
+            permutaciones_validas.append(pal) # si la palabra es valida va a la lista de permutaciones
+    return permutaciones_validas
+
+def buscar_palabras_rival(letras_atril_rival):
+    '''
+        recibe el las fichas del atril del rival y genera una lista de 
+        palabras validas
+    '''
+    permutaciones_validas=[]# lista para guardar las permutaciones validas
+    for i in range(len(letras_atril_rival)):
+       if (i+1>=2): # este if es para empezar a armar permutaciones de al menos dos caracteres
+            permutaciones_temp={"".join(p) for p in permutations(letras_atril_rival,i+1)} # generamos permutaciones con i+1 caracteres           
+            validar_palabra(permutaciones_temp,permutaciones_validas) # vemos cuales de esas permutaciones son validas, y las vamos guardando en una lista
+    return permutaciones_validas
+
+def buscar_lugar_disponible(window,letras_atril_rival,lugar,lugares_no_disponibles,cant,bolsa_total):
+    letras_atril_rival=[x.lower() for x in letras_atril_rival]# pasa la lista a minusculas xq las permutaciones no las reconocen
+    print(letras_atril_rival)
+    
+    palabras_posibles=buscar_palabras_rival(letras_atril_rival) # buscamos las posibles palabras
+    print(palabras_posibles)
+    #cantidad_de_veces_Repartidas=1
+    try:       
+        palabra_a_colocar=random.choice(palabras_posibles) # obtenemos alguna de las palabras posibles de la lista al azar si es posible
+        ok=False
+        while (not ok)&(cant<3):
+            x=random.choice(range(0,14))
+            y=random.choice(range(0,14))
+            lugar=(x,y)         
+            cant+=1
+            print('palabra_a_colocar',palabra_a_colocar)
+            if lugar not in lugares_no_disponibles:
+                if ((len(palabra_a_colocar)+y) <= 14):# vemos si la palabra puede colocarse verticalmente u horizontalmente
+                    ok=True
+                    for l in palabra_a_colocar:
+                        letras_usadas_en_tablero.append(l)
+                        #botones_usados.append(event)
+                        window[lugar].update(l.upper(), button_color=('black','oldlace'))
+                        letras_atril_rival.remove(l)
+                        lugares_no_disponibles.append(lugar)
+                        y+=1
+                        lugar=(x,y)
+                else:
+                    if ((len(palabra_a_colocar)+x) <= 14): 
+                        ok=True      
+                        for l in palabra_a_colocar:
+                            letras_usadas_en_tablero.append(l)
+                            #botones_usados.append(event)
+                            window[lugar].update(l.upper(), button_color=('black','oldlace'))
+                            letras_atril_rival.remove(l)
+                            lugares_no_disponibles.append(lugar)  
+                            x+=1
+                            lugar=(x,y)   
+        print('lugares_no_disponibles',lugares_no_disponibles)    
+        print('letras_atril_rival',letras_atril_rival)     
+        print('letras_usadas_en_tablero',letras_usadas_en_tablero) 
+        for i in range(len(letras_usadas_en_tablero)):
+            letra = crear_atril(bolsa_total)
+            letras_atril_jugador.append(letra)
+        letras_usadas_en_tablero.clear()     
+        print('letras_atril_rival despues de carga',letras_atril_rival)    
+    except (IndexError):  
+        print('no hay palabras validas en la lista')  
+        '''
+        letras_atril_rival.clear
+        print('antes',letras_atril_rival)
+        for i in range(7):  # carga de las 7 fichas al inicio
+            letra_rival = crear_atril(bolsa_total)  #generamos las fichas del rival tambien
+            letras_atril_rival.append(letra_rival)  #Las agregamos a su lista
+        print('despues',letras_atril_rival)    
+        '''
+       
+
+
+def turno_maquina(window,letras_atril_rival,lugar,lugares_no_disponibles,turno,bolsa_total):
+    sg.Popup('Turno de la maquina')
+    cant=0
+    buscar_lugar_disponible(window,letras_atril_rival,lugar,lugares_no_disponibles,cant,bolsa_total)
+    return 'player_1' 
+
+
+
+
+
+    
+
+
+############## fin IA ###################    

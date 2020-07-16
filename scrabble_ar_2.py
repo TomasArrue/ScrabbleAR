@@ -98,6 +98,10 @@ while True:
     if event in (None, 'Salir'):
         break
     else:
+         if turno == 'player_2':
+             turno=funciones.turno_maquina(window,letras_atril_rival,lugar,lugares_no_disponibles,turno,bolsa_total)
+             print('turno vuelta',turno)
+             sg.Popup('Es tu turno!')
          if type(event) is tuple:
              lugar = event
              if lugar not in no_disponibles: # pinto el lugar que estoy seleccionando,hago esa pregunta para que no trate de marcar un casillero que ya tiene una letra
@@ -171,7 +175,7 @@ while True:
 
          elif event == "Comenzar": # para inicializar el juego
              nombre=funciones.carga_nombre()
-             timer_running, dificult = funciones.cargar_juego(window,values,timer_running,nombre,bolsa_total,a)
+             timer_running, dificult = funciones.cargar_juego(window,values,timer_running,nombre,bolsa_total,a,letras_atril_rival)
 
          elif event == "Configuracion":
              funciones.configuracion_de_juego()
