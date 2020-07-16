@@ -184,19 +184,23 @@ def cargar_partida(window, letras_atril_jugador, botones_usados, lugares_no_disp
     window['atrilFichas'].update(visible=True)
     window['dificultad'].update(visible=False)
 
+    for butt in dic["otros"]["botones_usados"]:
+        botones_usados.append(butt)
+        window[butt].update(button_color=(
+            'darkgrey', 'darkgrey'), disabled=True)
+
     # carga de las 7 fichas al inicio
     for i in range(len(dic["atril"]["atril_jugador"])):
         nro_de_boton = 'Boton_' + str(i+1)
         letras_atril_jugador.append(dic["atril"]["atril_jugador"][i])
+        if nro_de_boton in botones_usados:
+            nro_de_boton = 'Boton_' + str(i+2)
         window[nro_de_boton].update(dic["atril"]["atril_jugador"][i])
 
     for i in range(len(dic["otros"]["lugares"])):
         lugares_no_disponibles.append(tuple(dic["otros"]["lugares"][i]))
         window[lugares_no_disponibles[i]].update(
             dic["otros"]["letras_usadas"][i], button_color=('black', 'oldlace'))
-
-    for butt in dic["otros"]["botones_usados"]:
-        botones_usados.append(butt)
 
     return dic["otros"]["dificultad"], dic["puntos"]["puntos_jugador"], dic["puntos"]["puntos_jugador_total"], dic["puntos"]["puntos_npc"], dic["puntos"]["puntos_npc_total"], dic["otros"]["hor"], dic["otros"]["ver"]
 

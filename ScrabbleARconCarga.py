@@ -8,7 +8,7 @@ from funciones import funciones
 # INICIA EL PROGRAMA PRINCIPAL
 
 try:
-    with open('config.json', 'r') as cf:
+    with open('./texto/config.json', 'r') as cf:
         pass
 except FileNotFoundError:
     sg.Popup('ERROR ---> config.json NO ENCONTRADO')
