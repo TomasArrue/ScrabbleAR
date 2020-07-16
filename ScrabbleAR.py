@@ -5,8 +5,6 @@ import random
 from random import choice
 from pattern.text.es import lexicon,spelling,verbs
 
-
-
 def configuracion_de_juego():
     """
         configuracion del juego inicial,cargamos el config.json, para poder cambiar
@@ -146,6 +144,35 @@ def cargar_juego(window,timer_running,nombre,letras_atril_jugador,bolsa_total):
     timer_running = not timer_running
 
     return timer_running, very_dificult
+
+def cargar_partida(window,letras_atril_jugador,botones_usados,lugares_no_disponibles):
+    l2 = []
+    with open('save.json','r') as l:
+        dic = json.load(l)
+    asignar_colores_al_tablero(window,dic["otros"]["dificultad"])
+    window['opcionesJuego'].update(visible=True)
+    window['Comenzar'].update(visible=False)
+    window['Configuracion'].update(visible=False)
+    window['Cargar Partida'].update(visible=False)
+    window['Guardar Partida'].update(visible=True)
+    window['Salir'].update(visible=True)
+    window['puntaje_propio'].update("PUNTAJE DE {0} ES :0".format("pepe"))
+    window['puntaje'].update(visible=True)
+    window["puntaje_propio"].update(dic["puntos"]["puntos_jugador_total"])
+    window['atrilFichasRival'].update(visible=True)
+    window['atrilFichas'].update(visible=True)
+    window['dificultad'].update(visible=False)
+    for i in range(len(dic["atril"]["atril_jugador"])):  # carga de las 7 fichas al inicio
+        nro_de_boton='Boton_'+str(i+1)
+        letras_atril_jugador.append(dic["atril"]["atril_jugador"][i])
+        window[nro_de_boton].update(dic["atril"]["atril_jugador"][i])
+
+    for i in range(len(dic["otros"]["lugares"])):
+        lugares_no_disponibles.append(tuple(dic["otros"]["lugares"][i]))
+        window[lugares_no_disponibles[i]].update(dic["otros"]["letras_usadas"][i],button_color=('black','oldlace'))
+    for butt in dic["otros"]["boton"]:
+        botones_usados.append(butt)
+    return dic["otros"]["dificultad"],dic["puntos"]["puntos_jugador"],dic["puntos"]["puntos_jugador_total"],dic["puntos"]["puntos_npc"],dic["puntos"]["puntos_npc_total"],dic["otros"]["hor"],dic["otros"]["ver"]
 
 def volver_a_pintar_la_casilla(cord,window):
     """
@@ -389,6 +416,7 @@ layout=[
 
 window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2),finalize=True, resizable=True,  auto_size_buttons=True)
 
+l2_guar = []
 puntos_jugador = 0            # puntos del jugdador,(en realidad hay que tener 2)
 puntos_jugador_total = 0
 puntos_npc = 0
@@ -403,6 +431,8 @@ layout2 = layout              # esto no se que es
 cantidad_de_veces_Repartidas = 0 # cantidad de veces de pedidos para hacer el cambio de fichas totales
 timer_running, counter = False, 0 # seteos para el timer,
 dificult=''         # la dificultad actual que luego sera asignada
+h = False
+v = False
 
 while True:
     event, values = window.read(timeout=10)
@@ -422,21 +452,25 @@ while True:
                  if lugar not in lugares_no_disponibles: # si el lugar no lo use
                      if len(letras_usadas_en_tablero) == 0:        # vemos si es la primera letra, seteamos la orientacion de la palabra
                         letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                        l2_guar.append(letra)
                         puntos_jugador += puntos_de_letra(letra,dificult,lugar) # hay que declarar una variable dific para enviar en lugar de facil
                         window["puntaje_propio"].update(puntos_jugador)
                      elif len(letras_usadas_en_tablero)==1: # vemos si es la primera letra, seteamos la orientacion de la palabra
                          h = horizontal(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1])
                          v = vertical(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1])
                          letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                         l2_guar.append(letra)
                          puntos_jugador += puntos_de_letra(letra,dificult,lugar) # hay que declarar una variable dific para enviar en lugar de facil
                          window["puntaje_propio"].update(puntos_jugador)
                      elif len(letras_usadas_en_tablero)>1:
                          if horizontal(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1]) and h:
                              letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                             l2_guar.append(letra)
                              puntos_jugador += puntos_de_letra(letra,dificult,lugar)
                              window["puntaje_propio"].update(puntos_jugador)
                          elif vertical(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1]) and v:
                              letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                             l2_guar.append(letra)
                              puntos_jugador += puntos_de_letra(letra,dificult,lugar)
                              window["puntaje_propio"].update(puntos_jugador)
                          else:
@@ -455,7 +489,8 @@ while True:
          elif event == "Comenzar": # para inicializar el juego
              nombre = carga_nombre()
              timer_running,dificult = cargar_juego(window,timer_running,nombre,letras_atril_jugador,bolsa_total)
-
+         elif event == "Cargar Partida":
+             dificult,puntos_jugador,puntos_jugador_total,puntos_npc,puntos_npc_total,h,v = cargar_partida(window,letras_atril_jugador,botones_usados,lugares_no_disponibles)
          elif event == "Configuracion":
              configuracion_de_juego()
 
@@ -520,8 +555,15 @@ while True:
                  puntos_jugador_total = puntos_de_palabra(dificult,lugares_no_disponibles,puntos_jugador)
                  window["puntaje_propio"].update(puntos_jugador_total)
                  letras_usadas_en_tablero.clear()
+
                  puntos_jugador = 0
                  pedir_fichas(window,botones_usados,letras_atril_jugador,bolsa_total)
-
+         if event == "Guardar Partida":
+             with open('save.json','w') as j:
+                 dic = {}
+                 dic["puntos"] = {"puntos_jugador":puntos_jugador,"puntos_jugador_total":puntos_jugador_total,"puntos_npc":puntos_npc,"puntos_npc_total":puntos_npc_total}
+                 dic["atril"] = {"atril_jugador":letras_atril_jugador}
+                 dic["otros"] = {"boton":botones_usados,"lugares":lugares_no_disponibles,"letras_usadas":l2_guar,"dificultad":dificult,"hor":h,"ver":v}
+                 json.dump(dic,j,indent = 4)
     window.Refresh()
 window.close()
