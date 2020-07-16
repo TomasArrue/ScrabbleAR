@@ -167,7 +167,7 @@ def cargar_partida(window,letras_atril_jugador,botones_usados,lugares_no_disponi
     """
 
     l2 = []
-    with open('save.json','r') as l:
+    with open('./texto/save.json','r') as l:
         dic = json.load(l)
     asignar_colores_al_tablero(window,dic["otros"]["dificultad"])
     window['opcionesJuego'].update(visible=True)
@@ -184,7 +184,7 @@ def cargar_partida(window,letras_atril_jugador,botones_usados,lugares_no_disponi
     window['dificultad'].update(visible=False)
 
     for i in range(len(dic["atril"]["atril_jugador"])):  # carga de las 7 fichas al inicio
-        nro_de_boton='Boton_'+str(i+1)
+        nro_de_boton = 'Boton_' + str(i+1)
         letras_atril_jugador.append(dic["atril"]["atril_jugador"][i])
         window[nro_de_boton].update(dic["atril"]["atril_jugador"][i])
 
@@ -248,7 +248,7 @@ def repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,letras_atril_ju
         Utilizamos este metodo para poder cambiar la mano de fichas que tenemos,
         y tenemos permitido hacerlo hasta 3 veces
     """
-    letras_atril_jugador = []
+    letras_atril_jugador.clear()
     if (cantidad_de_veces_Repartidas < 3):
         cantidad_de_veces_Repartidas=cantidad_de_veces_Repartidas+1
         for i in range(7):#carga de las 7 fichas
@@ -304,7 +304,9 @@ def letra_al_tablero(window,usados,botones_usados,letras_atril_jugador,no_dispon
     usados.append(letra)
     botones_usados.append(event)
     window[lugar].update(letra, button_color=('black','oldlace'))
+    print(letras_atril_jugador,'antes')
     letras_atril_jugador.remove(letra)
+    print(letras_atril_jugador)
     window[event].update(button_color=('darkgrey','darkgrey'),disabled = True)
     no_disponibles.append(lugar)
 
