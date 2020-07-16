@@ -31,30 +31,76 @@ def buscar_palabras_rival(letras_atril_rival):
             validar_palabra(permutaciones_temp,permutaciones_validas) # vemos cuales de esas permutaciones son validas, y las vamos guardando en una lista
     return permutaciones_validas
 
-def buscar_lugar_disponible(window,letras_atril_rival,lugar,lugares_no_disponibles):
+def buscar_lugar_disponible(window,letras_atril_rival,lugar,lugares_no_disponibles,cant,bolsa_total):
+    letras_atril_rival=[x.lower() for x in letras_atril_rival]# pasa la lista a minusculas xq las permutaciones no las reconocen
+    print(letras_atril_rival)
+    
     palabras_posibles=buscar_palabras_rival(letras_atril_rival) # buscamos las posibles palabras
+    print(palabras_posibles)
+    #cantidad_de_veces_Repartidas=1
     try:       
         palabra_a_colocar=random.choice(palabras_posibles) # obtenemos alguna de las palabras posibles de la lista al azar si es posible
         ok=False
-        while (not ok):
+        while (not ok)&(cant<3):
             x=random.choice(range(0,14))
             y=random.choice(range(0,14))
-            lugar=(x,y)
+            lugar=(x,y)         
+            cant+=1
+            print('palabra_a_colocar',palabra_a_colocar)
             if lugar not in lugares_no_disponibles:
-                ok=True
-
+                if ((len(palabra_a_colocar)+y) <= 14):# vemos si la palabra puede colocarse verticalmente u horizontalmente
+                    ok=True
+                    for l in palabra_a_colocar:
+                        letras_usadas_en_tablero.append(l)
+                        #botones_usados.append(event)
+                        window[lugar].update(l.upper(), button_color=('black','oldlace'))
+                        letras_atril_rival.remove(l)
+                        lugares_no_disponibles.append(lugar)
+                        y+=1
+                        lugar=(x,y)
+                else:
+                    if ((len(palabra_a_colocar)+x) <= 14): 
+                        ok=True      
+                        for l in palabra_a_colocar:
+                            letras_usadas_en_tablero.append(l)
+                            #botones_usados.append(event)
+                            window[lugar].update(l.upper(), button_color=('black','oldlace'))
+                            letras_atril_rival.remove(l)
+                            lugares_no_disponibles.append(lugar)  
+                            x+=1
+                            lugar=(x,y)   
+        print('lugares_no_disponibles',lugares_no_disponibles)    
+        print('letras_atril_rival',letras_atril_rival)     
+        print('letras_usadas_en_tablero',letras_usadas_en_tablero) 
+        for i in range(len(letras_usadas_en_tablero)):
+            letra = crear_atril(bolsa_total)
+            letras_atril_jugador.append(letra)
+        letras_usadas_en_tablero.clear()     
+        print('letras_atril_rival despues de carga',letras_atril_rival)    
     except (IndexError):  
-        print('no hay palabras validas en la lista')   
-
-
-        
-
-
-
+        print('no hay palabras validas en la lista')  
+        '''
+        letras_atril_rival.clear
+        print('antes',letras_atril_rival)
+        for i in range(7):  # carga de las 7 fichas al inicio
+            letra_rival = crear_atril(bolsa_total)  #generamos las fichas del rival tambien
+            letras_atril_rival.append(letra_rival)  #Las agregamos a su lista
+        print('despues',letras_atril_rival)    
+        '''
        
+
+
+def turno_maquina(window,letras_atril_rival,lugar,lugares_no_disponibles,turno,bolsa_total):
+    sg.Popup('Turno de la maquina')
+    cant=0
+    buscar_lugar_disponible(window,letras_atril_rival,lugar,lugares_no_disponibles,cant,bolsa_total)
+    return 'player_1' 
+
+
+
+
+
     
-
-
 
 
 ############## fin IA ###################
@@ -169,7 +215,7 @@ def asignar_colores_al_tablero(window,dificultad):
             x,y = par_de_cord
             window[x,y].update(button_color=(colores,colores))
 
-def cargar_juego(window,timer_running,nombre,letras_atril_jugador,bolsa_total):
+def cargar_juego(window,timer_running,nombre,letras_atril_jugador,letras_atril_rival,bolsa_total):
     """
         iniciamos todo el seteo inicial del juego:
             -la dificultad segun la seleccionada en el menu
@@ -195,6 +241,9 @@ def cargar_juego(window,timer_running,nombre,letras_atril_jugador,bolsa_total):
 
         nro_de_boton='Boton_'+str(i+1)
         obtener_fichas(window,nro_de_boton,letras_atril_jugador,bolsa_total)
+
+        letra_rival = crear_atril(bolsa_total)  #generamos las fichas del rival tambien
+        letras_atril_rival.append(letra_rival)  #Las agregamos a su lista
 
     timer_running = not timer_running
 
@@ -357,8 +406,9 @@ def formet(d):
     return l
 
 def vertical(pos_actual,pos_anterior):
-    print(pos_actual)
-    print(pos_anterior)
+    print(pos_actual[0],pos_actual[1])
+    print(pos_anterior[0],pos_anterior[1])
+
     if pos_anterior[0]+1 == pos_actual[0] and pos_actual[1] == pos_anterior[1]:
         return True
     else:
@@ -388,7 +438,7 @@ tamanio_Boton_De_Fichas = 2,2 # tamanio de botones que seran las fichas
 tamanio_Boton_De_Control = 15,1 # tamanio de botones de comenzar y salir
 max_Cant_Filas = max_Cant_Columnas = 15 # tamanio de las matrices
 dificultad = ['Facil','Medio','Dificil'] # combobox
-botones_De_Fichas = lambda name : sg.Button(name,button_color=color_De_Boton,size=tamanio_Boton_De_Fichas)
+#botones_De_Fichas = lambda name : sg.Button(name,button_color=color_De_Boton,size=tamanio_Boton_De_Fichas)
 botones_De_Fichas_rival = lambda name : sg.Button('?',button_color=color_De_Boton,size=tamanio_Boton_De_Fichas)
 sg.ChangeLookAndFeel('DarkGrey6') #thema del PySimpleGUI
 
@@ -409,18 +459,12 @@ opciones_de_juego = [ [sg.Button('Borrar',size=tamanio_Boton_De_Control),
                     ]
 #FICHAS DEL JUGADOR
 fichas=[ [sg.Text("Tus Fichas: ",font=("Chalkboard", 15))],
-         [sg.Button('',button_color=('black','oldlace'),size=(tamanio_Boton_De_Fichas),key="Boton_1",pad=(5,5)),
-          sg.Button('',button_color=('black','oldlace'),size=(tamanio_Boton_De_Fichas),key="Boton_2",pad=(5,5)),
-          sg.Button('',button_color=('black','oldlace'),size=(tamanio_Boton_De_Fichas),key="Boton_3",pad=(5,5)),
-          sg.Button('',button_color=('black','oldlace'),size=(tamanio_Boton_De_Fichas),key="Boton_4",pad=(5,5)),
-          sg.Button('',button_color=('black','oldlace'),size=(tamanio_Boton_De_Fichas),key="Boton_5",pad=(5,5)),
-          sg.Button('',button_color=('black','oldlace'),size=(tamanio_Boton_De_Fichas),key="Boton_6",pad=(5,5)),
-          sg.Button('',button_color=('black','oldlace'),size=(tamanio_Boton_De_Fichas),key="Boton_7",pad=(5,5))
-         ]]
+         [sg.Button('',button_color=('black','oldlace'),size=(tamanio_Boton_De_Fichas),key=("Boton_"+str(i+1)),pad=(5,5)) for i in range(7)]
+       ]
 
 #FICHAS DEL NPC
 fichas_rival =[ [sg.Text("Fichas CPU: ",font=("Chalkboard", 15))],
-                [botones_De_Fichas_rival(j) for j in atril_maquina]
+                [sg.Button('??',button_color=('white','brown'),size=(tamanio_Boton_De_Fichas),key=("Boton_2_"+str(i+1)),pad=(5,5)) for i in range(7)]
               ]
 
 tablero=[ [sg.Button('',button_color=('grey','white'),size=(1, 1), key=(i,j), pad=(0,0)) for j in range(max_Cant_Columnas)] for i in range(max_Cant_Filas)]#botones matriz
@@ -442,11 +486,13 @@ layout=[
 
 window = sg.Window('SCRABBLE', layout, default_button_element_size=(2,2),finalize=True, resizable=True,  auto_size_buttons=True)
 
+turno='player_1'
 puntos_jugador = 0            # puntos del jugdador,(en realidad hay que tener 2)
 puntos_jugador_total = 0
 puntos_npc = 0
 puntos_npc_total = 0
 letras_atril_jugador = []     # letras que voy usando
+letras_atril_rival = []       # letras del rival
 letras_usadas_en_tablero = [] # lleva las letras que ya use
 botones_usados = []           # nombre de los botones que voy usando
 lugares_no_disponibles = []          # lleva la cuenta de los lugares que ya escribi
@@ -462,6 +508,10 @@ while True:
     if event in (None, 'Salir'):
         break
     else:
+         if turno == 'player_2':
+             turno=turno_maquina(window,letras_atril_rival,lugar,lugares_no_disponibles,turno,bolsa_total)
+             print('turno vuelta',turno)
+             sg.Popup('Es tu turno!')
          if type(event) is tuple:
              lugar = event
              if lugar not in lugares_no_disponibles: # pinto el lugar que estoy seleccionando,hago esa pregunta para que no trate de marcar un casillero que ya tiene una letra
@@ -478,6 +528,7 @@ while True:
                         puntos_jugador += puntos_de_letra(letra,dificult,lugar) # hay que declarar una variable dific para enviar en lugar de facil
                         window["puntaje_propio"].update(puntos_jugador)
                      elif len(letras_usadas_en_tablero)==1: # vemos si es la primera letra, seteamos la orientacion de la palabra
+                         
                          h = horizontal(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1])
                          v = vertical(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1])
                          letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
@@ -507,7 +558,7 @@ while True:
                 quitar_fichas(window,letras_usadas_en_tablero,letras_atril_jugador,botones_usados,lugares_no_disponibles)
          elif event == "Comenzar": # para inicializar el juego
              nombre = carga_nombre()
-             timer_running,dificult = cargar_juego(window,timer_running,nombre,letras_atril_jugador,bolsa_total)
+             timer_running,dificult = cargar_juego(window,timer_running,nombre,letras_atril_jugador,letras_atril_rival,bolsa_total)
 
          elif event == "Configuracion":
              configuracion_de_juego()
@@ -575,6 +626,7 @@ while True:
                  letras_usadas_en_tablero.clear()
                  puntos_jugador = 0
                  pedir_fichas(window,botones_usados,letras_atril_jugador,bolsa_total)
+                 turno='player_2'
 
     window.Refresh()
 window.close()
