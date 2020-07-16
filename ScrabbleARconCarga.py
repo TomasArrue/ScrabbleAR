@@ -4,7 +4,7 @@ import PySimpleGUI as sg
 import random
 from random import choice
 from pattern.text.es import lexicon,spelling,verbs
-
+from funciones import funciones
 
 ###### INICIA EL PROGRAMA PRINCIPAL ############################################
 
@@ -91,6 +91,7 @@ puntos_jugador_total = 0
 puntos_npc = 0
 puntos_npc_total = 0
 letras_atril_jugador = []     # letras que voy usando
+letras_atril_rival = []
 letras_usadas_en_tablero = [] # lleva las letras que ya use
 botones_usados = []           # nombre de los botones que voy usando
 lugares_no_disponibles = []          # lleva la cuenta de los lugares que ya escribi
@@ -120,25 +121,25 @@ while True:
                  letra = window[event].GetText() # asigno la letra del evento
                  if lugar not in lugares_no_disponibles: # si el lugar no lo use
                      if len(letras_usadas_en_tablero) == 0:        # vemos si es la primera letra, seteamos la orientacion de la palabra
-                        funciones.letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                        funciones.letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles,letra,event,lugar)
                         l2_guar.append(letra)
                         puntos_jugador += funciones.puntos_de_letra(letra,dificult,lugar) # hay que declarar una variable dific para enviar en lugar de facil
                         window["puntaje_propio"].update(puntos_jugador)
                      elif len(letras_usadas_en_tablero)==1: # vemos si es la primera letra, seteamos la orientacion de la palabra
                          h = funciones.horizontal(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1])
                          v = funciones.vertical(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1])
-                         funciones.letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                         funciones.letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles,letra,event,lugar)
                          l2_guar.append(letra)
                          puntos_jugador += funciones.puntos_de_letra(letra,dificult,lugar) # hay que declarar una variable dific para enviar en lugar de facil
                          window["puntaje_propio"].update(puntos_jugador)
                      elif len(letras_usadas_en_tablero)>1:
                          if funciones.horizontal(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1]) and h:
-                             funciones.letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                             funciones.letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles,letra,event,lugar)
                              l2_guar.append(letra)
                              puntos_jugador += funciones.puntos_de_letra(letra,dificult,lugar)
                              window["puntaje_propio"].update(puntos_jugador)
                          elif funciones.vertical(lugar,lugares_no_disponibles[len(lugares_no_disponibles)-1]) and v:
-                             funciones.letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles)
+                             funciones.letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,letras_atril_jugador,lugares_no_disponibles,letra,event,lugar)
                              l2_guar.append(letra)
                              puntos_jugador += funciones.puntos_de_letra(letra,dificult,lugar)
                              window["puntaje_propio"].update(puntos_jugador)
@@ -147,7 +148,7 @@ while True:
 
          elif event == "Repartir De Nuevo": # pide 7 fichas nuevas en la mano
              if not botones_usados:
-                cantidad_de_veces_Repartidas = funciones.repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,letras_atril_jugador)
+                cantidad_de_veces_Repartidas = funciones.repartir_fichas_de_nuevo(window,cantidad_de_veces_Repartidas,letras_atril_jugador,bolsa_total)
              else:
                 sg.Popup('Estas en medio de una mano, tenes q tener 7 fichas para cambiar')
 
@@ -155,11 +156,11 @@ while True:
             if puntos_jugador != 0:
                 puntos_jugador -= funciones.puntos_de_letra(letras_usadas_en_tablero[len(letras_usadas_en_tablero)-1],dificult,lugares_no_disponibles[len(lugares_no_disponibles)-1])
                 window["puntaje_propio"].update(puntos_jugador)
-                funciones.quitar_fichas(window,letras_usadas_en_tablero,letras_atril_jugador,botones_usados,lugares_no_disponibles)
+                funciones.quitar_fichas(window,letras_usadas_en_tablero,botones_usados,lugares_no_disponibles,letras_atril_jugador)
 
          elif event == "Comenzar": # para inicializar el juego
              nombre = funciones.carga_nombre()
-             timer_running,dificult = funcinoes.cargar_juego(window,timer_running,nombre,letras_atril_jugador,bolsa_total)
+             timer_running,dificult = funciones.cargar_juego(window,values,timer_running,nombre,bolsa_total,letras_atril_jugador,letras_atril_rival)
 
          elif event == "Cargar Partida":
              dificult, puntos_jugador, puntos_jugador_total, puntos_npc,puntos_npc_total, h, v = funciones.cargar_partida(window,letras_atril_jugador,botones_usados,lugares_no_disponibles)
@@ -221,7 +222,7 @@ while True:
              ok = funciones.verificar_palabra(palabra_final)
              if not ok:
                  for i in range(len(usados)):
-                     funciones.quitar_fichas(window,letras_usadas_en_tablero,letras_atril_jugador,botones_usados,lugares_no_disponibles)
+                     funciones.quitar_fichas(window,letras_usadas_en_tablero,botones_usados,lugares_no_disponibles,letras_atril_jugador)
                  window["puntaje_propio"].update("00")
              else:
                  puntos_jugador_total = funciones.puntos_de_palabra(dificult,lugares_no_disponibles,puntos_jugador)
@@ -231,7 +232,7 @@ while True:
                  funciones.pedir_fichas(window,botones_usados,letras_atril_jugador,bolsa_total)
 
          if event == "Guardar Partida":
-             with open('save.json','w') as j:
+             with open('./texto/save.json','w') as j:
                  dic = {}
                  dic["puntos"] = {"puntos_jugador":puntos_jugador,"puntos_jugador_total":puntos_jugador_total,"puntos_npc":puntos_npc,"puntos_npc_total":puntos_npc_total}
                  dic["atril"] = {"atril_jugador":letras_atril_jugador}
