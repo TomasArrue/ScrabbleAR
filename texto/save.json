@@ -1,23 +1,23 @@
 {
     "puntos": {
-        "puntos_jugador": 12,
+        "puntos_jugador": 7,
         "puntos_jugador_total": 0,
         "puntos_npc": 0,
         "puntos_npc_total": 0
     },
     "atril": {
         "atril_jugador": [
-            "LL",
-            "L",
-            "P",
-            "T",
-            "W"
+            "N",
+            "RR",
+            "C",
+            "K",
+            "X"
         ]
     },
     "otros": {
         "botones_usados": [
-            "Boton_3",
-            "Boton_1"
+            "Boton_2",
+            "Boton_5"
         ],
         "lugares": [
             [
@@ -30,20 +30,11 @@
             ]
         ],
         "letras_usadas": [
-            "F",
-            "X"
+            "P",
+            "V"
         ],
         "dificultad": "Facil",
         "hor": true,
-        "ver": false,
-        "botones_atril": [
-            "Boton_1",
-            "Boton_2",
-            "Boton_3",
-            "Boton_4",
-            "Boton_5",
-            "Boton_6",
-            "Boton_7"
-        ]
+        "ver": false
     }
 }
