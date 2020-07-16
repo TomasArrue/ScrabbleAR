@@ -195,7 +195,7 @@ def cargar_partida(window, letras_atril_jugador, botones_usados, lugares_no_disp
         window[lugares_no_disponibles[i]].update(
             dic["otros"]["letras_usadas"][i], button_color=('black', 'oldlace'))
 
-    for butt in dic["otros"]["boton"]:
+    for butt in dic["otros"]["botones_usados"]:
         botones_usados.append(butt)
 
     return dic["otros"]["dificultad"], dic["puntos"]["puntos_jugador"], dic["puntos"]["puntos_jugador_total"], dic["puntos"]["puntos_npc"], dic["puntos"]["puntos_npc_total"], dic["otros"]["hor"], dic["otros"]["ver"]
