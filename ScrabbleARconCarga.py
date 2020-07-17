@@ -109,7 +109,7 @@ l2_guar = []
 puntos_jugador = 0
 puntos_jugador_total = 0
 puntos_npc = 0
-puntos_npc_total = 0
+puntos_npc_total = 100
 letras_atril_jugador = []     # letras que voy usando
 letras_atril_rival = []
 letras_usadas_en_tablero = []  # lleva las letras que ya use
@@ -258,8 +258,14 @@ while True:
 
             if counter == 6000:  # 6000 equivale a 1 minuto, 60000 a 10 minutos
                 timer_running = not timer_running
-                sg.Popup('termino el tiempo')
-
+                sg.Popup('termino el tiempo,analizando ganador:')
+                if puntos_jugador_total > puntos_npc_total:
+                    sg.Popup('¡Ganaste!')
+                elif puntos_jugador_total == puntos_npc_total:
+                    sg.Popup('¡Hubo un empate!')
+                else:
+                    sg.Popup('¡YOU DIED!,GIT GUD M8')
+                sys.exit()
         if event == "Evaluar":  # aca va evaluar,evalua la palabra y resetea las orientaciones
             palabra_final = "".join(letras_usadas_en_tablero)
             v = False
