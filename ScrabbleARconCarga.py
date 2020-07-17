@@ -213,7 +213,7 @@ while True:
             funciones.configuracion_de_juego()
 
         elif event == "TOP":
-            with open('ranking.json', 'r') as r:
+            with open('./texto/ranking.json', 'r') as r:
                 dicc = json.load(r)
 
             fac = dicc['facil']
