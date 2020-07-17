@@ -225,10 +225,11 @@ def verificar_palabra(palabra):
     """
         verificamos si la palabra es valida
     """
+    print(palabra)
     if palabra in lexicon and spelling or palabra in verbs:
         return(True)
     else:
-        return(True)  # cambiar a false
+        return(False)  # cambiar a false
 
 
 def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total):
@@ -313,9 +314,7 @@ def letra_al_tablero(window, usados, botones_usados, letras_atril_jugador, no_di
     usados.append(letra)
     botones_usados.append(event)
     window[lugar].update(letra, button_color=('black', 'oldlace'))
-    print(letras_atril_jugador, 'antes')
     letras_atril_jugador.remove(letra)
-    print(letras_atril_jugador)
     window[event].update(button_color=('darkgrey', 'darkgrey'), disabled=True)
     no_disponibles.append(lugar)
 

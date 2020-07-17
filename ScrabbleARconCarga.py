@@ -270,13 +270,8 @@ while True:
             palabra_final = "".join(letras_usadas_en_tablero)
             v = False
             h = False
-            ok = funciones.verificar_palabra(palabra_final)
-            if not ok:
-                for i in range(len(letras_usadas_en_tablero)):
-                    funciones.quitar_fichas(
-                        window, letras_usadas_en_tablero, botones_usados, lugares_no_disponibles, letras_atril_jugador)
-                window["puntaje_propio"].update("00")
-            else:
+            if funciones.verificar_palabra(palabra_final):
+                print("palabra valida")
                 puntos_jugador_total = funciones.puntos_de_palabra(
                     dificult, lugares_no_disponibles, puntos_jugador)
                 window["puntaje_propio"].update(puntos_jugador_total)
@@ -285,6 +280,12 @@ while True:
                 puntos_jugador = 0
                 funciones.pedir_fichas(
                     window, botones_usados, letras_atril_jugador, bolsa_total)
+            else:
+                print("palabra invalida")
+                for i in range(len(letras_usadas_en_tablero)):
+                    funciones.quitar_fichas(
+                        window, letras_usadas_en_tablero, botones_usados, lugares_no_disponibles, letras_atril_jugador)
+                window["puntaje_propio"].update("00")
 
         if event == "Guardar Partida":
             if not botones_usados:
