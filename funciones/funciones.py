@@ -162,12 +162,10 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total, letras_atri
     return timer_running, very_dificult
 
 
-def cargar_partida(window, letras_atril_jugador, botones_usados, lugares_no_disponibles):
+def cargar_partida(window, letras_atril_jugador, botones_usados, lugares_no_disponibles, letras_guardadas):
     """
        asdasd
     """
-
-    l2 = []
     with open('./texto/save.json', 'r') as l:
         dic = json.load(l)
     asignar_colores_al_tablero(window, dic["otros"]["dificultad"])
@@ -184,23 +182,14 @@ def cargar_partida(window, letras_atril_jugador, botones_usados, lugares_no_disp
     window['atrilFichas'].update(visible=True)
     window['dificultad'].update(visible=False)
 
-    for butt in dic["otros"]["boton"]:
-        botones_usados.append(butt)
-        window[butt].update(button_color=(
-            'darkgrey', 'darkgrey'), disabled=True)
+    for letra in dic["otros"]["letras_usadas"]:
+        letras_guardadas.append(letra)
 
     # carga de las 7 fichas al inicio
-    e = 1
-    nro_de_boton = 'Boton_' + str(e)
     for i in range(len(dic["atril"]["atril_jugador"])):
+        nro_de_boton = 'Boton_'+str(i+1)
+        window[nro_de_boton].update(dic["atril"]["atril_jugador"][i])
         letras_atril_jugador.append(dic["atril"]["atril_jugador"][i])
-        if nro_de_boton in botones_usados:
-            nro_de_boton = 'Boton_' + str(e+1)
-        print(letras_atril_jugador[i])
-        window[nro_de_boton].update(letras_atril_jugador[i])
-        e += 1
-        nro_de_boton = 'Boton_' + str(e+1)
-        print(nro_de_boton)
 
     for i in range(len(dic["otros"]["lugares"])):
         lugares_no_disponibles.append(tuple(dic["otros"]["lugares"][i]))

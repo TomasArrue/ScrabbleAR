@@ -148,7 +148,7 @@ while True:
                 if len(letras_usadas_en_tablero) == 0:
                     funciones.letra_al_tablero(window, letras_usadas_en_tablero, botones_usados,
                                                letras_atril_jugador, lugares_no_disponibles, letra, event, lugar)
-                    l2_guar.append(letra)
+
                     # hay que declarar una variable dific para enviar en lugar de facil
                     puntos_jugador += funciones.puntos_de_letra(
                         letra, dificult, lugar)
@@ -161,7 +161,7 @@ while True:
                         lugar, lugares_no_disponibles[len(lugares_no_disponibles)-1])
                     funciones.letra_al_tablero(window, letras_usadas_en_tablero, botones_usados,
                                                letras_atril_jugador, lugares_no_disponibles, letra, event, lugar)
-                    l2_guar.append(letra)
+
                     # hay que declarar una variable dific para enviar en lugar de facil
                     puntos_jugador += funciones.puntos_de_letra(
                         letra, dificult, lugar)
@@ -170,14 +170,14 @@ while True:
                     if funciones.horizontal(lugar, lugares_no_disponibles[len(lugares_no_disponibles)-1]) and h:
                         funciones.letra_al_tablero(window, letras_usadas_en_tablero, botones_usados,
                                                    letras_atril_jugador, lugares_no_disponibles, letra, event, lugar)
-                        l2_guar.append(letra)
+
                         puntos_jugador += funciones.puntos_de_letra(
                             letra, dificult, lugar)
                         window["puntaje_propio"].update(puntos_jugador)
                     elif funciones.vertical(lugar, lugares_no_disponibles[len(lugares_no_disponibles)-1]) and v:
                         funciones.letra_al_tablero(window, letras_usadas_en_tablero, botones_usados,
                                                    letras_atril_jugador, lugares_no_disponibles, letra, event, lugar)
-                        l2_guar.append(letra)
+
                         puntos_jugador += funciones.puntos_de_letra(
                             letra, dificult, lugar)
                         window["puntaje_propio"].update(puntos_jugador)
@@ -207,7 +207,7 @@ while True:
 
         elif event == "Cargar Partida":
             dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v = funciones.cargar_partida(
-                window, letras_atril_jugador, botones_usados, lugares_no_disponibles)
+                window, letras_atril_jugador, botones_usados, lugares_no_disponibles, l2_guar)
 
         elif event == "Configuracion":
             funciones.configuracion_de_juego()
@@ -274,19 +274,24 @@ while True:
                 puntos_jugador_total = funciones.puntos_de_palabra(
                     dificult, lugares_no_disponibles, puntos_jugador)
                 window["puntaje_propio"].update(puntos_jugador_total)
+                l2_guar.extend(letras_usadas_en_tablero)
                 letras_usadas_en_tablero.clear()
                 puntos_jugador = 0
                 funciones.pedir_fichas(
                     window, botones_usados, letras_atril_jugador, bolsa_total)
 
         if event == "Guardar Partida":
-            with open('./texto/save.json', 'w') as j:
-                dic = {}
-                dic["puntos"] = {"puntos_jugador": puntos_jugador, "puntos_jugador_total": puntos_jugador_total,
-                                 "puntos_npc": puntos_npc, "puntos_npc_total": puntos_npc_total}
-                dic["atril"] = {"atril_jugador": letras_atril_jugador}
-                dic["otros"] = {"boton": botones_usados, "lugares": lugares_no_disponibles,
-                                "letras_usadas": l2_guar, "dificultad": dificult, "hor": h, "ver": v}
-                json.dump(dic, j, indent=4)
+            if not botones_usados:
+                with open('./texto/save.json', 'w') as j:
+                    dic = {}
+                    dic["puntos"] = {"puntos_jugador": puntos_jugador, "puntos_jugador_total": puntos_jugador_total,
+                                     "puntos_npc": puntos_npc, "puntos_npc_total": puntos_npc_total}
+                    dic["atril"] = {"atril_jugador": letras_atril_jugador}
+                    dic["otros"] = {"lugares": lugares_no_disponibles,
+                                    "letras_usadas": l2_guar, "dificultad": dificult, "hor": h, "ver": v}
+                    json.dump(dic, j, indent=4)
+            else:
+                sg.Popup(
+                    "Solo se puede guardar una partida teniendo el atril completo")
     window.Refresh()
 window.close()
