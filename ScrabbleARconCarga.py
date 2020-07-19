@@ -71,10 +71,11 @@ fichas = [
 ]
 
 # FICHAS DEL NPC
-fichas_rival = [
-    [sg.Text("Fichas CPU: ", font=("Chalkboard", 15))],
-    [botones_De_Fichas_rival(j) for j in atril_maquina]
-]
+fichas_rival = [[sg.Text("Fichas CPU: ", font=("Chalkboard", 15))],
+                [sg.Button('??', button_color=('white', 'brown'), size=(
+                    tamanio_Boton_De_Fichas), key=("Boton_2_"+str(i+1)), pad=(5, 5)) for i in range(7)]
+                ]
+
 
 tablero = [
     [sg.Button('', button_color=('grey', 'white'), size=(1, 1), key=(i, j), pad=(0, 0)) for j in range(max_Cant_Columnas)] for i in range(max_Cant_Filas)
@@ -124,12 +125,18 @@ timer_running, counter = False, 0  # seteos para el timer,
 dificult = ''         # la dificultad actual que luego sera asignada
 h = False
 v = False
+turno = 'player_1'
 
 while True:
     event, values = window.read(timeout=10)
     if event in (None, 'Salir'):
         break
     else:
+        if turno == 'player_2':
+            turno = funciones.turno_maquina(window, letras_atril_rival,
+                                  lugar, lugares_no_disponibles, turno, bolsa_total,letras_usadas_en_tablero)
+            print('turno vuelta', turno)
+            sg.Popup('Tu Turno!')
         if type(event) is tuple:
             lugar = event
             if lugar not in lugares_no_disponibles:  # pinto el lugar que estoy seleccionando,hago esa pregunta para que no trate de marcar un casillero que ya tiene una letra
@@ -280,6 +287,7 @@ while True:
                 puntos_jugador = 0
                 funciones.pedir_fichas(
                     window, botones_usados, letras_atril_jugador, bolsa_total)
+                turno = 'player_2'    
             else:
                 print("palabra invalida")
                 for i in range(len(letras_usadas_en_tablero)):

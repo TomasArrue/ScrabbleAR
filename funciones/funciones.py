@@ -2,6 +2,7 @@ import json
 import PySimpleGUI as sg
 import random
 from pattern.text.es import lexicon, spelling, verbs
+from itertools import permutations
 
 
 def configuracion_de_juego():
@@ -226,6 +227,7 @@ def verificar_palabra(palabra):
         verificamos si la palabra es valida
     """
     print(palabra)
+    #if palabra in verbs or ((palabra in lexicon) and (palabra in spelling)):
     if palabra in lexicon and spelling or palabra in verbs:
         return(True)
     else:
@@ -393,6 +395,12 @@ def horizontal(pos_actual, pos_anterior):
 
 ############# IA ###############
 
+
+
+
+
+
+
 def validar_palabra(permutaciones, permutaciones_validas):
     '''
         Valida palabras que esten dentro de las permutaciones
@@ -400,7 +408,8 @@ def validar_palabra(permutaciones, permutaciones_validas):
         validas
     '''
     for pal in permutaciones:
-        if pal in verbs or ((pal in lexicon) and (pal in spelling)):
+        if pal in lexicon and spelling or pal in verbs:
+        #if pal in verbs or ((pal in lexicon) and (pal in spelling)):
             # si la palabra es valida va a la lista de permutaciones
             permutaciones_validas.append(pal)
     return permutaciones_validas
@@ -411,7 +420,7 @@ def buscar_palabras_rival(letras_atril_rival):
         recibe el las fichas del atril del rival y genera una lista de
         palabras validas
     '''
-    permutaciones_validas = []  # lista para guardar las permutaciones validas
+    permutaciones_validas = []  # lista vacia para guardar las permutaciones validas
     for i in range(len(letras_atril_rival)):
         if (i+1 >= 2):  # este if es para empezar a armar permutaciones de al menos dos caracteres
             # generamos permutaciones con i+1 caracteres
@@ -422,76 +431,138 @@ def buscar_palabras_rival(letras_atril_rival):
     return permutaciones_validas
 
 
-def buscar_lugar_disponible(window, letras_atril_rival, lugar, lugares_no_disponibles, cant, bolsa_total):
-    # pasa la lista a minusculas xq las permutaciones no las reconocen
-    letras_atril_rival = [x.lower() for x in letras_atril_rival]
-    print(letras_atril_rival)
+def todas_los_posiciones_validas(tamanio_pal,lugar,lugar_aux,lugares_no_disponibles,orientacion):
+    ok=False
+    for i in range(tamanio_pal):
+        print('valor de i', i)
+        if (orientacion==0):
+            lugar_aux=lugar[0],lugar[1]+i
+        else:
+            lugar_aux=lugar[0]+i,lugar[1] 
+        print('lugar ',lugar_aux)
+        if lugar_aux not in lugares_no_disponibles:
+            ok=True
+        else:
+            ok=False    
+    return ok  
 
+
+def colocar_en_tablero(window,palabra_a_colocar,letras_usadas_en_tablero,lugar,letras_atril_rival,lugares_no_disponibles,x,y,orientacion):
+    for l in palabra_a_colocar:
+        letras_usadas_en_tablero.append(l)
+        print('antes del window',lugar)
+        window[lugar].update(l.upper(), button_color=('black', 'oldlace'))
+        letras_atril_rival.remove(l.upper())
+        lugares_no_disponibles.append(lugar)
+        if orientacion == 0:
+            y+=1
+        else:    
+            x+=1
+        lugar = (x, y)          
+
+
+def buscar_lugar_disponible(window, letras_atril_rival, lugar, lugares_no_disponibles, cant, bolsa_total,letras_usadas_en_tablero):
+    '''
+        Para el turno de la maquina Buscamos un lugar en el tablero de forma aleatoria 
+        en el cual colocaremos la palabra, en caso de no tener palabras validas, pasa el turno   
+    '''
+    # pasa la lista a minusculas xq las permutaciones no las reconocen las letras en mayuscula
+    letras_atril_rival_aux = [x.lower() for x in letras_atril_rival]
     palabras_posibles = buscar_palabras_rival(
-        letras_atril_rival)  # buscamos las posibles palabras
-    print(palabras_posibles)
-    # cantidad_de_veces_Repartidas=1
+        letras_atril_rival_aux)  # obtenemos una lista con las posibles palabras
+    
+    # intentamos obtener alguna palabra de la lista, en caso que la lista no tenga palabras validas se pasa el turno
     try:
         # obtenemos alguna de las palabras posibles de la lista al azar si es posible
         palabra_a_colocar = random.choice(palabras_posibles)
-        ok = False
+        
+        #Ya tenemos la palabra, ahora buscamos lugar disponible
+        ok = False 
         while (not ok) & (cant < 3):
-            x = random.choice(range(0, 14))
-            y = random.choice(range(0, 14))
+            x = random.choice(range(0, 15))
+            y = random.choice(range(0, 15))
             lugar = (x, y)
             cant += 1
-            print('palabra_a_colocar', palabra_a_colocar)
+            print('palabra_a_colocar', palabra_a_colocar)# test 
+            print('lugar',lugar)
+            # Primero vemos si el lugar seleccionado esta disponible
             if lugar not in lugares_no_disponibles:
-                # vemos si la palabra puede colocarse verticalmente u horizontalmente
-                if ((len(palabra_a_colocar)+y) <= 14):
-                    ok = True
-                    for l in palabra_a_colocar:
-                        letras_usadas_en_tablero.append(l)
-                        # botones_usados.append(event)
-                        window[lugar].update(
-                            l.upper(), button_color=('black', 'oldlace'))
-                        letras_atril_rival.remove(l)
-                        lugares_no_disponibles.append(lugar)
-                        y += 1
-                        lugar = (x, y)
+                # orientacion si la variable es 0 , va a intentar primero poner la palabra horizontal
+                # en caso contrario, si es 1 va intentar ponerla en vertical
+                orientacion=random.choice(range(0, 2))
+                tamanio_pal=len(palabra_a_colocar)
+                lugar_aux=lugar
+                # Segundo vemos si la palabra no se va de los limites
+                if(orientacion == 0):
+                    print('horizontal')
+                    print(tamanio_pal,'+',y,'< 15')
+                    if ((tamanio_pal+y) < 15):
+                        # Tercero vemos si cada posicion a utilizar esta libre
+                        ok=todas_los_posiciones_validas(tamanio_pal,lugar,lugar_aux,lugares_no_disponibles,orientacion)
+                        if (ok):
+                            colocar_en_tablero(
+                                window,palabra_a_colocar,letras_usadas_en_tablero,lugar,letras_atril_rival,
+                                lugares_no_disponibles,x,y,orientacion)
+                    else:
+                        print(tamanio_pal,'+',x,'< 15')
+                        if ((tamanio_pal+x) < 15):
+                            lugar_aux=lugar
+                            # Tercero vemos si cada posicion a utilizar esta libre
+                            ok=todas_los_posiciones_validas(tamanio_pal,lugar,lugar_aux,lugares_no_disponibles,orientacion)
+                            if (ok):
+                                colocar_en_tablero(
+                                    window,palabra_a_colocar,letras_usadas_en_tablero,lugar,letras_atril_rival,
+                                    lugares_no_disponibles,x,y,orientacion)
                 else:
-                    if ((len(palabra_a_colocar)+x) <= 14):
-                        ok = True
-                        for l in palabra_a_colocar:
-                            letras_usadas_en_tablero.append(l)
-                            # botones_usados.append(event)
-                            window[lugar].update(
-                                l.upper(), button_color=('black', 'oldlace'))
-                            letras_atril_rival.remove(l)
-                            lugares_no_disponibles.append(lugar)
-                            x += 1
-                            lugar = (x, y)
-        print('lugares_no_disponibles', lugares_no_disponibles)
-        print('letras_atril_rival', letras_atril_rival)
-        print('letras_usadas_en_tablero', letras_usadas_en_tablero)
+                    print('vertical')
+                    print(tamanio_pal,'+',x,'< 15')
+                    if ((tamanio_pal+x) < 15):
+                        # Tercero vemos si cada posicion a utilizar esta libre
+                        ok=todas_los_posiciones_validas(tamanio_pal,lugar,lugar_aux,lugares_no_disponibles,orientacion)
+                        if (ok):
+                            colocar_en_tablero(
+                                window,palabra_a_colocar,letras_usadas_en_tablero,lugar,letras_atril_rival,
+                                lugares_no_disponibles,x,y,orientacion)
+                    else:
+                        print(tamanio_pal,'+',y,'< 15')
+                        if ((tamanio_pal+y) < 15):
+                            lugar_aux=lugar
+                            # Tercero vemos si cada posicion a utilizar esta libre
+                            ok=todas_los_posiciones_validas(tamanio_pal,lugar,lugar_aux,lugares_no_disponibles,orientacion)
+                            if (ok):
+                                colocar_en_tablero(
+                                    window,palabra_a_colocar,letras_usadas_en_tablero,lugar,letras_atril_rival,
+                                    lugares_no_disponibles,x,y,orientacion)
+
         for i in range(len(letras_usadas_en_tablero)):
             letra = crear_atril(bolsa_total)
-            letras_atril_jugador.append(letra)
+            letras_atril_rival.append(letra)
         letras_usadas_en_tablero.clear()
         print('letras_atril_rival despues de carga', letras_atril_rival)
+
+        
     except (IndexError):
         print('no hay palabras validas en la lista')
-        '''
-        letras_atril_rival.clear
-        print('antes',letras_atril_rival)
-        for i in range(7):  # carga de las 7 fichas al inicio
-            letra_rival = crear_atril(bolsa_total)  #generamos las fichas del rival tambien
-            letras_atril_rival.append(letra_rival)  #Las agregamos a su lista
-        print('despues',letras_atril_rival)
-        '''
+        sg.Popup('La maquina no tiene palabras validas para colocar pasa el turno')
+  
 
 
-def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles, turno, bolsa_total):
-    sg.Popup('Turno de la maquina')
-    cant = 0
+
+
+def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles, turno, bolsa_total,letras_usadas_en_tablero):
+    '''
+        Comienza el turno de la maquina
+        - La maquina tendra 3 intentos para buscar lugar disponible, en caso de no encontrarlo debera pasar el turno
+        - en la funcion buscar_lugar_disponible se desarrolla la parte de buscar una palabra valida y un lugar disponible
+    '''
+    #sg.Popup('Turno de la maquina')
+    cant = 0 # intentos para buscar palabras en cada turno inicializa en 0
     buscar_lugar_disponible(window, letras_atril_rival,
-                            lugar, lugares_no_disponibles, cant, bolsa_total)
-    return 'player_1'
+                            lugar, lugares_no_disponibles, cant, bolsa_total,letras_usadas_en_tablero)
+    return 'player_2'
+
+
+
 
 
 ############## fin IA ###################
