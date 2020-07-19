@@ -432,14 +432,17 @@ def buscar_palabras_rival(letras_atril_rival):
 
 
 def todas_los_posiciones_validas(tamanio_pal,lugar,lugar_aux,lugares_no_disponibles,orientacion):
+    '''
+        Aca validamos que todos los lugares que van a ir las letras 
+        en el tablero sean validos. En caso de que haya lugares ocupados, 
+        nos devolvera False
+    '''
     ok=False
     for i in range(tamanio_pal):
-        print('valor de i', i)
         if (orientacion==0):
             lugar_aux=lugar[0],lugar[1]+i
         else:
             lugar_aux=lugar[0]+i,lugar[1] 
-        print('lugar ',lugar_aux)
         if lugar_aux not in lugares_no_disponibles:
             ok=True
         else:
@@ -448,9 +451,14 @@ def todas_los_posiciones_validas(tamanio_pal,lugar,lugar_aux,lugares_no_disponib
 
 
 def colocar_en_tablero(window,palabra_a_colocar,letras_usadas_en_tablero,lugar,letras_atril_rival,lugares_no_disponibles,x,y,orientacion):
+    '''
+        En este metodo colocamos las letras de las palabras en el tablero, 
+        recorremos la palabra y por cada letra, la agregamos al tablero, 
+        la removemos del atril, y guardamos los lugares no disponibles a 
+        la lista de lugares ocupados en el tablero
+    '''
     for l in palabra_a_colocar:
         letras_usadas_en_tablero.append(l)
-        print('antes del window',lugar)
         window[lugar].update(l.upper(), button_color=('black', 'oldlace'))
         letras_atril_rival.remove(l.upper())
         lugares_no_disponibles.append(lugar)
@@ -459,6 +467,18 @@ def colocar_en_tablero(window,palabra_a_colocar,letras_usadas_en_tablero,lugar,l
         else:    
             x+=1
         lugar = (x, y)          
+
+
+def chequeo_y_colocacion(tamanio_pal,y,x,lugar,lugar_aux,lugares_no_disponibles,orientacion, window,palabra_a_colocar,letras_usadas_en_tablero,letras_atril_rival):
+    '''
+        Metodo general en el cual se chequean las palabras y se colocan en el tablero
+    '''
+    ok=todas_los_posiciones_validas(tamanio_pal,lugar,lugar_aux,lugares_no_disponibles,orientacion)
+    if (ok):
+        colocar_en_tablero(
+            window,palabra_a_colocar,letras_usadas_en_tablero,lugar,letras_atril_rival,
+            lugares_no_disponibles,x,y,orientacion)
+    return ok        
 
 
 def buscar_lugar_disponible(window, letras_atril_rival, lugar, lugares_no_disponibles, cant, bolsa_total,letras_usadas_en_tablero):
@@ -483,8 +503,6 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar, lugares_no_dispon
             y = random.choice(range(0, 15))
             lugar = (x, y)
             cant += 1
-            print('palabra_a_colocar', palabra_a_colocar)# test 
-            print('lugar',lugar)
             # Primero vemos si el lugar seleccionado esta disponible
             if lugar not in lugares_no_disponibles:
                 # orientacion si la variable es 0 , va a intentar primero poner la palabra horizontal
@@ -494,45 +512,27 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar, lugares_no_dispon
                 lugar_aux=lugar
                 # Segundo vemos si la palabra no se va de los limites
                 if(orientacion == 0):
-                    print('horizontal')
+                    print('horizontal')# test
                     print(tamanio_pal,'+',y,'< 15')
                     if ((tamanio_pal+y) < 15):
-                        # Tercero vemos si cada posicion a utilizar esta libre
-                        ok=todas_los_posiciones_validas(tamanio_pal,lugar,lugar_aux,lugares_no_disponibles,orientacion)
-                        if (ok):
-                            colocar_en_tablero(
-                                window,palabra_a_colocar,letras_usadas_en_tablero,lugar,letras_atril_rival,
-                                lugares_no_disponibles,x,y,orientacion)
+                        ok=chequeo_y_colocacion(tamanio_pal,y,x,lugar,lugar_aux,lugares_no_disponibles,orientacion, window,palabra_a_colocar,letras_usadas_en_tablero,letras_atril_rival)
                     else:
                         print(tamanio_pal,'+',x,'< 15')
+                        orientacion=1
                         if ((tamanio_pal+x) < 15):
                             lugar_aux=lugar
-                            # Tercero vemos si cada posicion a utilizar esta libre
-                            ok=todas_los_posiciones_validas(tamanio_pal,lugar,lugar_aux,lugares_no_disponibles,orientacion)
-                            if (ok):
-                                colocar_en_tablero(
-                                    window,palabra_a_colocar,letras_usadas_en_tablero,lugar,letras_atril_rival,
-                                    lugares_no_disponibles,x,y,orientacion)
+                            ok=chequeo_y_colocacion(tamanio_pal,y,x,lugar,lugar_aux,lugares_no_disponibles,orientacion, window,palabra_a_colocar,letras_usadas_en_tablero,letras_atril_rival)
                 else:
-                    print('vertical')
+                    print('vertical')# test
                     print(tamanio_pal,'+',x,'< 15')
                     if ((tamanio_pal+x) < 15):
-                        # Tercero vemos si cada posicion a utilizar esta libre
-                        ok=todas_los_posiciones_validas(tamanio_pal,lugar,lugar_aux,lugares_no_disponibles,orientacion)
-                        if (ok):
-                            colocar_en_tablero(
-                                window,palabra_a_colocar,letras_usadas_en_tablero,lugar,letras_atril_rival,
-                                lugares_no_disponibles,x,y,orientacion)
+                        ok=chequeo_y_colocacion(tamanio_pal,y,x,lugar,lugar_aux,lugares_no_disponibles,orientacion, window,palabra_a_colocar,letras_usadas_en_tablero,letras_atril_rival)
                     else:
                         print(tamanio_pal,'+',y,'< 15')
+                        orientacion=0
                         if ((tamanio_pal+y) < 15):
                             lugar_aux=lugar
-                            # Tercero vemos si cada posicion a utilizar esta libre
-                            ok=todas_los_posiciones_validas(tamanio_pal,lugar,lugar_aux,lugares_no_disponibles,orientacion)
-                            if (ok):
-                                colocar_en_tablero(
-                                    window,palabra_a_colocar,letras_usadas_en_tablero,lugar,letras_atril_rival,
-                                    lugares_no_disponibles,x,y,orientacion)
+                            ok=chequeo_y_colocacion(tamanio_pal,y,x,lugar,lugar_aux,lugares_no_disponibles,orientacion, window,palabra_a_colocar,letras_usadas_en_tablero,letras_atril_rival)
 
         for i in range(len(letras_usadas_en_tablero)):
             letra = crear_atril(bolsa_total)
