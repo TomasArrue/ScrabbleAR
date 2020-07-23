@@ -136,7 +136,7 @@ while True:
             turno = funciones.turno_maquina(window, letras_atril_rival,
                                   lugar, lugares_no_disponibles, turno, bolsa_total,letras_usadas_en_tablero)
             print('turno vuelta', turno)
-            sg.Popup('Tu Turno!')
+            #sg.Popup('Tu Turno!')
         if type(event) is tuple:
             lugar = event
             if lugar not in lugares_no_disponibles:  # pinto el lugar que estoy seleccionando,hago esa pregunta para que no trate de marcar un casillero que ya tiene una letra
