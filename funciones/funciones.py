@@ -367,10 +367,10 @@ def puntos_de_letra(letra, dificultad, coord):
 
 def puntos_de_palabra(dificultad, no_disponibles, puntos):
     """
-       En esta parte vamos a calcular el total de los puntos de la palabra 
+       En esta parte vamos a calcular el total de los puntos de la palabra
        cargada.
        Segun la dificultad vamos a tener distintos modificadores en cada color
-       Si nuestra palabra pasa por casillas con colores el puntaje final se 
+       Si nuestra palabra pasa por casillas con colores el puntaje final se
        vera afectado
     """
     with open('./texto/config.json', 'r') as p:
@@ -501,7 +501,7 @@ def chequeo_y_colocacion(tamanio_pal, x, y, lugar, lugar_aux,
                          palabra_a_colocar, letras_usadas_en_tablero,
                          letras_atril_rival):
     """
-        Metodo general en el cual se chequean las palabras y se colocan en el 
+        Metodo general en el cual se chequean las palabras y se colocan en el
         tablero
     """
     print('lugar que va a chequear...', lugar)
@@ -595,8 +595,8 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                             lugares_no_disponibles, cant,
                             bolsa_total, letras_usadas_en_tablero):
     """
-        Para el turno de la maquina Buscamos un lugar en el tablero de forma 
-        aleatoria en el cual colocaremos la palabra, en caso de no tener 
+        Para el turno de la maquina Buscamos un lugar en el tablero de forma
+        aleatoria en el cual colocaremos la palabra, en caso de no tener
         palabras validas, pasa el turno
     """
     # pasa la lista a minusculas xq las permutaciones no las reconocen las
