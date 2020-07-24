@@ -7,9 +7,9 @@ from itertools import permutations
 
 def configuracion_de_juego():
     """
-        configuracion del juego inicial,cargamos el config.json, para poder cambiar
-        la cantidades de letras iniciales en la bolsa de fichas y ademas podemos
-        editar el valor de cada ficha
+        configuracion del juego inicial,cargamos el config.json, para poder
+        cambiar la cantidades de letras iniciales en la bolsa de fichas y
+        ademas podemos editar el valor de cada ficha
     """
     with open('config.json', 'r') as cf:
         c = json.load(cf)
@@ -22,14 +22,17 @@ def configuracion_de_juego():
                  font=("Chalkboard", 25), relief=sg.RELIEF_RIDGE)],
         [sg.Text(k, size=(3, 1), justification='center')
          for k, v in diccionario_cantidad_de_letras.items()],
-        [sg.Text('PARA MODIFICAR LA CANTIDAD DE LETRAS POR LETRA CAMBIE EL VALOR A LA LETRA CORRESPONDIENTE :')],
+        [sg.Text('PARA MODIFICAR LA CANTIDAD DE LETRAS POR LETRA CAMBIE EL ',
+                 'VALOR A LA LETRA CORRESPONDIENTE :')],
         [sg.Input(v, size=(3, 1), key=(k+'_cant'))
          for k, v in diccionario_cantidad_de_letras.items()],
-        [sg.Text('PARA MODIFICAR EL VALOR DE LAS LETRAS POR LETRA CAMBIE EL VALOR A LA LETRA CORRESPONDIENTE:')],
+        [sg.Text('PARA MODIFICAR EL VALOR DE LAS LETRAS POR LETRA CAMBIE EL ',
+                 'VALOR A LA LETRA CORRESPONDIENTE:')],
         [sg.Input(v, size=(3, 1), key=(k+'_valor'))
          for k, v in diccionario_cantidad_de_puntos.items()],
         [sg.Text('')],
-        [sg.Text('PARA MODIFICAR EL TIEMPO INGRESE EL TIEMPO EN MINUTOS (de 5 a 30) QUE QUIERES QUE DURE LA PARTIDA')],
+        [sg.Text('PARA MODIFICAR EL TIEMPO INGRESE EL TIEMPO EN MINUTOS ',
+                 '(de 5 a 30) QUE QUIERES QUE DURE LA PARTIDA')],
         [sg.Input(size=(9, 1), key=('time'))],
         [sg.Button('GUARDAR CONFIGURACION'), sg.Button('CANCELAR')]
     ]
@@ -49,9 +52,10 @@ def configuracion_de_juego():
                 if (num_tiempo < 5):
                     num_tiempo = 5
             except (ValueError):
-                num_tiempo = 15  # seteamos 15 minutos en caso de cargar erronea, pero informamos que se cargo mal el tiempo
-                sg.Popup(
-                    'El tiempo se cargo de maneara erronea, pero cargamos la partida de 15 minutos')
+                # seteamos 15 minutos en caso de cargar erronea de tiempo
+                num_tiempo = 15
+                sg.Popup('El tiempo se cargo de maneara erronea, pero ',
+                         'cargamos la partida de 15 minutos')
             for k, v in diccionario_cantidad_de_letras.items():
                 try:
                     numero_nuevo = int(values3[k+'_cant'])
@@ -127,7 +131,8 @@ def asignar_colores_al_tablero(window, dificultad):
             window[x, y].update(button_color=(colores, colores))
 
 
-def cargar_juego(window, values, timer_running, nombre, bolsa_total, letras_atril_jugador, letras_atril_rival):
+def cargar_juego(window, values, timer_running, nombre, bolsa_total, 
+                 letras_atril_jugador, letras_atril_rival):
     """
         iniciamos todo el seteo inicial del juego:
             -la dificultad segun la seleccionada en el menu
@@ -163,12 +168,13 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total, letras_atri
     return timer_running, very_dificult
 
 
-def cargar_partida(window, letras_atril_jugador, botones_usados, lugares_no_disponibles, letras_guardadas):
+def cargar_partida(window, letras_atril_jugador, botones_usados,
+                   lugares_no_disponibles, letras_guardadas):
     """
        asdasd
     """
-    with open('./texto/save.json', 'r') as l:
-        dic = json.load(l)
+    with open('./texto/save.json', 'r') as archivo_carga:
+        dic = json.load(archivo_carga)
     asignar_colores_al_tablero(window, dic["otros"]["dificultad"])
     window['opcionesJuego'].update(visible=True)
     window['Comenzar'].update(visible=False)
@@ -195,9 +201,13 @@ def cargar_partida(window, letras_atril_jugador, botones_usados, lugares_no_disp
     for i in range(len(dic["otros"]["lugares"])):
         lugares_no_disponibles.append(tuple(dic["otros"]["lugares"][i]))
         window[lugares_no_disponibles[i]].update(
-            dic["otros"]["letras_usadas"][i], button_color=('black', 'oldlace'))
+               dic["otros"]["letras_usadas"][i],  
+               button_color=('black', 'oldlace'))
 
-    return dic["otros"]["dificultad"], dic["puntos"]["puntos_jugador"], dic["puntos"]["puntos_jugador_total"], dic["puntos"]["puntos_npc"], dic["puntos"]["puntos_npc_total"], dic["otros"]["hor"], dic["otros"]["ver"]
+    return dic["otros"]["dificultad"], dic["puntos"]["puntos_jugador"], 
+    dic["puntos"]["puntos_jugador_total"], dic["puntos"]["puntos_npc"], 
+    dic["puntos"]["puntos_npc_total"], 
+    dic["otros"]["hor"], dic["otros"]["ver"]
 
 
 def volver_a_pintar_la_casilla(cord, window):
@@ -237,9 +247,9 @@ def verificar_palabra(palabra):
 def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total):
     """
         Este metodo nos da una ficha "nueva".
-        Generamos una letra random la agregamos a la lista de letras de nuestro atril,
-        luego con la key del boton recibida como parametro actualizamos el valor del
-        boton con la nueva letra
+        Generamos una letra random la agregamos a la lista de letras de 
+        nuestro atril, luego con la key del boton recibida como parametro 
+        actualizamos el valor del boton con la nueva letra
     """
     letra = crear_atril(bolsa_total)
     letras_atril_jugador.append(letra)
@@ -248,10 +258,11 @@ def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total):
     window.Refresh()
 
 
-def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas, letras_atril_jugador, bolsa_total):
+def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas, 
+                             letras_atril_jugador, bolsa_total):
     """
-        Utilizamos este metodo para poder cambiar la mano de fichas que tenemos,
-        y tenemos permitido hacerlo hasta 3 veces
+        Utilizamos este metodo para poder cambiar la mano de fichas que 
+        tenemos, y tenemos permitido hacerlo hasta 3 veces
     """
     letras_atril_jugador.clear()
     if (cantidad_de_veces_Repartidas < 3):
@@ -266,21 +277,29 @@ def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas, letras_atril_
     return cantidad_de_veces_Repartidas
 
 
-def quitar_fichas(window, usados, botones_usados, no_disponibles, letras_atril_jugador):
+def quitar_fichas(window, usados, botones_usados, no_disponibles, 
+                  letras_atril_jugador):
     """
-        quitar fichas nos permite sacar las fichas ingresadas al tablero en el turno correspondiente.
-        Mientras que la longitud lista de usados del turno sea mayor a 0 vamos a poder retirar fichas
-        que ingresamos, en caso de que no se pueda no podremos quitar mas
+        quitar fichas nos permite sacar las fichas ingresadas al tablero en el
+        turno correspondiente.
+        Mientras que la longitud lista de usados del turno sea mayor a 0 vamos 
+        a poder retirar fichas que ingresamos, en caso de que no se pueda no 
+        podremos quitar mas
     """
     # print(len(usados),' ',len(no_disponibles),' ',len(botones_usados))
-    # Aca antes de borrar una letra vamos a preguntar si hay letras para borrar, en caso contrario no podras borrar mas letras
+    # Aca antes de borrar una letra vamos a preguntar si hay letras para borrar
+    # en caso contrario no podras borrar mas letras
     if len(usados) > 0:
-        # Saca la ultima letra de la palabra cargada - el pop saca de usados  el elemento de la ultima posicion de la lista de usados
+        # Saca la ultima letra de la palabra cargada - el pop saca de usados  
+        # el elemento de la ultima posicion de la lista de usados
         letra_a_borrar = usados.pop()
         boton_a_recuperar = botones_usados.pop()
-        # vuelve a cargar la letra que sacamos del tablero en el atril de nuestras fichas
+        # vuelve a cargar la letra que sacamos del tablero en el atril de 
+        # nuestras fichas
         letras_atril_jugador.append(letra_a_borrar)
-        # Saca la ultima coordenada de la palabra cargada - el pop saca de no_disponibles el elemento de la ultima posicion de la lista de no_disponibles
+        # Saca la ultima coordenada de la palabra cargada - el pop saca de 
+        # no_disponibles el elemento de la ultima posicion de la lista
+        # de no_disponibles
         coord_a_liberar = no_disponibles.pop()
         # vuelve a pintar la casilla de su color en estado inicial
         volver_a_pintar_la_casilla(coord_a_liberar, window)
@@ -293,8 +312,8 @@ def quitar_fichas(window, usados, botones_usados, no_disponibles, letras_atril_j
 
 def pedir_fichas(window, botones_usados, letras_atril_jugador, bolsa_total):
     """
-       El pedir fichas nos permite pedir la cantidad de fichas usadas en el ultimo turno
-       hasta llegar a tener 7 nuevamente.
+       El pedir fichas nos permite pedir la cantidad de fichas usadas en el 
+       ultimo turno hasta llegar a tener 7 nuevamente.
     """
     for i in botones_usados:
         letra = letras_atril_jugador[len(letras_atril_jugador)-1]
@@ -304,14 +323,16 @@ def pedir_fichas(window, botones_usados, letras_atril_jugador, bolsa_total):
         botones_usados.pop()
 
 
-def letra_al_tablero(window, usados, botones_usados, letras_atril_jugador, no_disponibles, letra, event, lugar):
+def letra_al_tablero(window, usados, botones_usados, letras_atril_jugador,
+                     no_disponibles, letra, event, lugar):
     """
        Utilizamos este metodo para graficar el colocar la ficha en el tablero.
        -Guardamos la ficha en una lista de "usados"
        -Guardamos el nombre del boton para luego recuperarlo
        -En el tablero ponemos el valor de la ficha seleccionada
        -Sacamos la letra de nuestro atril, y la deshabilitamos del atril
-       -Para finalizar guardamos las coordenadas del lugar en una lista de lugares no disponibles
+       -Para finalizar guardamos las coordenadas del lugar en una lista de 
+        lugares no disponibles
     """
     usados.append(letra)
     botones_usados.append(event)
@@ -323,7 +344,8 @@ def letra_al_tablero(window, usados, botones_usados, letras_atril_jugador, no_di
 
 def puntos_de_letra(letra, dificultad, coord):
     """
-       calculamos el valor de la letra ingresada en el tablero. accedemos al json para ver su puntaje asociado
+       calculamos el valor de la letra ingresada en el tablero. accedemos al 
+       json para ver su puntaje asociado
     """
     with open('./texto/config.json', 'r') as p:
         dicc = json.load(p)
@@ -345,9 +367,11 @@ def puntos_de_letra(letra, dificultad, coord):
 
 def puntos_de_palabra(dificultad, no_disponibles, puntos):
     """
-       En esta parte vamos a calcular el total de los puntos de la palabra cargada.
+       En esta parte vamos a calcular el total de los puntos de la palabra 
+       cargada.
        Segun la dificultad vamos a tener distintos modificadores en cada color
-       Si nuestra palabra pasa por casillas con colores el puntaje final se vera afectado
+       Si nuestra palabra pasa por casillas con colores el puntaje final se 
+       vera afectado
     """
     with open('./texto/config.json', 'r') as p:
         dicc = json.load(p)
@@ -369,12 +393,12 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
 
 
 def formet(d):
-    l = []
+    lista = []
     for k, v in d.items():
         variable = '{} {} '.format("Jugador:", k) + '{} {} '.format(
             "Puntaje:", v["Puntos"]) + '{} {}'.format("Fecha:", v["Fecha"])
-        l.append(variable)
-    return l
+        lista.append(variable)
+    return lista
 
 
 def vertical(pos_actual, pos_anterior):
@@ -393,7 +417,7 @@ def horizontal(pos_actual, pos_anterior):
         return False
 
 
-####################################################### IA #######################################################
+# ============================= IA =============================
 
 
 def validar_palabra(permutaciones, permutaciones_validas):
@@ -415,92 +439,97 @@ def buscar_palabras_rival(letras_atril_rival):
         recibe el las fichas del atril del rival y genera una lista de
         palabras validas
     """
-    permutaciones_validas = []  # lista vacia para guardar las permutaciones validas
+    # lista vacia para guardar las permutaciones validas
+    permutaciones_validas = []
     for i in range(len(letras_atril_rival)):
-        if (i+1 >= 2):  # este if es para empezar a armar permutaciones de al menos dos caracteres
-            # generamos permutaciones con i+1 caracteres
+        # este if es para empezar a armar permutaciones de al menos dos
+        #  caracteres generamos permutaciones con i+1 caracteres
+        if (i+1 >= 2):
             permutaciones_temp = {
                 "".join(p) for p in permutations(letras_atril_rival, i+1)}
-            # vemos cuales de esas permutaciones son validas, y las vamos guardando en una lista
+            # vemos cuales de esas permutaciones son validas, y las vamos 
+            # guardando en una lista
             validar_palabra(permutaciones_temp, permutaciones_validas)
     return permutaciones_validas
 
 
-def todas_los_posiciones_validas(tamanio_pal, lugar, lugar_aux, lugares_no_disponibles, orientacion):
+def todas_los_posiciones_validas(tamanio_pal, lugar, lugar_aux,
+                                 lugares_no_disponibles, orientacion):
     """
         Aca validamos que todos los lugares que van a ir las letras
         en el tablero sean validos. En caso de que haya lugares ocupados,
         nos devolvera False
     """
-    
     ok = True
-    #i=0
-    #while (ok) and (i < len(palabra_a_colocar)):
+    # i=0
+    # while (ok) and (i < len(palabra_a_colocar)):
     for i in range(tamanio_pal):
         if (orientacion == 0):
             lugar_aux = lugar[0], lugar[1]+i
         else:
             lugar_aux = lugar[0]+i, lugar[1]
-        #print('verificando lugar...', lugar_aux) #test
-        #print('lugares no disponibles ',lugares_no_disponibles) #test
+        # print('verificando lugar...', lugar_aux) #test
+        # print('lugares no disponibles ',lugares_no_disponibles) #test
         if lugar_aux in lugares_no_disponibles:
             ok = False
-        #i+=1    
-    print('Se puede poner?.....',ok) #test
+        # i+=1    
+    print('Se puede poner?.....', ok)  # test
     return ok
 
 
-def colocar_en_tablero(window, palabra_a_colocar, letras_usadas_en_tablero, lugar, letras_atril_rival, lugares_no_disponibles, x, y, orientacion,tamanio_pal):
+def colocar_en_tablero(window, palabra_a_colocar, letras_usadas_en_tablero, 
+                       lugar, letras_atril_rival, lugares_no_disponibles, x, 
+                       y, orientacion, tamanio_pal):
     """
         En este metodo colocamos las letras de las palabras en el tablero,
         recorremos la palabra y por cada letra, la agregamos al tablero,
         la removemos del atril, y guardamos los lugares no disponibles a
         la lista de lugares ocupados en el tablero
     """ 
-    for i,l in zip(range(tamanio_pal),palabra_a_colocar):
+    for i, l in zip(range(tamanio_pal), palabra_a_colocar):
         if (orientacion == 0):
             lugar_aux = lugar[0], lugar[1]+i
         else:
             lugar_aux = lugar[0]+i, lugar[1]
-        print  (lugar,': lugar=lugar_aux :',lugar_aux) 
+        print(lugar, ': lugar=lugar_aux :', lugar_aux) 
         letras_usadas_en_tablero.append(l)
         print('poniendo en el lugar...', lugar_aux)
         window[lugar_aux].update(l.upper(), button_color=('black', 'oldlace'))
         letras_atril_rival.remove(l.upper())
         lugares_no_disponibles.append(lugar_aux)
 
-        
 
-        '''    
-        if orientacion == 1:
-            x += 1
-        else:
-            y += 1
-        lugar = (x, y)
-        '''
-
-
-def chequeo_y_colocacion(tamanio_pal, x, y, lugar, lugar_aux, lugares_no_disponibles, orientacion, window, palabra_a_colocar, letras_usadas_en_tablero, letras_atril_rival):
+def chequeo_y_colocacion(tamanio_pal, x, y, lugar, lugar_aux,
+                         lugares_no_disponibles, orientacion, window, 
+                         palabra_a_colocar, letras_usadas_en_tablero, 
+                         letras_atril_rival):
     """
-        Metodo general en el cual se chequean las palabras y se colocan en el tablero
+        Metodo general en el cual se chequean las palabras y se colocan en el 
+        tablero
     """
-    print('lugar que va a chequear...',lugar)
+    print('lugar que va a chequear...', lugar)
     print('cordenadas check...', x, ' ', y, ' orientacion ', orientacion)
     ok = todas_los_posiciones_validas(
         tamanio_pal, lugar, lugar_aux, lugares_no_disponibles, orientacion)
     if (ok):
         colocar_en_tablero(
-            window, palabra_a_colocar, letras_usadas_en_tablero, lugar, letras_atril_rival,
-            lugares_no_disponibles, x, y, orientacion,tamanio_pal)
+            window, palabra_a_colocar, letras_usadas_en_tablero, lugar, 
+            letras_atril_rival, lugares_no_disponibles, x, y, orientacion, 
+            tamanio_pal)
 
     return ok
 
+
 def cambiar_orientacion(orientacion):
-    if orientacion == 1 : orientacion = 0
-    elif orientacion == 0 : orientacion = 1
+    if orientacion == 1: orientacion = 0
+    elif orientacion == 0: orientacion = 1
     return orientacion
 
-def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux, lugares_no_disponibles, orientacion, window, palabra_a_colocar, letras_usadas_en_tablero, letras_atril_rival):
+
+def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
+                         lugares_no_disponibles, orientacion, window, 
+                         palabra_a_colocar, letras_usadas_en_tablero, 
+                         letras_atril_rival):
 
     print('palabra_a_colocar.....', palabra_a_colocar)
     print('x...', cord1,', y...', cord2)
@@ -513,29 +542,41 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux, lugares_no
         if (((tamanio_pal-1)+cord2) < 15): # si es horizontal chequeamos que y sea valida
             print('cordenadas horziontal...', cord1, ' ',
                 cord2, ' orientacion ', orientacion)
-            ok = chequeo_y_colocacion(tamanio_pal, cord1, cord2, lugar, lugar_aux, lugares_no_disponibles,
-                                    orientacion, window, palabra_a_colocar, letras_usadas_en_tablero, letras_atril_rival)
+            ok = chequeo_y_colocacion(tamanio_pal, cord1, cord2, lugar, lugar_aux, 
+                                      lugares_no_disponibles,orientacion, window,
+                                      palabra_a_colocar, letras_usadas_en_tablero, 
+                                      letras_atril_rival)
         else:
-            print('cordenadas horziontal NO ENTRAN, VEAMOS SI ENTRAN DE FORMA VERTICAL...',tamanio_pal-1,'+',cord2,'< 15')
+            print('cordenadas horziontal NO ENTRAN, VEAMOS SI ENTRAN DE FORMA VERTICAL...',
+                  tamanio_pal-1,'+',cord2,'< 15')
             orientacion=1
             if (((tamanio_pal-1)+cord1) < 15):
                 #lugar_aux=lugar
-                ok=chequeo_y_colocacion(tamanio_pal,cord2,cord1,lugar,lugar_aux,lugares_no_disponibles,orientacion, window,palabra_a_colocar,letras_usadas_en_tablero,letras_atril_rival)
+                ok=chequeo_y_colocacion(tamanio_pal,cord2,cord1,lugar,lugar_aux,
+                                        lugares_no_disponibles,orientacion, window,
+                                        palabra_a_colocar,letras_usadas_en_tablero,
+                                        letras_atril_rival)
     
     elif orientacion == 1:
         print(tamanio_pal-1, '+', cord1, '< 15')
         if (((tamanio_pal-1)+cord1) < 15): # si es horizontal chequeamos que x sea valida
             print('cordenadas vertical...', cord1, ' ',
                 cord2, ' orientacion ', orientacion)
-            ok = chequeo_y_colocacion(tamanio_pal, cord1, cord2, lugar, lugar_aux, lugares_no_disponibles,
-                                    orientacion, window, palabra_a_colocar, letras_usadas_en_tablero, letras_atril_rival)
+            ok = chequeo_y_colocacion(tamanio_pal, cord1, cord2, lugar, lugar_aux, 
+                                      lugares_no_disponibles, orientacion, window,
+                                      palabra_a_colocar, letras_usadas_en_tablero, 
+                                      letras_atril_rival)
         else:
-            print('cordenadas vertical NO ENTRAN, VEAMOS SI ENTRAN DE FORMA HORIZONTAL...',tamanio_pal-1,'+',cord2,'< 15')
+            print('cordenadas vertical NO ENTRAN, VEAMOS SI ENTRAN DE FORMA HORIZONTAL...',
+                  tamanio_pal-1,'+',cord2,'< 15')
             orientacion=0
             print(tamanio_pal-1, '+', cord2, '< 15')
             if (((tamanio_pal-1)+cord2) < 15):
                 #lugar_aux=lugar
-                ok=chequeo_y_colocacion(tamanio_pal,cord2,cord1,lugar,lugar_aux,lugares_no_disponibles,orientacion, window,palabra_a_colocar,letras_usadas_en_tablero,letras_atril_rival)
+                ok=chequeo_y_colocacion(tamanio_pal,cord2,cord1,lugar,lugar_aux,
+                                        lugares_no_disponibles,orientacion, window,
+                                        palabra_a_colocar,letras_usadas_en_tablero, 
+                                        letras_atril_rival)
     
     else:
         sg.popup('No entra la palabra')
@@ -543,23 +584,9 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux, lugares_no
     if (not ok):    
         sg.popup('No entra la palabra')
     return ok        
-    
-    '''
-    elif (((tamanio_pal-1)+cord2) < 15) and not ok:
-        print(tamanio_pal-1, '+', cord2, '< 15')
-        orientacion=cambiar_orientacion(orientacion)
-        #lugar_aux = lugar
-        lugar=(cord2,cord1)
-        print('lugar que hay que chequear...',lugar)
-        print('cordenadas 2...', cord2, ' ',
-              cord1, ' orientacion ', orientacion)   
-        ok = chequeo_y_colocacion(tamanio_pal, cord1, cord2, lugar, lugar_aux, lugares_no_disponibles,
-                                  orientacion, window, palabra_a_colocar, letras_usadas_en_tablero, letras_atril_rival)
-    '''
 
-
-
-def buscar_lugar_disponible(window, letras_atril_rival, lugar, lugares_no_disponibles, cant, bolsa_total, letras_usadas_en_tablero):
+def buscar_lugar_disponible(window, letras_atril_rival, lugar, lugares_no_disponibles, cant, 
+                            bolsa_total, letras_usadas_en_tablero):
     """
         Para el turno de la maquina Buscamos un lugar en el tablero de forma aleatoria
         en el cual colocaremos la palabra, en caso de no tener palabras validas, pasa el turno
@@ -568,7 +595,8 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar, lugares_no_dispon
     letras_atril_rival_aux = [x.lower() for x in letras_atril_rival]
     palabras_posibles = buscar_palabras_rival(
         letras_atril_rival_aux)  # obtenemos una lista con las posibles palabras
-    # intentamos obtener alguna palabra de la lista, en caso que la lista no tenga palabras validas se pasa el turno
+    # intentamos obtener alguna palabra de la lista, en caso que la lista no tenga palabras validas
+    #  se pasa el turno
     try:
         # obtenemos alguna de las palabras posibles de la lista al azar si es posible
         palabra_a_colocar = random.choice(palabras_posibles)
@@ -581,14 +609,15 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar, lugares_no_dispon
             cant += 1
             # Primero vemos si el lugar seleccionado esta disponible
             if lugar not in lugares_no_disponibles:
-                # orientacion si la variable es 0 , va a intentar primero poner la palabra horizontal
-                # en caso contrario, si es 1 va intentar ponerla en vertical
+                # orientacion si la variable es 0 , va a intentar primero poner la palabra 
+                # horizontalnen caso contrario, si es 1 va intentar ponerla en vertical
                 orientacion = random.choice(range(0, 2))
                 tamanio_pal = len(palabra_a_colocar)
                 lugar_aux = lugar
                 # Segundo vemos si la palabra no se va de los limites
                 ok = seteando_orientacion(tamanio_pal, x, y, lugar, lugar_aux, lugares_no_disponibles,
-                                          orientacion, window, palabra_a_colocar, letras_usadas_en_tablero, letras_atril_rival)
+                                          orientacion, window, palabra_a_colocar, letras_usadas_en_tablero,
+                                          letras_atril_rival)
         for i in range(len(letras_usadas_en_tablero)):
             letra = crear_atril(bolsa_total)
             letras_atril_rival.append(letra)
@@ -598,7 +627,8 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar, lugares_no_dispon
         # IMPLEMENTAR EL REPARTIR DE NUEVO CON LA MAQUINA
 
 
-def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles, turno, bolsa_total, letras_usadas_en_tablero):
+def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles, turno, bolsa_total, 
+    letras_usadas_en_tablero):
     """
         Comienza el turno de la maquina:
         - La maquina tendra 3 intentos para buscar lugar disponible,
@@ -610,7 +640,8 @@ def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles, tur
     sg.Popup('Turno de la maquina')
     cant = 0  # intentos para buscar palabras en cada turno inicializa en 0
     buscar_lugar_disponible(window, letras_atril_rival,
-                            lugar, lugares_no_disponibles, cant, bolsa_total, letras_usadas_en_tablero)
+                            lugar, lugares_no_disponibles, cant, bolsa_total, 
+                            letras_usadas_en_tablero)
     return 'player_2'
 
 

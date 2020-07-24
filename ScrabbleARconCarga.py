@@ -56,7 +56,8 @@ opciones_de_juego = [
 # FICHAS DEL JUGADOR
 fichas = [
     [sg.Text("Tus Fichas: ", font=("Chalkboard", 15))],
-    [sg.Button('', button_color=('black', 'oldlace'), size=(tamanio_Boton_De_Fichas), key="Boton_1", pad=(5, 5)),
+    [sg.Button('', button_color=('black', 'oldlace'), 
+     size=(tamanio_Boton_De_Fichas), key="Boton_1", pad=(5, 5)),
      sg.Button('', button_color=('black', 'oldlace'), size=(
          tamanio_Boton_De_Fichas), key="Boton_2", pad=(5, 5)),
      sg.Button('', button_color=('black', 'oldlace'), size=(
@@ -67,7 +68,8 @@ fichas = [
          tamanio_Boton_De_Fichas), key="Boton_5", pad=(5, 5)),
      sg.Button('', button_color=('black', 'oldlace'), size=(
          tamanio_Boton_De_Fichas), key="Boton_6", pad=(5, 5)),
-     sg.Button('', button_color=('black', 'oldlace'), size=(tamanio_Boton_De_Fichas), key="Boton_7", pad=(5, 5))]
+     sg.Button('', button_color=('black', 'oldlace'), 
+     size=(tamanio_Boton_De_Fichas), key="Boton_7", pad=(5, 5))]
 ]
 
 # FICHAS DEL NPC
