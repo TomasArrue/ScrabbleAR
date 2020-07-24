@@ -490,7 +490,7 @@ def colocar_en_tablero(window, palabra_a_colocar, letras_usadas_en_tablero,
             lugar_aux = lugar[0]+i, lugar[1]
         # print(lugar, ': lugar=lugar_aux :', lugar_aux) # test
         letras_usadas_en_tablero.append(l)
-        #print('poniendo en el lugar...', lugar_aux)
+        # print('poniendo en el lugar...', lugar_aux)
         window[lugar_aux].update(l.upper(), button_color=('black', 'oldlace'))
         letras_atril_rival.remove(l.upper())
         lugares_no_disponibles.append(lugar_aux)
@@ -658,7 +658,7 @@ def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
     buscar_lugar_disponible(window, letras_atril_rival,
                             lugar, lugares_no_disponibles, cant, bolsa_total,
                             letras_usadas_en_tablero)
-    return 'player_2'
+    return 'player_1'
 
 
 # ============================= FIN IA =============================
