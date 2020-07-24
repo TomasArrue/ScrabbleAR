@@ -32,7 +32,6 @@ def botones_De_Fichas(name): return sg.Button(
 def botones_De_Fichas_rival(name): return sg.Button(
     '?', button_color=color_De_Boton, size=tamanio_Boton_De_Fichas)
 
-
 sg.ChangeLookAndFeel('DarkGrey6')  # thema del PySimpleGUI
 
 # VENTANA PRINCIPAL
@@ -42,8 +41,8 @@ opciones_de_inicio = [
     [sg.Button('Configuracion', size=tamanio_Boton_De_Control)],
     [sg.InputCombo(dificultad, default_value='Facil',
                    size=(10, 10), key='dificultad')],
-    [sg.Button('Guardar Partida', size=tamanio_Boton_De_Control, visible=False)],
-    [sg.Button('Salir', size=tamanio_Boton_De_Control)]
+    [sg.Button('Guardar Partida', size=tamanio_Boton_De_Control,
+     visible=False)], [sg.Button('Salir', size=tamanio_Boton_De_Control)]
 ]
 
 # VENTANA DEL JUEGO
@@ -75,12 +74,14 @@ fichas = [
 # FICHAS DEL NPC
 fichas_rival = [[sg.Text("Fichas CPU: ", font=("Chalkboard", 15))],
                 [sg.Button('??', button_color=('white', 'brown'), size=(
-                    tamanio_Boton_De_Fichas), key=("Boton_2_"+str(i+1)), pad=(5, 5)) for i in range(7)]
+                    tamanio_Boton_De_Fichas), key=("Boton_2_"+str(i+1)), 
+                    pad=(5, 5)) for i in range(7)]
                 ]
 
 
 tablero = [
-    [sg.Button('', button_color=('grey', 'white'), size=(1, 1), key=(i, j), pad=(0, 0)) for j in range(max_Cant_Columnas)] for i in range(max_Cant_Filas)
+    [sg.Button('', button_color=('grey', 'white'), size=(1, 1), key=(i, j),
+     pad=(0, 0)) for j in range(max_Cant_Columnas)] for i in range(max_Cant_Filas)
 ]  # botones matriz
 
 puntaje_y_tiempo = [
@@ -97,9 +98,11 @@ layout = [
              font=("Chalkboard", 25), relief=sg.RELIEF_RIDGE)],
     [sg.Column(fichas_rival, key='atrilFichasRival',
                justification='center', visible=False)],
-    [sg.Column(opciones_de_inicio, key='opcionesComienzo', justification='left'), sg.Column(
-        tablero), sg.Column(puntaje_y_tiempo, key='puntaje', visible=False)],
-    [sg.Column(fichas, key='atrilFichas', justification='center', visible=False)],
+    [sg.Column(opciones_de_inicio, key='opcionesComienzo',
+     justification='left'), sg.Column(tablero), sg.Column(puntaje_y_tiempo,
+     key='puntaje', visible=False)],
+    [sg.Column(fichas, key='atrilFichas', justification='center',
+     visible=False)],
     [sg.Column(opciones_de_juego, key='opcionesJuego',
                justification='center', visible=False)],
 ]
@@ -118,7 +121,8 @@ letras_atril_rival = []
 letras_usadas_en_tablero = []  # lleva las letras que ya use
 botones_usados = []           # nombre de los botones que voy usando
 lugares_no_disponibles = []     # lleva la cuenta de los lugares que ya escribi
-ant = ()                 # para despintar la casilla anterior cuando toco una nueva
+# para despintar la casilla anterior cuando toco una nueva
+ant = ()
 lugar = ()                    # marca la casilla actual
 layout2 = layout              # esto no se que es
 # cantidad de veces de pedidos para hacer el cambio de fichas totales
@@ -136,12 +140,15 @@ while True:
     else:
         if turno == 'player_2':
             turno = funciones.turno_maquina(window, letras_atril_rival,
-                                  lugar, lugares_no_disponibles, turno, bolsa_total,letras_usadas_en_tablero)
+                    lugar, lugares_no_disponibles, turno, bolsa_total,
+                    letras_usadas_en_tablero)
             print('turno vuelta', turno)
             #sg.Popup('Tu Turno!')
         if type(event) is tuple:
             lugar = event
-            if lugar not in lugares_no_disponibles:  # pinto el lugar que estoy seleccionando,hago esa pregunta para que no trate de marcar un casillero que ya tiene una letra
+# pinto el lugar que estoy seleccionando,hago esa pregunta para que no trate
+# de marcar un casillero que ya tiene una letra
+            if lugar not in lugares_no_disponibles:
                 window[lugar].update(button_color=('white', 'darkgrey'))
             # digo que si anterior tiene algo que despinte lo anterior
             if (ant) and (ant not in lugares_no_disponibles):
@@ -155,23 +162,29 @@ while True:
             if lugar not in lugares_no_disponibles:  # si el lugar no lo use
                 # vemos si es la primera letra, seteamos la orientacion
                 if len(letras_usadas_en_tablero) == 0:
-                    funciones.letra_al_tablero(window, letras_usadas_en_tablero, botones_usados,
-                                               letras_atril_jugador, lugares_no_disponibles, letra, event, lugar)
+                    funciones.letra_al_tablero(window,
+                     letras_usadas_en_tablero, botones_usados,
+                     letras_atril_jugador, lugares_no_disponibles, letra,
+                     event, lugar)
 
-                    # hay que declarar una variable dific para enviar en lugar de facil
+            # hay que declarar una variable dific para enviar en lugar de facil
                     puntos_jugador += funciones.puntos_de_letra(
                         letra, dificult, lugar)
                     window["puntaje_propio"].update(puntos_jugador)
-                # vemos si es la primera letra, seteamos la orientacion de la palabra
+        # vemos si es la primera letra, seteamos la orientacion de la palabra
                 elif len(letras_usadas_en_tablero) == 1:
                     h = funciones.horizontal(
-                        lugar, lugares_no_disponibles[len(lugares_no_disponibles)-1])
+                        lugar, lugares_no_disponibles
+                        [len(lugares_no_disponibles)-1])
                     v = funciones.vertical(
-                        lugar, lugares_no_disponibles[len(lugares_no_disponibles)-1])
-                    funciones.letra_al_tablero(window, letras_usadas_en_tablero, botones_usados,
-                                               letras_atril_jugador, lugares_no_disponibles, letra, event, lugar)
+                        lugar, lugares_no_disponibles
+                        [len(lugares_no_disponibles)-1])
+                    funciones.letra_al_tablero(window,
+                     letras_usadas_en_tablero, botones_usados,
+                     letras_atril_jugador, lugares_no_disponibles, letra,
+                     event, lugar)
 
-                    # hay que declarar una variable dific para enviar en lugar de facil
+            # hay que declarar una variable dific para enviar en lugar de facil
                     puntos_jugador += funciones.puntos_de_letra(
                         letra, dificult, lugar)
                     window["puntaje_propio"].update(puntos_jugador)
