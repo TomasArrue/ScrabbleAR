@@ -529,7 +529,15 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
                          lugares_no_disponibles, orientacion, window,
                          palabra_a_colocar, letras_usadas_en_tablero,
                          letras_atril_rival):
-
+    """                      
+       En este metodo nos llegaran el lugar, la palabra a colocar y la
+       orientacion, y  se analizan los casos posibles para colocarla en
+       el tablero.
+       Primero verifica que entre en la orientacion deseada, luego en caso de 
+       no poder se intentara poner desde el mismo lugar que se deseaba 
+       pero en la orientacion contraria, y en caso de no poder nos avisara 
+       que no se puedo colocar
+    """
     print('palabra_a_colocar.....', palabra_a_colocar)
     print('x...', cord1, ', y...', cord2)
     print('orientacion...', orientacion)
