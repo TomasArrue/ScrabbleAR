@@ -55,8 +55,8 @@ opciones_de_juego = [
 # FICHAS DEL JUGADOR
 fichas = [
     [sg.Text("Tus Fichas: ", font=("Chalkboard", 15))],
-    [sg.Button('', button_color=('black', 'oldlace'), 
-     size=(tamanio_Boton_De_Fichas), key="Boton_1", pad=(5, 5)),
+    [sg.Button('', button_color=('black', 'oldlace'),
+               size=(tamanio_Boton_De_Fichas), key="Boton_1", pad=(5, 5)),
      sg.Button('', button_color=('black', 'oldlace'), size=(
          tamanio_Boton_De_Fichas), key="Boton_2", pad=(5, 5)),
      sg.Button('', button_color=('black', 'oldlace'), size=(
@@ -67,8 +67,8 @@ fichas = [
          tamanio_Boton_De_Fichas), key="Boton_5", pad=(5, 5)),
      sg.Button('', button_color=('black', 'oldlace'), size=(
          tamanio_Boton_De_Fichas), key="Boton_6", pad=(5, 5)),
-     sg.Button('', button_color=('black', 'oldlace'), 
-     size=(tamanio_Boton_De_Fichas), key="Boton_7", pad=(5, 5))]
+     sg.Button('', button_color=('black', 'oldlace'),
+               size=(tamanio_Boton_De_Fichas), key="Boton_7", pad=(5, 5))]
 ]
 
 # FICHAS DEL NPC
@@ -98,11 +98,18 @@ layout = [
              font=("Chalkboard", 25), relief=sg.RELIEF_RIDGE)],
     [sg.Column(fichas_rival, key='atrilFichasRival',
                justification='center', visible=False)],
+<<<<<<< HEAD
     [sg.Column(opciones_de_inicio, key='opcionesComienzo',
      justification='left'), sg.Column(tablero), sg.Column(puntaje_y_tiempo,
      key='puntaje', visible=False)],
     [sg.Column(fichas, key='atrilFichas', justification='center',
      visible=False)],
+=======
+    [sg.Column(opciones_de_inicio, key='opcionesComienzo', justification='left'), sg.Column(
+        tablero), sg.Column(puntaje_y_tiempo, key='puntaje', visible=False)],
+    [sg.Column(fichas, key='atrilFichas',
+               justification='center', visible=False)],
+>>>>>>> cd5ba835fcd4c054e7954ff543c41497bb50698e
     [sg.Column(opciones_de_juego, key='opcionesJuego',
                justification='center', visible=False)],
 ]
@@ -140,8 +147,12 @@ while True:
     else:
         if turno == 'player_2':
             turno = funciones.turno_maquina(window, letras_atril_rival,
+<<<<<<< HEAD
                     lugar, lugares_no_disponibles, turno, bolsa_total,
                     letras_usadas_en_tablero)
+=======
+                                            lugar, lugares_no_disponibles, turno, bolsa_total, letras_usadas_en_tablero)
+>>>>>>> cd5ba835fcd4c054e7954ff543c41497bb50698e
             print('turno vuelta', turno)
             #sg.Popup('Tu Turno!')
         if type(event) is tuple:
@@ -302,7 +313,7 @@ while True:
                 puntos_jugador = 0
                 funciones.pedir_fichas(
                     window, botones_usados, letras_atril_jugador, bolsa_total)
-                turno = 'player_2'    
+                turno = 'player_2'
             else:
                 print("palabra invalida")
                 for i in range(len(letras_usadas_en_tablero)):
