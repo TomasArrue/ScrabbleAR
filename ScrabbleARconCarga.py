@@ -3,7 +3,7 @@ import sys
 # esten disponibles para ejecutar
 import json
 import PySimpleGUI as sg
-from funciones import funciones
+from funciones import funciones_tom as funciones
 
 # INICIA EL PROGRAMA PRINCIPAL
 
@@ -75,7 +75,7 @@ fichas = [
 
 # FICHAS DEL NPC
 fichas_rival = [[sg.Text("Fichas CPU: ", font=("Chalkboard", 15))],
-                [sg.Button('??', button_color=('white', 'brown'), size=(
+                [sg.Button('??', size=(
                     tamanio_Boton_De_Fichas), key=("Boton_2_"+str(i+1)),
                     pad=(5, 5)) for i in range(7)]
                 ]
@@ -87,9 +87,12 @@ tablero = [
 ]  # botones matriz
 
 puntaje_y_tiempo = [
-    [sg.Text('TU PUNTAJE:', font=("Chalkboard", 10))], [
-        sg.Text('00', key='puntaje_propio', font=("Chalkboard", 10))],
-    [sg.Text('PUNTAJE PC: 0', font=("Chalkboard", 10))],
+    [sg.Text('TU PUNTAJE:', font=("Chalkboard", 10))],
+    [sg.Text('00', key='puntaje_propio', font=("Chalkboard", 10))],
+    [sg.Text('PUNTAJE DE JUGADA:', font=("Chalkboard", 10))],
+    [sg.Text('00', key='puntaje_de_jugada', font=("Chalkboard", 10))],
+    [sg.Text('PUNTAJE PC:', font=("Chalkboard", 10))],
+    [sg.Text('00', key='puntaje_PC', font=("Chalkboard", 10))],
     [sg.Text('Tiempo', font=('Chalkboard', 15))],
     [sg.Text('00:00', font=('Chalkboard', 15), key='-OUTPUT-')],
     [sg.T(' ' * 5)]
@@ -117,7 +120,7 @@ l2_guar = []
 puntos_jugador = 0
 puntos_jugador_total = 0
 puntos_npc = 0
-puntos_npc_total = 100
+puntos_npc_total = 0
 letras_atril_jugador = []     # letras que voy usando
 letras_atril_rival = []
 letras_usadas_en_tablero = []  # lleva las letras que ya use
@@ -141,12 +144,15 @@ while True:
         break
     else:
         if turno == 'player_2':
-            turno = funciones.turno_maquina(window, letras_atril_rival,
-                                            lugar, lugares_no_disponibles,
-                                            turno, bolsa_total,
-                                            letras_usadas_en_tablero)
+            puntos_npc, turno = funciones.turno_maquina(window, letras_atril_rival,
+                                                        lugar, lugares_no_disponibles,
+                                                        turno, bolsa_total,
+                                                        letras_usadas_en_tablero, 
+                                                        dificult)
+            puntos_npc_total = puntos_npc_total+puntos_npc
+            window["puntaje_PC"].update(puntos_npc_total)
             print('turno vuelta', turno)
-            #sg.Popup('Tu Turno!')
+            # sg.Popup('Tu Turno!')
         if type(event) is tuple:
             lugar = event
             # pinto el lugar que estoy seleccionando,hago esa pregunta para
@@ -176,7 +182,7 @@ while True:
                     # en lugar de facil
                     puntos_jugador += funciones.puntos_de_letra(
                         letra, dificult, lugar)
-                    window["puntaje_propio"].update(puntos_jugador)
+                    window["puntaje_de_jugada"].update(puntos_jugador)
                 # vemos si es la primera letra, seteamos la orientacion de
                 #  la palabra
                 elif len(letras_usadas_en_tablero) == 1:
@@ -197,7 +203,7 @@ while True:
                     # de facil
                     puntos_jugador += funciones.puntos_de_letra(
                         letra, dificult, lugar)
-                    window["puntaje_propio"].update(puntos_jugador)
+                    window["puntaje_de_jugada"].update(puntos_jugador)
                 elif len(letras_usadas_en_tablero) > 1:
                     if funciones.horizontal(lugar, lugares_no_disponibles
                                             [len(lugares_no_disponibles)-1]) and h:
@@ -210,7 +216,7 @@ while True:
 
                         puntos_jugador += funciones.puntos_de_letra(
                             letra, dificult, lugar)
-                        window["puntaje_propio"].update(puntos_jugador)
+                        window["puntaje_de_jugada"].update(puntos_jugador)
                     elif funciones.vertical(lugar, lugares_no_disponibles
                                             [len(lugares_no_disponibles)-1]) and v:
                         funciones.letra_al_tablero(window,
@@ -222,7 +228,7 @@ while True:
 
                         puntos_jugador += funciones.puntos_de_letra(
                             letra, dificult, lugar)
-                        window["puntaje_propio"].update(puntos_jugador)
+                        window["puntaje_de_jugada"].update(puntos_jugador)
                     else:
                         sg.Popup('Lugar Invalido')
         # pide 7 fichas nuevas en la mano
@@ -241,7 +247,7 @@ while True:
                 puntos_jugador -= funciones.puntos_de_letra(letras_usadas_en_tablero[len(
                     letras_usadas_en_tablero)-1], dificult,
                     lugares_no_disponibles[len(lugares_no_disponibles)-1])
-                window["puntaje_propio"].update(puntos_jugador)
+                window["puntaje_de_jugada"].update(puntos_jugador)
                 funciones.quitar_fichas(window, letras_usadas_en_tablero,
                                         botones_usados, lugares_no_disponibles,
                                         letras_atril_jugador)
@@ -329,12 +335,17 @@ while True:
             h = False
             if funciones.verificar_palabra(palabra_final):
                 print("palabra valida")
-                puntos_jugador_total = funciones.puntos_de_palabra(
+                puntos_jugador_total_aux =  funciones.puntos_de_palabra(
                     dificult, lugares_no_disponibles, puntos_jugador)
+                puntos_jugador_total+=puntos_jugador_total_aux    
+                print('total',puntos_jugador_total ) 
+                print('total auzx',puntos_jugador_total_aux )
+                print('puntos_jugador',puntos_jugador)    
                 window["puntaje_propio"].update(puntos_jugador_total)
                 l2_guar.extend(letras_usadas_en_tablero)
                 letras_usadas_en_tablero.clear()
                 puntos_jugador = 0
+                window["puntaje_de_jugada"].update("00")
                 funciones.pedir_fichas(
                     window, botones_usados, letras_atril_jugador, bolsa_total)
                 turno = 'player_2'
@@ -344,7 +355,8 @@ while True:
                     funciones.quitar_fichas(
                         window, letras_usadas_en_tablero, botones_usados,
                         lugares_no_disponibles, letras_atril_jugador)
-                window["puntaje_propio"].update("00")
+                window["puntaje_de_jugada"].update("00")
+                puntos_jugador = 0
 
         if event == "Guardar Partida":
             if not botones_usados:

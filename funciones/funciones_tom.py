@@ -351,7 +351,7 @@ def puntos_de_letra(letra, dificultad, coord):
         dicc = json.load(p)
     valor_de_letra = dicc["valor_por_letra"]
     tablero_actual = dicc[dificultad]
-
+    letra=letra.upper()
     # lo tengo que castear a lista porque asi quedo grabado en el json
     if list(coord) in tablero_actual["indianred"]:
         v = valor_de_letra[letra]+5
@@ -388,7 +388,7 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
         puntos = puntos - random.randint(0, 10)
     for element in int_blue:
         puntos = puntos / 2
-
+    
     return puntos
 
 
@@ -601,7 +601,8 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
 
 def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                             lugares_no_disponibles, cant,
-                            bolsa_total, letras_usadas_en_tablero):
+                            bolsa_total, letras_usadas_en_tablero, 
+                            dificultad):
     """
         Para el turno de la maquina Buscamos un lugar en el tablero de forma
         aleatoria en el cual colocaremos la palabra, en caso de no tener
@@ -616,6 +617,7 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
     # intentamos obtener alguna palabra de la lista, en caso que la lista no
     # tenga palabras validas
     # se pasa el turno
+    puntos_npc = 0
     try:
         # obtenemos alguna de las palabras posibles de la lista al azar si es
         # posible
@@ -642,31 +644,40 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                                           letras_usadas_en_tablero,
                                           letras_atril_rival)
         ##########################################################################################################################################
-        # necesito una lista de coords que son los ultimos de lugares_no_disponibles                                                             #
-        # lista_coords = []                                                                                                                      #
-        # for i in range(lugares_no_disponibles(len(lugares_no_disponibles) - tamanio_pal), lugares_no_disponibles(len(lugares_no_disponibles))) #
-        #     lista_coords = i                                                                                                                   #
-        # ahora tengo "letras_usadas_en_tablero" y "lista_coords" si esta bien hecho puedo recorrer las dos listas y usar las funciones de       #
-        # que ya tenemos y no nececitams hacer otro                                                                                              #
-        # puntos_npc = 0                                                                                                                         #
-        # for i in range(tamanio_pal)                                                                                                            #
-        #     aux = puntos_de_letra(letras_usadas_en_tablero[i], dificultad, lista_coords[i])                                                    #
-        #     puntos_npc = puntos_npc + aux                                                                                                      #
-        #     for i in range(tamanio_pal)                                                                                                        #
-        #         puntos_npc = puntos_de_palabra(dificultad, lista_coords[i], puntos_npc)                                                        #
+        # necesito una lista de coords que son los ultimos de lugares_no_disponibles
+        print('esta aca 1')
+        lista_coords = []
+        for i in range(1,tamanio_pal+1):
+            element = lugares_no_disponibles[-i]
+            lista_coords.append(element)
+        lista_coords.reverse()    
+        # ahora tengo "letras_usadas_en_tablero" y "lista_coords" si esta bien hecho puedo recorrer las dos listas y usar las funciones de
+        # que ya tenemos y no nececitams hacer otro                                                                                                                                                                                                                      #
+        print('esta aca 2 ')
+        for i in range(tamanio_pal):
+            aux = puntos_de_letra(letras_usadas_en_tablero[i], dificultad,
+                                lista_coords[i])
+            print('valor de letra...',aux, 'letra',letras_usadas_en_tablero[i])                    
+            puntos_npc = puntos_npc + aux
+        print('valor de total...',puntos_npc)       
+        print('esta aca 3 ')
+        for i in range(tamanio_pal):
+            puntos_npc2 = puntos_de_palabra(dificultad, lista_coords[i], puntos_npc)
+        print('valor de total con modificador...',puntos_npc2)      
         ##########################################################################################################################################
         for i in range(len(letras_usadas_en_tablero)):
             letra = crear_atril(bolsa_total)
             letras_atril_rival.append(letra)
         letras_usadas_en_tablero.clear()
+        return puntos_npc
     except (IndexError):
         sg.Popup('La maquina no tiene palabras validas para',
                  'colocar pasa el turno')
-        # IMPLEMENTAR EL REPARTIR DE NUEVO CON LA MAQUINA
+        return 0
 
 
 def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
-                  turno, bolsa_total, letras_usadas_en_tablero):
+                  turno, bolsa_total, letras_usadas_en_tablero,dificultad):
     """
         Comienza el turno de la maquina:
         - La maquina tendra 3 intentos para buscar lugar disponible,
@@ -677,10 +688,10 @@ def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
     """
     sg.Popup('Turno de la maquina')
     cant = 0  # intentos para buscar palabras en cada turno inicializa en 0
-    buscar_lugar_disponible(window, letras_atril_rival,
-                            lugar, lugares_no_disponibles, cant, bolsa_total,
-                            letras_usadas_en_tablero)
-    return 'player_1'
+    puntos = buscar_lugar_disponible(window, letras_atril_rival,
+                                     lugar, lugares_no_disponibles, cant, bolsa_total,
+                                     letras_usadas_en_tablero,dificultad)
+    return puntos, 'player_1'
 
 
 #############################################################
