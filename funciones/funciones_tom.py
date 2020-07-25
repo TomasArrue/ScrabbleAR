@@ -483,7 +483,6 @@ def colocar_en_tablero(window, palabra_a_colocar, letras_usadas_en_tablero,
         la removemos del atril, y guardamos los lugares no disponibles a
         la lista de lugares ocupados en el tablero
     """
-    # puntos_npc = 0
     for i, l in zip(range(tamanio_pal), palabra_a_colocar):
         if (orientacion == 0):
             lugar_aux = lugar[0], lugar[1]+i
@@ -495,8 +494,6 @@ def colocar_en_tablero(window, palabra_a_colocar, letras_usadas_en_tablero,
         window[lugar_aux].update(l.upper(), button_color=('black', 'oldlace'))
         letras_atril_rival.remove(l.upper())
         lugares_no_disponibles.append(lugar_aux)
-        # puntos_npc = puntos_de_letra(i, dificultad, lugar_aux)
-    # return puntos_de_palabra(dificultad, lugares_no_disponibles, puntos_npc)
 
 
 def chequeo_y_colocacion(tamanio_pal, x, y, lugar, lugar_aux,
@@ -644,6 +641,20 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                                           window, palabra_a_colocar,
                                           letras_usadas_en_tablero,
                                           letras_atril_rival)
+        ##########################################################################################################################################
+        # necesito una lista de coords que son los ultimos de lugares_no_disponibles                                                             #
+        # lista_coords = []                                                                                                                      #
+        # for i in range(lugares_no_disponibles(len(lugares_no_disponibles) - tamanio_pal), lugares_no_disponibles(len(lugares_no_disponibles))) #
+        #     lista_coords = i                                                                                                                   #
+        # ahora tengo "letras_usadas_en_tablero" y "lista_coords" si esta bien hecho puedo recorrer las dos listas y usar las funciones de       #
+        # que ya tenemos y no nececitams hacer otro                                                                                              #
+        # puntos_npc = 0                                                                                                                         #
+        # for i in range(tamanio_pal)                                                                                                            #
+        #     aux = puntos_de_letra(letras_usadas_en_tablero[i], dificultad, lista_coords[i])                                                    #
+        #     puntos_npc = puntos_npc + aux                                                                                                      #
+        #     for i in range(tamanio_pal)                                                                                                        #
+        #         puntos_npc = puntos_de_palabra(dificultad, lista_coords[i], puntos_npc)                                                        #
+        ##########################################################################################################################################
         for i in range(len(letras_usadas_en_tablero)):
             letra = crear_atril(bolsa_total)
             letras_atril_rival.append(letra)
@@ -674,19 +685,16 @@ def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
 
 #############################################################
 # Aca escribo para los puntos de la IA
-# esto lo agrego en la funcion "colocar_en_tablero"
 #
 # Con:
 # reutilizar las funciones "puntos_de_letra" y "puntos_de_palabra"
-# agrego una var aux: "puntos_npc" (peude ir de parametro pero PAKE)
-# y un return para que devuelva el resultado de lo que vale la palabra
+# agrego una var aux: "puntos_npc"
 #
 # Como:
-# Dentro del "for": linea 498
-# 'puntos_npc = puntos_de_letra(i, dificultad, lugar_aux)'
-# pero para esto le falta los que multiplican o dividen la palabra la palabra
 #
-# fuera del "for": linea 499
-# return puntos_de_palabra(dificultad, lugares_no_disponibles, puntos_npc)'
-
+# 'puntos_npc = puntos_de_letra(letra, dificultad, coord)'
+#
+# 'return puntos_de_palabra(dificultad, lugares_no_disponibles, puntos_npc)'
+#
+# ver lineas 647
 # ============================= FIN IA =============================
