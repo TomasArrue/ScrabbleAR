@@ -25,14 +25,6 @@ max_Cant_Filas = max_Cant_Columnas = 15  # tamanio de las matrices
 dificultad = ['Facil', 'Medio', 'Dificil']  # combobox
 
 
-def botones_De_Fichas(name): return sg.Button(
-    name, button_color=color_De_Boton, size=tamanio_Boton_De_Fichas)
-
-
-def botones_De_Fichas_rival(name): return sg.Button(
-    '?', button_color=color_De_Boton, size=tamanio_Boton_De_Fichas)
-
-
 sg.ChangeLookAndFeel('DarkGrey6')  # thema del PySimpleGUI
 
 # VENTANA PRINCIPAL
