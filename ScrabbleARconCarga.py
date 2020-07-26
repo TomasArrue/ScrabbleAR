@@ -54,6 +54,8 @@ opciones_de_juego = [
      sg.Button("Repartir De Nuevo", size=tamanio_Boton_De_Control),
      sg.Button("TOP", size=tamanio_Boton_De_Control)]
 ]
+
+'''
 # FICHAS DEL JUGADOR
 fichas = [
     [sg.Text("Tus Fichas: ", font=("Chalkboard", 15))],
@@ -72,6 +74,13 @@ fichas = [
      sg.Button('', button_color=('black', 'oldlace'),
                size=(tamanio_Boton_De_Fichas), key="Boton_7", pad=(5, 5))]
 ]
+'''
+#FICHAS DEL JUGADOR
+fichas=[ [sg.Text("Tus Fichas: ",font=("Chalkboard", 15))],
+         [sg.Button('',button_color=('black','oldlace'), 
+          size=(tamanio_Boton_De_Fichas),
+          key=("Boton_"+str(i+1)),pad=(5,5)) for i in range(7)]
+       ]
 
 # FICHAS DEL NPC
 fichas_rival = [[sg.Text("Fichas CPU: ", font=("Chalkboard", 15))],
@@ -152,7 +161,7 @@ while True:
             puntos_npc_total = puntos_npc_total+puntos_npc
             window["puntaje_PC"].update(puntos_npc_total)
             print('turno vuelta', turno)
-            # sg.Popup('Tu Turno!')
+            sg.Popup('Tu Turno!')
         if type(event) is tuple:
             lugar = event
             # pinto el lugar que estoy seleccionando,hago esa pregunta para
@@ -166,7 +175,7 @@ while True:
 
         # si el evento seria una letra y lugar tiene algo es xq marque algo
         if event in ("Boton_1", "Boton_2", "Boton_3", "Boton_4", "Boton_5",
-                     "Boton_6", "Boton_7") and lugar:
+                     "Boton_6", "Boton_0") and lugar:
             letra = window[event].GetText()  # asigno la letra del evento
             if lugar not in lugares_no_disponibles:  # si el lugar no lo use
                 # vemos si es la primera letra, seteamos la orientacion
@@ -334,13 +343,19 @@ while True:
             v = False
             h = False
             if funciones.verificar_palabra(palabra_final):
-                print("palabra valida")
+                lista_coords=[]
+                tamanio_pal=len(palabra_final)
+                for i in range(1,tamanio_pal+1):
+                    element = lugares_no_disponibles[-i]
+                    lista_coords.append(element)
+                lista_coords.reverse()  
+                # print("palabra valida")
                 puntos_jugador_total_aux =  funciones.puntos_de_palabra(
-                    dificult, lugares_no_disponibles, puntos_jugador)
+                    dificult, lista_coords, puntos_jugador)
                 puntos_jugador_total+=puntos_jugador_total_aux    
-                print('total',puntos_jugador_total ) 
-                print('total auzx',puntos_jugador_total_aux )
-                print('puntos_jugador',puntos_jugador)    
+                # print('total',puntos_jugador_total ) 
+                # print('total auzx',puntos_jugador_total_aux )
+                # print('puntos_jugador',puntos_jugador)    
                 window["puntaje_propio"].update(puntos_jugador_total)
                 l2_guar.extend(letras_usadas_en_tablero)
                 letras_usadas_en_tablero.clear()

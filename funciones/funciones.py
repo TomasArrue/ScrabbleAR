@@ -380,10 +380,10 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
     # conjuntos para hacer la interseccion
     green = set(map(tuple, tablero_actual["mediumseagreen"]))
     blue = set(map(tuple, tablero_actual["skyblue"]))
-
+    
     int_green = green.intersection(set(no_disponibles))
     int_blue = blue.intersection(set(no_disponibles))
-
+ 
     for element in int_green:
         puntos = puntos - random.randint(0, 10)
     for element in int_blue:

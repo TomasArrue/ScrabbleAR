@@ -194,6 +194,7 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
 
     # carga de las 7 fichas al inicio
     for i in range(len(dic["atril"]["atril_jugador"])):
+        
         nro_de_boton = 'Boton_'+str(i+1)
         window[nro_de_boton].update(dic["atril"]["atril_jugador"][i])
         letras_atril_jugador.append(dic["atril"]["atril_jugador"][i])
@@ -376,19 +377,23 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
     with open('./texto/config.json', 'r') as p:
         dicc = json.load(p)
     tablero_actual = dicc[dificultad]
-
+    # print('puntos..',puntos) 
     # conjuntos para hacer la interseccion
     green = set(map(tuple, tablero_actual["mediumseagreen"]))
     blue = set(map(tuple, tablero_actual["skyblue"]))
 
     int_green = green.intersection(set(no_disponibles))
     int_blue = blue.intersection(set(no_disponibles))
+    # print('cordenas verdes..',int_green)
+    # print('cordenas no disponibles..',no_disponibles)
 
     for element in int_green:
-        puntos = puntos - random.randint(0, 10)
+        num = random.randint(0, 10)
+        puntos = puntos - num
+        # print("num aleatorio...", num)
     for element in int_blue:
-        puntos = puntos / 2
-    
+        puntos = puntos // 2
+    print('puntos 2..',puntos)
     return puntos
 
 
@@ -645,25 +650,22 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                                           letras_atril_rival)
         ##########################################################################################################################################
         # necesito una lista de coords que son los ultimos de lugares_no_disponibles
-        print('esta aca 1')
         lista_coords = []
         for i in range(1,tamanio_pal+1):
             element = lugares_no_disponibles[-i]
             lista_coords.append(element)
         lista_coords.reverse()    
         # ahora tengo "letras_usadas_en_tablero" y "lista_coords" si esta bien hecho puedo recorrer las dos listas y usar las funciones de
-        # que ya tenemos y no nececitams hacer otro                                                                                                                                                                                                                      #
-        print('esta aca 2 ')
+        # que ya tenemos y no nececitams hacer otro                                                                                                                                                                                                                      
         for i in range(tamanio_pal):
             aux = puntos_de_letra(letras_usadas_en_tablero[i], dificultad,
                                 lista_coords[i])
-            print('valor de letra...',aux, 'letra',letras_usadas_en_tablero[i])                    
+            # print('valor de letra...',aux, 'letra',letras_usadas_en_tablero[i])                    
             puntos_npc = puntos_npc + aux
-        print('valor de total...',puntos_npc)       
-        print('esta aca 3 ')
+        # print('valor de total...',puntos_npc)       
         for i in range(tamanio_pal):
             puntos_npc2 = puntos_de_palabra(dificultad, lista_coords[i], puntos_npc)
-        print('valor de total con modificador...',puntos_npc2)      
+        # print('valor de total con modificador...',puntos_npc2)      
         ##########################################################################################################################################
         for i in range(len(letras_usadas_en_tablero)):
             letra = crear_atril(bolsa_total)
