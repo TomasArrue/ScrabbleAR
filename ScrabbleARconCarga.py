@@ -3,7 +3,7 @@ import sys
 # esten disponibles para ejecutar
 import json
 import PySimpleGUI as sg
-from funciones import funciones_tom as funciones
+from funciones import funciones
 
 # INICIA EL PROGRAMA PRINCIPAL
 
