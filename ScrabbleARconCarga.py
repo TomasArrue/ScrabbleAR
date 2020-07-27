@@ -251,7 +251,8 @@ while True:
             else: sg.popup('Comienza la maquina!')
 
         elif event == "Cargar Partida":
-            dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v = funciones.cargar_partida(window,letras_atril_jugador,botones_usados,lugares_no_disponibles,l2_guar,letras_atril_rival)
+            counter, dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v = funciones.cargar_partida(window,letras_atril_jugador,botones_usados,lugares_no_disponibles,l2_guar,letras_atril_rival)
+            timer_running = not timer_running
 
         elif event == "Configuracion":
             funciones.configuracion_de_juego()
@@ -364,6 +365,7 @@ while True:
                     dic["otros"] = {"lugares": lugares_no_disponibles,
                                     "letras_usadas": l2_guar,
                                     "dificultad": dificult, "hor": h, "ver": v}
+                    dic['tiempo']={'reloj':counter}                
                     json.dump(dic, j, indent=4)
             else:
                 sg.Popup(

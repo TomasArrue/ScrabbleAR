@@ -192,6 +192,9 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
     window['atrilFichas'].update(visible=True)
     window['dificultad'].update(visible=False)
 
+    window['-OUTPUT-'].update('{:02d}:{:02d}'.format(
+    (dic['tiempo']['reloj'] // 100) // 60, (dic['tiempo']['reloj']  // 100) % 60))
+
     for letra in dic["otros"]["letras_usadas"]:
         letras_guardadas.append(letra)
 
@@ -211,7 +214,7 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
             dic["otros"]["letras_usadas"][i],
             button_color=('black', 'oldlace'))
 
-    return dic["otros"]["dificultad"], dic["puntos"]["puntos_jugador"],dic["puntos"]["puntos_jugador_total"], dic["puntos"]["puntos_npc"],dic["puntos"]["puntos_npc_total"],dic["otros"]["hor"], dic["otros"]["ver"]
+    return dic['tiempo']['reloj'], dic["otros"]["dificultad"], dic["puntos"]["puntos_jugador"],dic["puntos"]["puntos_jugador_total"], dic["puntos"]["puntos_npc"],dic["puntos"]["puntos_npc_total"],dic["otros"]["hor"], dic["otros"]["ver"]
 
 
 def volver_a_pintar_la_casilla(cord, window):
