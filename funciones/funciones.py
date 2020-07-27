@@ -149,11 +149,13 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
     window['Cargar Partida'].update(visible=False)
     window['Guardar Partida'].update(visible=True)
     window['Salir'].update(visible=True)
-    window['puntaje_propio'].update("PUNTAJE DE {0} ES :0".format(nombre))
+    texto=nombre.upper()+' TU PUNTAJE ES:'
+    window['tu_puntaje_propio'].update(texto)
     window['puntaje'].update(visible=True)
     window['atrilFichasRival'].update(visible=True)
     window['atrilFichas'].update(visible=True)
     window['dificultad'].update(visible=False)
+    
 
     for i in range(7):  # carga de las 7 fichas al inicio
 

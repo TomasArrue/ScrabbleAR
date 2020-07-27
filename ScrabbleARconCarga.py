@@ -1,6 +1,7 @@
 import sys
 # usamos el import sys para abortar el programa en caso de que los  archivos no
 # esten disponibles para ejecutar
+import random
 import json
 import PySimpleGUI as sg
 from funciones import funciones
@@ -47,26 +48,6 @@ opciones_de_juego = [
      sg.Button("TOP", size=tamanio_Boton_De_Control)]
 ]
 
-'''
-# FICHAS DEL JUGADOR
-fichas = [
-    [sg.Text("Tus Fichas: ", font=("Chalkboard", 15))],
-    [sg.Button('', button_color=('black', 'oldlace'),
-               size=(tamanio_Boton_De_Fichas), key="Boton_1", pad=(5, 5)),
-     sg.Button('', button_color=('black', 'oldlace'), size=(
-         tamanio_Boton_De_Fichas), key="Boton_2", pad=(5, 5)),
-     sg.Button('', button_color=('black', 'oldlace'), size=(
-         tamanio_Boton_De_Fichas), key="Boton_3", pad=(5, 5)),
-     sg.Button('', button_color=('black', 'oldlace'), size=(
-         tamanio_Boton_De_Fichas), key="Boton_4", pad=(5, 5)),
-     sg.Button('', button_color=('black', 'oldlace'), size=(
-         tamanio_Boton_De_Fichas), key="Boton_5", pad=(5, 5)),
-     sg.Button('', button_color=('black', 'oldlace'), size=(
-         tamanio_Boton_De_Fichas), key="Boton_6", pad=(5, 5)),
-     sg.Button('', button_color=('black', 'oldlace'),
-               size=(tamanio_Boton_De_Fichas), key="Boton_7", pad=(5, 5))]
-]
-'''
 #FICHAS DEL JUGADOR
 fichas=[ [sg.Text("Tus Fichas: ",font=("Chalkboard", 15))],
          [sg.Button('',button_color=('black','oldlace'), 
@@ -88,12 +69,13 @@ tablero = [
 ]  # botones matriz
 
 puntaje_y_tiempo = [
-    [sg.Text('TU PUNTAJE:', font=("Chalkboard", 10))],
-    [sg.Text('00', key='puntaje_propio', font=("Chalkboard", 10))],
+    [sg.Text(' ------ TU PUNTAJE ES:', key='tu_puntaje_propio',size=(20,1), 
+             font=("Chalkboard", 10))],
+    [sg.Text('0', key='puntaje_propio', font=("Chalkboard", 10))],
     [sg.Text('PUNTAJE DE JUGADA:', font=("Chalkboard", 10))],
-    [sg.Text('00', key='puntaje_de_jugada', font=("Chalkboard", 10))],
+    [sg.Text('0', key='puntaje_de_jugada', font=("Chalkboard", 10))],
     [sg.Text('PUNTAJE PC:', font=("Chalkboard", 10))],
-    [sg.Text('00', key='puntaje_PC', font=("Chalkboard", 10))],
+    [sg.Text('0', key='puntaje_PC', font=("Chalkboard", 10))],
     [sg.Text('Tiempo', font=('Chalkboard', 15))],
     [sg.Text('00:00', font=('Chalkboard', 15), key='-OUTPUT-')],
     [sg.T(' ' * 5)]
@@ -137,7 +119,9 @@ timer_running, counter = False, 0  # seteos para el timer,
 dificult = ''         # la dificultad actual que luego sera asignada
 h = False
 v = False
-turno = 'player_1'
+turno=''
+
+
 
 while True:
     event, values = window.read(timeout=10)
@@ -259,6 +243,11 @@ while True:
             timer_running, dificult = funciones.cargar_juego(
                 window, values, timer_running, nombre, bolsa_total,
                 letras_atril_jugador, letras_atril_rival)
+            #random para ver quien inicia la partida    
+            quien_inicia=random.choice(range(1, 3))
+            turno='player_'+str(quien_inicia)  
+            if turno == 'player_1': sg.popup('Empezas vos {}!'.format(nombre.upper()))  
+            else: sg.popup('Comienza la maquina!')
 
         elif event == "Cargar Partida":
             dificult, puntos_jugador, puntos_jugador_total, puntos_npc,
@@ -352,7 +341,7 @@ while True:
                 l2_guar.extend(letras_usadas_en_tablero)
                 letras_usadas_en_tablero.clear()
                 puntos_jugador = 0
-                window["puntaje_de_jugada"].update("00")
+                window["puntaje_de_jugada"].update("0")
                 funciones.pedir_fichas(
                     window, botones_usados, letras_atril_jugador, bolsa_total)
                 turno = 'player_2'
@@ -362,7 +351,7 @@ while True:
                     funciones.quitar_fichas(
                         window, letras_usadas_en_tablero, botones_usados,
                         lugares_no_disponibles, letras_atril_jugador)
-                window["puntaje_de_jugada"].update("00")
+                window["puntaje_de_jugada"].update("0")
                 puntos_jugador = 0
 
         if event == "Guardar Partida":
