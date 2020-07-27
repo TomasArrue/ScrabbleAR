@@ -171,7 +171,7 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
 
 
 def cargar_partida(window, letras_atril_jugador, botones_usados,
-                   lugares_no_disponibles, letras_guardadas):
+                   lugares_no_disponibles, letras_guardadas,letras_atril_rival):
     """
        asdasd
     """
@@ -187,6 +187,7 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
     window['puntaje_propio'].update("PUNTAJE DE {0} ES :0".format("pepe"))
     window['puntaje'].update(visible=True)
     window["puntaje_propio"].update(dic["puntos"]["puntos_jugador_total"])
+    window["puntaje_PC"].update(dic["puntos"]["puntos_npc_total"])
     window['atrilFichasRival'].update(visible=True)
     window['atrilFichas'].update(visible=True)
     window['dificultad'].update(visible=False)
@@ -201,16 +202,16 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
         window[nro_de_boton].update(dic["atril"]["atril_jugador"][i])
         letras_atril_jugador.append(dic["atril"]["atril_jugador"][i])
 
+    letras_atril_rival.extend(dic["atril_rival"]["letras_atril_rival"])
+
+    letras_atril_jugador.append(dic["atril"]["atril_jugador"][i])
     for i in range(len(dic["otros"]["lugares"])):
         lugares_no_disponibles.append(tuple(dic["otros"]["lugares"][i]))
         window[lugares_no_disponibles[i]].update(
             dic["otros"]["letras_usadas"][i],
             button_color=('black', 'oldlace'))
 
-    return dic["otros"]["dificultad"], dic["puntos"]["puntos_jugador"],
-    dic["puntos"]["puntos_jugador_total"], dic["puntos"]["puntos_npc"],
-    dic["puntos"]["puntos_npc_total"],
-    dic["otros"]["hor"], dic["otros"]["ver"]
+    return dic["otros"]["dificultad"], dic["puntos"]["puntos_jugador"],dic["puntos"]["puntos_jugador_total"], dic["puntos"]["puntos_npc"],dic["puntos"]["puntos_npc_total"],dic["otros"]["hor"], dic["otros"]["ver"]
 
 
 def volver_a_pintar_la_casilla(cord, window):
@@ -483,7 +484,7 @@ def todas_los_posiciones_validas(tamanio_pal, lugar, lugar_aux,
 
 def colocar_en_tablero(window, palabra_a_colocar, letras_usadas_en_tablero,
                        lugar, letras_atril_rival, lugares_no_disponibles, x,
-                       y, orientacion, tamanio_pal):
+                       y, orientacion, tamanio_pal,l2_guar):
     """
         En este metodo colocamos las letras de las palabras en el tablero,
         recorremos la palabra y por cada letra, la agregamos al tablero,
@@ -501,12 +502,13 @@ def colocar_en_tablero(window, palabra_a_colocar, letras_usadas_en_tablero,
         window[lugar_aux].update(l.upper(), button_color=('black', 'oldlace'))
         letras_atril_rival.remove(l.upper())
         lugares_no_disponibles.append(lugar_aux)
+        l2_guar.extend(l.upper())
 
 
 def chequeo_y_colocacion(tamanio_pal, x, y, lugar, lugar_aux,
                          lugares_no_disponibles, orientacion, window,
                          palabra_a_colocar, letras_usadas_en_tablero,
-                         letras_atril_rival):
+                         letras_atril_rival,l2_guar):
     """
         Metodo general en el cual se chequean las palabras y se colocan en el
         tablero
@@ -519,7 +521,7 @@ def chequeo_y_colocacion(tamanio_pal, x, y, lugar, lugar_aux,
         colocar_en_tablero(
             window, palabra_a_colocar, letras_usadas_en_tablero, lugar,
             letras_atril_rival, lugares_no_disponibles, x, y, orientacion,
-            tamanio_pal)
+            tamanio_pal,l2_guar)
 
     return ok
 
@@ -535,7 +537,7 @@ def cambiar_orientacion(orientacion):
 def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
                          lugares_no_disponibles, orientacion, window,
                          palabra_a_colocar, letras_usadas_en_tablero,
-                         letras_atril_rival):
+                         letras_atril_rival,l2_guar):
     """                      
        En este metodo nos llegaran el lugar, la palabra a colocar y la
        orientacion, y  se analizan los casos posibles para colocarla en
@@ -561,7 +563,7 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
                                       orientacion, window,
                                       palabra_a_colocar,
                                       letras_usadas_en_tablero,
-                                      letras_atril_rival)
+                                      letras_atril_rival,l2_guar)
         else:
             print('cordenadas horziontal NO ENTRAN, VEAMOS SI ENTRAN DE FORMA',
                   'VERTICAL...', tamanio_pal-1, '+', cord2, '< 15')
@@ -572,7 +574,7 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
                                           orientacion, window,
                                           palabra_a_colocar,
                                           letras_usadas_en_tablero,
-                                          letras_atril_rival)
+                                          letras_atril_rival,l2_guar)
 
     elif orientacion == 1:
         print(tamanio_pal-1, '+', cord1, '< 15')
@@ -585,7 +587,7 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
                                       orientacion, window,
                                       palabra_a_colocar,
                                       letras_usadas_en_tablero,
-                                      letras_atril_rival)
+                                      letras_atril_rival,l2_guar)
         else:
             print('cordenadas vertical NO ENTRAN, VEAMOS SI ENTRAN DE FORMA',
                   'HORIZONTAL...', tamanio_pal-1, '+', cord2, '< 15')
@@ -597,7 +599,7 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
                                           orientacion, window,
                                           palabra_a_colocar,
                                           letras_usadas_en_tablero,
-                                          letras_atril_rival)
+                                          letras_atril_rival,l2_guar)
     else:
         sg.popup('No entra la palabra')
 
@@ -609,7 +611,7 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
 def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                             lugares_no_disponibles, cant,
                             bolsa_total, letras_usadas_en_tablero, 
-                            dificultad):
+                            dificultad,l2_guar):
     """
         Para el turno de la maquina Buscamos un lugar en el tablero de forma
         aleatoria en el cual colocaremos la palabra, en caso de no tener
@@ -649,7 +651,7 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                                           lugares_no_disponibles, orientacion,
                                           window, palabra_a_colocar,
                                           letras_usadas_en_tablero,
-                                          letras_atril_rival)
+                                          letras_atril_rival,l2_guar)
         ##########################################################################################################################################
         # necesito una lista de coords que son los ultimos de lugares_no_disponibles
         lista_coords = []
@@ -681,7 +683,7 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
 
 
 def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
-                  turno, bolsa_total, letras_usadas_en_tablero,dificultad):
+                  turno, bolsa_total, letras_usadas_en_tablero,dificultad,l2_guar):
     """
         Comienza el turno de la maquina:
         - La maquina tendra 3 intentos para buscar lugar disponible,
@@ -693,8 +695,10 @@ def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
     sg.Popup('Turno de la maquina')
     cant = 0  # intentos para buscar palabras en cada turno inicializa en 0
     puntos = buscar_lugar_disponible(window, letras_atril_rival,
-                                     lugar, lugares_no_disponibles, cant, bolsa_total,
-                                     letras_usadas_en_tablero,dificultad)
+                                     lugar, lugares_no_disponibles, cant, 
+                                     bolsa_total, letras_usadas_en_tablero, 
+                                     dificultad,l2_guar)
+
     return puntos, 'player_1'
 
 

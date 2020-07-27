@@ -125,6 +125,7 @@ turno=''
 
 while True:
     event, values = window.read(timeout=10)
+    print('reloj..',counter)
     if event in (None, 'Salir'):
         break
     else:
@@ -133,7 +134,7 @@ while True:
                                                         lugar, lugares_no_disponibles,
                                                         turno, bolsa_total,
                                                         letras_usadas_en_tablero, 
-                                                        dificult)
+                                                        dificult,l2_guar)
             puntos_npc_total = puntos_npc_total+puntos_npc
             window["puntaje_PC"].update(puntos_npc_total)
             print('turno vuelta', turno)
@@ -250,12 +251,7 @@ while True:
             else: sg.popup('Comienza la maquina!')
 
         elif event == "Cargar Partida":
-            dificult, puntos_jugador, puntos_jugador_total, puntos_npc,
-            puntos_npc_total, h, v = funciones.cargar_partida(window,
-                                                              letras_atril_jugador,
-                                                              botones_usados,
-                                                              lugares_no_disponibles,
-                                                              l2_guar)
+            dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v = funciones.cargar_partida(window,letras_atril_jugador,botones_usados,lugares_no_disponibles,l2_guar,letras_atril_rival)
 
         elif event == "Configuracion":
             funciones.configuracion_de_juego()
@@ -354,7 +350,7 @@ while True:
                 window["puntaje_de_jugada"].update("0")
                 puntos_jugador = 0
 
-        if event == "Guardar Partida":
+        if event == "Guardar Partida" and turno == 'player_1':
             if not botones_usados:
                 with open('./texto/save.json', 'w') as j:
                     dic = {}
@@ -364,6 +360,7 @@ while True:
                                      "puntos_npc": puntos_npc,
                                      "puntos_npc_total": puntos_npc_total}
                     dic["atril"] = {"atril_jugador": letras_atril_jugador}
+                    dic["atril_rival"] = {"letras_atril_rival": letras_atril_rival}
                     dic["otros"] = {"lugares": lugares_no_disponibles,
                                     "letras_usadas": l2_guar,
                                     "dificultad": dificult, "hor": h, "ver": v}

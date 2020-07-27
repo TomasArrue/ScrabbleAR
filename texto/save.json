@@ -1,45 +1,91 @@
 {
     "puntos": {
         "puntos_jugador": 0,
-        "puntos_jugador_total": 22,
-        "puntos_npc": 0,
-        "puntos_npc_total": 0
+        "puntos_jugador_total": 11,
+        "puntos_npc": 3,
+        "puntos_npc_total": 15
     },
     "atril": {
         "atril_jugador": [
             "L",
-            "V",
-            "C",
-            "K",
-            "A",
             "J",
-            "I"
+            "E",
+            "Z",
+            "B",
+            "P",
+            "Q"
+        ]
+    },
+    "atril_rival": {
+        "letras_atril_rival": [
+            "Y",
+            "J",
+            "M",
+            "V",
+            "N",
+            "U",
+            "H"
         ]
     },
     "otros": {
         "lugares": [
             [
-                6,
-                3
+                11,
+                7
             ],
             [
-                6,
-                4
+                11,
+                8
             ],
             [
-                6,
-                5
+                13,
+                11
             ],
             [
-                6,
-                6
+                13,
+                12
+            ],
+            [
+                13,
+                13
+            ],
+            [
+                7,
+                11
+            ],
+            [
+                8,
+                2
+            ],
+            [
+                9,
+                2
+            ],
+            [
+                4,
+                8
+            ],
+            [
+                8,
+                14
+            ],
+            [
+                9,
+                14
             ]
         ],
         "letras_usadas": [
-            "W",
-            "X",
-            "D",
-            "Z"
+            "K",
+            "E",
+            "L",
+            "E",
+            "B",
+            "R",
+            "I",
+            "R",
+            "T",
+            "G",
+            "A"
         ],
         "dificultad": "Facil",
         "hor": false,
