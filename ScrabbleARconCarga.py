@@ -159,9 +159,9 @@ while True:
                 window[lugar].update(button_color=('white', 'darkgrey'))
                 print(lugar)
             # digo que si anterior tiene algo que despinte lo anterior
-            #if (ant) and (ant not in lugares_no_disponibles):
-            #    funciones.volver_a_pintar_la_casilla(lugar, window, dificult)
-            #ant = lugar,
+            if (ant) and (ant not in lugares_no_disponibles):
+                funciones.volver_a_pintar_la_casilla(lugar, window, dificult)
+            ant = lugar
 
         # si el evento seria una letra y lugar tiene algo es xq marque algo
         if event in ("Boton_1","Boton_1", "Boton_2", "Boton_3", "Boton_4", 
@@ -297,11 +297,6 @@ while True:
                     med[k] = v      
                 elif v["Dificultad"]=='dificil':
                     dif[k] = v      
-
-            #fac = dicc['facil']
-            #med = dicc['medio']
-            #dif = dicc['dificil']
-            #total= dicc
 
             f = sorted(fac.items(), key=lambda k: k[1]["Puntos"], reverse=True)
             m = sorted(med.items(), key=lambda k: k[1]["Puntos"], reverse=True)
