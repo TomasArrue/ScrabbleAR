@@ -357,6 +357,7 @@ while True:
             if not botones_usados:
                 with open('./texto/save.json', 'w') as j:
                     dic = {}
+                    dic["nombre"] = nombre
                     dic["puntos"] = {"puntos_jugador": puntos_jugador,
                                      "puntos_jugador_total":
                                      puntos_jugador_total,
