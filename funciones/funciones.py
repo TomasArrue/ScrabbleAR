@@ -156,9 +156,7 @@ def asignar_colores_al_tablero(window, dificultad):
     tablero_config = dic[dificultad]
 
     for colores in tablero_config.keys():
-        print(colores)
         lista_de_cord = tablero_config[colores]
-        print(lista_de_cord)
         for par_de_cord in lista_de_cord:
             x, y = par_de_cord
             window[x, y].update(button_color=(colores, colores))
