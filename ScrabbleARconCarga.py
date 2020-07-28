@@ -38,6 +38,7 @@ opciones_de_inicio = [
                    size=(10, 10), key='dificultad')],
     [sg.Button('Guardar Partida', size=tamanio_Boton_De_Control,
                visible=False)],
+    [sg.Button("TOP", size=tamanio_Boton_De_Control)],           
     [sg.Button('Salir', size=tamanio_Boton_De_Control)]
 ]
 
@@ -45,8 +46,8 @@ opciones_de_inicio = [
 opciones_de_juego = [
     [sg.Button('Borrar', size=tamanio_Boton_De_Control),
      sg.Button("Evaluar", size=tamanio_Boton_De_Control),
-     sg.Button("Repartir De Nuevo", size=tamanio_Boton_De_Control),
-     sg.Button("TOP", size=tamanio_Boton_De_Control)]
+     sg.Button("Repartir De Nuevo", size=tamanio_Boton_De_Control)
+    ]
 ]
 
 # FICHAS DEL JUGADOR
@@ -256,7 +257,11 @@ while True:
             quien_inicia = random.choice(range(1, 3))
             turno = 'player_'+str(quien_inicia)
             if turno == 'player_1':
-                sg.popup('Empezas vos {}!'.format(nombre.upper()))
+                try:
+                    sg.popup('Empezas vos {}!'.format(nombre.upper()))
+                except AttributeError:
+                    nombre = 'NN'    
+                    sg.popup('Empezas vos {}!'.format(nombre.upper()))
             else:
                 sg.popup('Comienza la maquina!')
 
@@ -341,6 +346,18 @@ while True:
                 sg.Popup('termino el tiempo,analizando ganador:')
                 if puntos_jugador_total > puntos_npc_total:
                     sg.Popup('¡Ganaste!')
+                    with open('./texto/ranking_test.json', 'r') as j:
+                        dicc = json.load(j)
+                    with open('./texto/ranking_test.json', 'w') as j:
+                        id=str(random.choice(range(0,10000)))
+                        dicc['id_'+id] = {"Dificultad": dificult.lower(),
+                                         "Nombre":nombre,
+                                         "Puntos": puntos_jugador_total,
+                                         "Fecha": 0}
+
+                        json.dump(dicc, j, indent=4)                 
+                  
+                    
                 elif puntos_jugador_total == puntos_npc_total:
                     sg.Popup('¡Hubo un empate!')
                 else:

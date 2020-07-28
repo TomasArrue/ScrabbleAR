@@ -123,7 +123,7 @@ def carga_nombre():
     window3 = sg.Window('Ingresa datos', layout3)
     while True:
         event, values = window3.read()
-        if event == 'Listo':
+        if event == 'Listo' or event== None:
             nombre = values['name']
             break
     window3.close()
@@ -168,7 +168,11 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
     window['Cargar Partida'].update(visible=False)
     window['Guardar Partida'].update(visible=True)
     window['Salir'].update(visible=True)
-    texto = nombre.upper()+' TU PUNTAJE ES:'
+    try:
+        texto = nombre.upper()+' TU PUNTAJE ES:'
+    except AttributeError:
+        nombre = 'NN' 
+        texto = nombre.upper()+' TU PUNTAJE ES:' 
     window['tu_puntaje_propio'].update(texto)
     window['puntaje'].update(visible=True)
     window['indice'].update(visible=True)
@@ -207,10 +211,8 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
     window['Cargar Partida'].update(visible=False)
     window['Guardar Partida'].update(visible=True)
     window['Salir'].update(visible=True)
-    
     texto=dic['nombre'].upper()+' TU PUNTAJE ES:'
     window['tu_puntaje_propio'].update(texto)
-    
     window['puntaje_propio'].update("PUNTAJE DE {0} ES :0".format("pepe"))
     window['puntaje'].update(visible=True)
     window["puntaje_propio"].update(dic["puntos"]["puntos_jugador_total"])
