@@ -166,6 +166,7 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
     window['Comenzar'].update(visible=False)
     window['Configuracion'].update(visible=False)
     window['Cargar Partida'].update(visible=False)
+    window['TOP'].update(visible=False)
     window['Guardar Partida'].update(visible=True)
     window['Salir'].update(visible=True)
     try:

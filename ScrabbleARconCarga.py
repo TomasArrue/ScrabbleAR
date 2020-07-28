@@ -36,9 +36,9 @@ opciones_de_inicio = [
     [sg.Button('Configuracion', size=tamanio_Boton_De_Control)],
     [sg.InputCombo(dificultad, default_value='Facil',
                    size=(10, 10), key='dificultad')],
+    [sg.Button("TOP", size=tamanio_Boton_De_Control)],                   
     [sg.Button('Guardar Partida', size=tamanio_Boton_De_Control,
                visible=False)],
-    [sg.Button("TOP", size=tamanio_Boton_De_Control)],           
     [sg.Button('Salir', size=tamanio_Boton_De_Control)]
 ]
 
@@ -98,7 +98,7 @@ layout = [
     [sg.Column(opciones_de_inicio, key='opcionesComienzo',
                justification='left'), sg.Column(tablero),
      sg.Column(puntaje_y_tiempo, key='puntaje', visible=False),
-     sg.Column(botones_indieces, key='indice', visible=False)],
+     sg.Frame('Valores de celdas', botones_indieces,key='indice', visible=False)],
     [sg.Column(fichas, key='atrilFichas', justification='center',
                visible=False)],
     [sg.Column(opciones_de_juego, key='opcionesJuego',
