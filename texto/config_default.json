@@ -64,6 +64,18 @@
     "Y": 4,
     "Z": 10
   },
+  "easter_eggs":
+       [ "MONTY",
+         "PYTHON",
+         "PLUS",
+         "GUIDO", 
+         "TOMY",
+         "DANI",
+         "TINDI",
+         "FEDE",
+         "PATTERN",
+         "RICKROLL"
+      ],
   "Dificil": {
     "indianred": [
       [
