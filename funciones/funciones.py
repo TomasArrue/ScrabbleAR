@@ -14,7 +14,6 @@ def dibujo_python(window):
     for colores, cc in tablero_config.items():
         lista_de_cord = tablero_config[colores]
         for par_de_cord in lista_de_cord:
-            print(par_de_cord)
             x, y = par_de_cord
             window[x, y].update(button_color=(colores, colores))
 
