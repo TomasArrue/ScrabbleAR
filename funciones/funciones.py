@@ -434,7 +434,7 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
 def formet(d):
     lista = []
     for k, v in d.items():
-        variable = '{} {} '.format("Jugador:", k) + '{} {} '.format(
+        variable = '{} {} --- '.format("Jugador:", v["Nombre"]) + '{} {} --- '.format(
             "Puntaje:", v["Puntos"]) + '{} {}'.format("Fecha:", v["Fecha"])
         lista.append(variable)
     return lista

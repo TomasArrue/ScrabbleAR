@@ -1,0 +1,57 @@
+{ 
+    "jugador_1": {
+        "Dificultad":"facil",
+        "Nombre":"Lucas",
+        "Puntos": 54,
+        "Fecha": 0
+    },
+    "jugador_2": {
+        "Dificultad":"facil",
+        "Nombre":"Pepe",
+        "Puntos": 70,
+        "Fecha": 0
+    },
+    "jugador_3": {
+        "Dificultad":"facil",
+        "Nombre":"Tomy",
+        "Puntos": 34,
+        "Fecha": 0
+    },
+    "jugador_4": {
+        "Dificultad":"medio",
+        "Nombre":"Dani",
+        "Puntos": 54,
+        "Fecha": 0
+    },
+    "jugador_5": {
+        "Dificultad":"medio",
+        "Nombre":"Rick",
+        "Puntos": 70,
+        "Fecha": 0
+    },
+    "jugador_6": {
+        "Dificultad":"medio",
+        "Nombre":"Morty",
+        "Puntos": 34,
+        "Fecha": 0
+    },
+    "jugador_7": {
+        "Dificultad":"medio",
+        "Nombre":"Sumi",
+        "Puntos": 124,
+        "Fecha": 0
+    },
+    "jugador_8": {
+        "Dificultad":"dificil",
+        "Nombre":"Pedoro",
+        "Puntos": 70,
+        "Fecha": 0
+    },
+    "jugador_9": {
+        "Dificultad":"dificil",
+        "Nombre":"Rosa",
+        "Puntos": 34,
+        "Fecha": 0
+    }
+
+}

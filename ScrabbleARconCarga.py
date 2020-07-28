@@ -274,25 +274,41 @@ while True:
             funciones.configuracion_de_juego()
 
         elif event == "TOP":
-            with open('./texto/ranking.json', 'r') as r:
+            with open('./texto/ranking_test.json', 'r') as r:
                 dicc = json.load(r)
 
-            fac = dicc['facil']
-            med = dicc['medio']
-            dif = dicc['dificil']
+            fac={}
+            med={}
+            dif={}
+            for k, v in dicc.items():
+                if v["Dificultad"]=='facil':
+                    fac[k] = v 
+                elif v["Dificultad"]=='medio':
+                    med[k] = v      
+                elif v["Dificultad"]=='dificil':
+                    dif[k] = v      
+
+            #fac = dicc['facil']
+            #med = dicc['medio']
+            #dif = dicc['dificil']
+            #total= dicc
 
             f = sorted(fac.items(), key=lambda k: k[1]["Puntos"], reverse=True)
             m = sorted(med.items(), key=lambda k: k[1]["Puntos"], reverse=True)
             d = sorted(dif.items(), key=lambda k: k[1]["Puntos"], reverse=True)
+            total=  sorted(dicc.items(), key=lambda k: k[1]["Puntos"], reverse=True)
+
+            print(total)
 
             rank_facil = funciones.formet(dict(f))
             rank_medio = funciones.formet(dict(m))
             rank_dif = funciones.formet(dict(d))
+            rank_total = funciones.formet(dict(total))
 
-            tab1_layout = [[sg.T('This is inside tab 1')]]
-            tab2_layout = [[sg.Listbox(values=rank_facil, size=(30, 10))]]
-            tab3_layout = [[sg.Listbox(values=rank_medio, size=(30, 10))]]
-            tab4_layout = [[sg.Listbox(values=rank_dif, size=(30, 10))]]
+            tab1_layout = [[sg.Listbox(values=rank_total, size=(50, 10))]]
+            tab2_layout = [[sg.Listbox(values=rank_facil, size=(50, 10))]]
+            tab3_layout = [[sg.Listbox(values=rank_medio, size=(50, 10))]]
+            tab4_layout = [[sg.Listbox(values=rank_dif, size=(50, 10))]]
 
             layout2 = [
                 [sg.Text('RANKING'), sg.Text('', key='_OUTPUT_')],
