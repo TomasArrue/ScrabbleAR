@@ -193,8 +193,12 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
     """
        asdasd
     """
-    with open('./texto/save.json', 'r') as archivo_carga:
-        dic = json.load(archivo_carga)
+    try:
+        with open('./texto/save.json', 'r') as archivo_carga:
+            dic = json.load(archivo_carga)
+    except FileNotFoundError:  
+        sg.popup('No se encontro el archivo de la partida guardad')      
+        return 'Error'
     asignar_colores_al_tablero(window, dic["otros"]["dificultad"])
     window['opcionesJuego'].update(visible=True)
     window['Comenzar'].update(visible=False)

@@ -1,4 +1,5 @@
 import sys
+import os
 # usamos el import sys para abortar el programa en caso de que los  archivos no
 # esten disponibles para ejecutar
 import random
@@ -124,7 +125,7 @@ turno = ''
 
 while True:
     event, values = window.read(timeout=10)
-    print('reloj..', counter)
+    #print(event)
     if event in (None, 'Salir'):
         break
     else:
@@ -150,8 +151,8 @@ while True:
             ant = lugar,
 
         # si el evento seria una letra y lugar tiene algo es xq marque algo
-        if event in ("Boton_1", "Boton_2", "Boton_3", "Boton_4", "Boton_5",
-                     "Boton_6", "Boton_0") and lugar:
+        if event in ("Boton_1","Boton_1", "Boton_2", "Boton_3", "Boton_4", 
+                     "Boton_5", "Boton_6", "Boton_7") and lugar:
             letra = window[event].GetText()  # asigno la letra del evento
             if lugar not in lugares_no_disponibles:  # si el lugar no lo use
                 # vemos si es la primera letra, seteamos la orientacion
@@ -252,9 +253,14 @@ while True:
                 sg.popup('Comienza la maquina!')
 
         elif event == "Cargar Partida":
-            counter, dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v = funciones.cargar_partida(
-                window, letras_atril_jugador, botones_usados, lugares_no_disponibles, l2_guar, letras_atril_rival)
-            timer_running = not timer_running
+            if os.path.isfile('./texto/save.json') :   
+                counter, dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v = funciones.cargar_partida(
+                    window, letras_atril_jugador, botones_usados, lugares_no_disponibles, l2_guar, letras_atril_rival)
+                timer_running = not timer_running
+            else:  
+                sg.popup('No tenes partidas guardadas')
+
+
 
         elif event == "Configuracion":
             funciones.configuracion_de_juego()
@@ -349,7 +355,7 @@ while True:
                 for i in range(len(letras_usadas_en_tablero)):
                     funciones.quitar_fichas(
                         window, letras_usadas_en_tablero, botones_usados,
-                        lugares_no_disponibles, letras_atril_jugador)
+                        lugares_no_disponibles, letras_atril_jugador,dificult)
                 window["puntaje_de_jugada"].update("0")
                 puntos_jugador = 0
 

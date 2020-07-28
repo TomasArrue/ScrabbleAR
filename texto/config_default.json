@@ -3,6 +3,9 @@
     "fila": 15,
     "columna": 15
   },
+  "tiempo":{
+   "minutos":10
+  },
   "cantidad_de_letras": {
     "A": 11,
     "B": 3,
