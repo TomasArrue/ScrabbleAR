@@ -202,6 +202,10 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
     window['Cargar Partida'].update(visible=False)
     window['Guardar Partida'].update(visible=True)
     window['Salir'].update(visible=True)
+    
+    texto=dic['nombre'].upper()+' TU PUNTAJE ES:'
+    window['tu_puntaje_propio'].update(texto)
+    
     window['puntaje_propio'].update("PUNTAJE DE {0} ES :0".format("pepe"))
     window['puntaje'].update(visible=True)
     window["puntaje_propio"].update(dic["puntos"]["puntos_jugador_total"])
