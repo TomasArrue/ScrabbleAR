@@ -63,6 +63,13 @@ fichas_rival = [[sg.Text("Fichas CPU: ", font=("Chalkboard", 15))],
                     pad=(5, 5)) for i in range(7)]
                 ]
 
+botones_indieces=[[sg.Button(size=(1,1),button_color=('black', 'indianred')),sg.Text('Letra +5')],
+                  [sg.Button(size=(1,1),button_color=('black', 'skyblue')),sg.Text('Palabra /2')],
+                  [sg.Button(size=(1,1),button_color=('black', 'goldenrod')),sg.Text('Letra *2')], 
+                  [sg.Button(size=(1,1),button_color=('black', 'mediumseagreen')),sg.Text('Palabra -(0,10)')],
+                  ]
+
+
 
 tablero = [
     [sg.Button('', button_color=('grey', 'white'), size=(1, 1), key=(i, j),
@@ -89,7 +96,8 @@ layout = [
                justification='center', visible=False)],
     [sg.Column(opciones_de_inicio, key='opcionesComienzo',
                justification='left'), sg.Column(tablero),
-     sg.Column(puntaje_y_tiempo, key='puntaje', visible=False)],
+     sg.Column(puntaje_y_tiempo, key='puntaje', visible=False),
+     sg.Column(botones_indieces, key='indice', visible=False)],
     [sg.Column(fichas, key='atrilFichas', justification='center',
                visible=False)],
     [sg.Column(opciones_de_juego, key='opcionesJuego',
@@ -299,7 +307,7 @@ while True:
             window2 = sg.Window('TOP TEN').Layout(layout2)
             while True:
                 event2, values2 = window2.Read()
-                if event2 == 'Exit':
+                if event2 == 'Exit' or event2 == None:
                     break
             window2.Close()
 

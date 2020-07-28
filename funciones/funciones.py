@@ -171,6 +171,7 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
     texto = nombre.upper()+' TU PUNTAJE ES:'
     window['tu_puntaje_propio'].update(texto)
     window['puntaje'].update(visible=True)
+    window['indice'].update(visible=True)
     window['atrilFichasRival'].update(visible=True)
     window['atrilFichas'].update(visible=True)
     window['dificultad'].update(visible=False)
@@ -214,6 +215,7 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
     window['puntaje'].update(visible=True)
     window["puntaje_propio"].update(dic["puntos"]["puntos_jugador_total"])
     window["puntaje_PC"].update(dic["puntos"]["puntos_npc_total"])
+    window['indice'].update(visible=True)
     window['atrilFichasRival'].update(visible=True)
     window['atrilFichas'].update(visible=True)
     window['dificultad'].update(visible=False)
