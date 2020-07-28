@@ -4,6 +4,19 @@ import random
 from pattern.text.es import lexicon, spelling, verbs
 from itertools import permutations
 
+def dibujo_python(window):
+    '''
+       Pinta el tablero con el simbolo de python
+    '''
+    with open('./texto/dibujo.json', 'r') as t:
+            dic = json.load(t)
+    tablero_config = dic["Dibujo"]
+    for colores, cc in tablero_config.items():
+        lista_de_cord = tablero_config[colores]
+        for par_de_cord in lista_de_cord:
+            print(par_de_cord)
+            x, y = par_de_cord
+            window[x, y].update(button_color=(colores, colores))
 
 def configuracion_de_juego():
     """
@@ -144,7 +157,9 @@ def asignar_colores_al_tablero(window, dificultad):
     tablero_config = dic[dificultad]
 
     for colores in tablero_config.keys():
+        print(colores)
         lista_de_cord = tablero_config[colores]
+        print(lista_de_cord)
         for par_de_cord in lista_de_cord:
             x, y = par_de_cord
             window[x, y].update(button_color=(colores, colores))

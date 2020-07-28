@@ -131,6 +131,8 @@ h = False
 v = False
 turno = ''
 
+funciones.dibujo_python(window)
+
 
 while True:
     event, values = window.read(timeout=10)
@@ -138,6 +140,7 @@ while True:
     if event in (None, 'Salir'):
         break
     else:
+
         if turno == 'player_2':
             puntos_npc, turno = funciones.turno_maquina(window, letras_atril_rival,
                                                         lugar, lugares_no_disponibles,
@@ -154,10 +157,11 @@ while True:
             # que no trate  de marcar un casillero que ya tiene una letra
             if lugar not in lugares_no_disponibles:
                 window[lugar].update(button_color=('white', 'darkgrey'))
+                print(lugar)
             # digo que si anterior tiene algo que despinte lo anterior
-            if (ant) and (ant not in lugares_no_disponibles):
-                funciones.volver_a_pintar_la_casilla(lugar, window, dificult)
-            ant = lugar,
+            #if (ant) and (ant not in lugares_no_disponibles):
+            #    funciones.volver_a_pintar_la_casilla(lugar, window, dificult)
+            #ant = lugar,
 
         # si el evento seria una letra y lugar tiene algo es xq marque algo
         if event in ("Boton_1","Boton_1", "Boton_2", "Boton_3", "Boton_4", 
@@ -250,6 +254,7 @@ while True:
         # para inicializar el juego
         elif event == "Comenzar":
             nombre = funciones.carga_nombre()
+            [[window[i, j].update(button_color=('black', 'azure')) for j in range(max_Cant_Columnas)] for i in range(max_Cant_Filas)]
             timer_running, dificult = funciones.cargar_juego(
                 window, values, timer_running, nombre, bolsa_total,
                 letras_atril_jugador, letras_atril_rival)
