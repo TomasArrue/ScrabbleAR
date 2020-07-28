@@ -48,12 +48,12 @@ opciones_de_juego = [
      sg.Button("TOP", size=tamanio_Boton_De_Control)]
 ]
 
-#FICHAS DEL JUGADOR
-fichas=[ [sg.Text("Tus Fichas: ",font=("Chalkboard", 15))],
-         [sg.Button('',button_color=('black','oldlace'), 
-          size=(tamanio_Boton_De_Fichas),
-          key=("Boton_"+str(i+1)),pad=(5,5)) for i in range(7)]
-       ]
+# FICHAS DEL JUGADOR
+fichas = [[sg.Text("Tus Fichas: ", font=("Chalkboard", 15))],
+          [sg.Button('', button_color=('black', 'oldlace'),
+                     size=(tamanio_Boton_De_Fichas),
+                     key=("Boton_"+str(i+1)), pad=(5, 5)) for i in range(7)]
+          ]
 
 # FICHAS DEL NPC
 fichas_rival = [[sg.Text("Fichas CPU: ", font=("Chalkboard", 15))],
@@ -69,7 +69,7 @@ tablero = [
 ]  # botones matriz
 
 puntaje_y_tiempo = [
-    [sg.Text(' ------ TU PUNTAJE ES:', key='tu_puntaje_propio',size=(20,1), 
+    [sg.Text(' ------ TU PUNTAJE ES:', key='tu_puntaje_propio', size=(20, 1),
              font=("Chalkboard", 10))],
     [sg.Text('0', key='puntaje_propio', font=("Chalkboard", 10))],
     [sg.Text('PUNTAJE DE JUGADA:', font=("Chalkboard", 10))],
@@ -119,13 +119,12 @@ timer_running, counter = False, 0  # seteos para el timer,
 dificult = ''         # la dificultad actual que luego sera asignada
 h = False
 v = False
-turno=''
-
+turno = ''
 
 
 while True:
     event, values = window.read(timeout=10)
-    print('reloj..',counter)
+    print('reloj..', counter)
     if event in (None, 'Salir'):
         break
     else:
@@ -133,8 +132,8 @@ while True:
             puntos_npc, turno = funciones.turno_maquina(window, letras_atril_rival,
                                                         lugar, lugares_no_disponibles,
                                                         turno, bolsa_total,
-                                                        letras_usadas_en_tablero, 
-                                                        dificult,l2_guar)
+                                                        letras_usadas_en_tablero,
+                                                        dificult, l2_guar)
             puntos_npc_total = puntos_npc_total+puntos_npc
             window["puntaje_PC"].update(puntos_npc_total)
             print('turno vuelta', turno)
@@ -147,7 +146,7 @@ while True:
                 window[lugar].update(button_color=('white', 'darkgrey'))
             # digo que si anterior tiene algo que despinte lo anterior
             if (ant) and (ant not in lugares_no_disponibles):
-                funciones.volver_a_pintar_la_casilla(lugar, window)
+                funciones.volver_a_pintar_la_casilla(lugar, window, dificult)
             ant = lugar,
 
         # si el evento seria una letra y lugar tiene algo es xq marque algo
@@ -236,7 +235,7 @@ while True:
                 window["puntaje_de_jugada"].update(puntos_jugador)
                 funciones.quitar_fichas(window, letras_usadas_en_tablero,
                                         botones_usados, lugares_no_disponibles,
-                                        letras_atril_jugador)
+                                        letras_atril_jugador, dificult)
 
         # para inicializar el juego
         elif event == "Comenzar":
@@ -244,14 +243,17 @@ while True:
             timer_running, dificult = funciones.cargar_juego(
                 window, values, timer_running, nombre, bolsa_total,
                 letras_atril_jugador, letras_atril_rival)
-            #random para ver quien inicia la partida    
-            quien_inicia=random.choice(range(1, 3))
-            turno='player_'+str(quien_inicia)  
-            if turno == 'player_1': sg.popup('Empezas vos {}!'.format(nombre.upper()))  
-            else: sg.popup('Comienza la maquina!')
+            # random para ver quien inicia la partida
+            quien_inicia = random.choice(range(1, 3))
+            turno = 'player_'+str(quien_inicia)
+            if turno == 'player_1':
+                sg.popup('Empezas vos {}!'.format(nombre.upper()))
+            else:
+                sg.popup('Comienza la maquina!')
 
         elif event == "Cargar Partida":
-            counter, dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v = funciones.cargar_partida(window,letras_atril_jugador,botones_usados,lugares_no_disponibles,l2_guar,letras_atril_rival)
+            counter, dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v = funciones.cargar_partida(
+                window, letras_atril_jugador, botones_usados, lugares_no_disponibles, l2_guar, letras_atril_rival)
             timer_running = not timer_running
 
         elif event == "Configuracion":
@@ -321,19 +323,19 @@ while True:
             v = False
             h = False
             if funciones.verificar_palabra(palabra_final):
-                lista_coords=[]
-                tamanio_pal=len(palabra_final)
-                for i in range(1,tamanio_pal+1):
+                lista_coords = []
+                tamanio_pal = len(palabra_final)
+                for i in range(1, tamanio_pal+1):
                     element = lugares_no_disponibles[-i]
                     lista_coords.append(element)
-                lista_coords.reverse()  
+                lista_coords.reverse()
                 # print("palabra valida")
-                puntos_jugador_total_aux =  funciones.puntos_de_palabra(
+                puntos_jugador_total_aux = funciones.puntos_de_palabra(
                     dificult, lista_coords, puntos_jugador)
-                puntos_jugador_total+=puntos_jugador_total_aux    
-                # print('total',puntos_jugador_total ) 
+                puntos_jugador_total += puntos_jugador_total_aux
+                # print('total',puntos_jugador_total )
                 # print('total auzx',puntos_jugador_total_aux )
-                # print('puntos_jugador',puntos_jugador)    
+                # print('puntos_jugador',puntos_jugador)
                 window["puntaje_propio"].update(puntos_jugador_total)
                 l2_guar.extend(letras_usadas_en_tablero)
                 letras_usadas_en_tablero.clear()
@@ -361,11 +363,12 @@ while True:
                                      "puntos_npc": puntos_npc,
                                      "puntos_npc_total": puntos_npc_total}
                     dic["atril"] = {"atril_jugador": letras_atril_jugador}
-                    dic["atril_rival"] = {"letras_atril_rival": letras_atril_rival}
+                    dic["atril_rival"] = {
+                        "letras_atril_rival": letras_atril_rival}
                     dic["otros"] = {"lugares": lugares_no_disponibles,
                                     "letras_usadas": l2_guar,
                                     "dificultad": dificult, "hor": h, "ver": v}
-                    dic['tiempo']={'reloj':counter}                
+                    dic['tiempo'] = {'reloj': counter}
                     json.dump(dic, j, indent=4)
             else:
                 sg.Popup(
