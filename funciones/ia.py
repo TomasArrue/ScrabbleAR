@@ -221,7 +221,8 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                                           window, palabra_a_colocar,
                                           letras_usadas_en_tablero,
                                           letras_atril_rival, l2_guar)
-        ##########################################################################################################################################
+        #####################################################################
+        #####################################################################
         # necesito una lista de coords que son los ultimos de
         # lugares_no_disponibles
         lista_coords = []
@@ -238,16 +239,16 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
             # print('valor de letra.',aux, 'letra',letras_usadas_en_tablero[i])
             puntos_npc = puntos_npc + aux
         # print('valor de total...',puntos_npc)
-        for i in range(tamanio_pal):
-            puntos_npc2 = funciones.puntos_de_palabra(
-                dificultad, lista_coords[i], puntos_npc)
+        puntos_npc2 = funciones.puntos_de_palabra(
+            dificultad, lista_coords, puntos_npc)
         print('valor de total con modificador...', puntos_npc2)
-        ##########################################################################################################################################
+        #####################################################################
+        #####################################################################
         for i in range(len(letras_usadas_en_tablero)):
             letra = funciones.crear_atril(bolsa_total)
             letras_atril_rival.append(letra)
         letras_usadas_en_tablero.clear()
-        return puntos_npc
+        return puntos_npc2
     except (IndexError):
         sg.Popup('La maquina no tiene palabras validas para',
                  'colocar pasa el turno')

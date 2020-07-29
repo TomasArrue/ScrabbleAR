@@ -444,13 +444,14 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
 
     int_green = green.intersection(set(no_disponibles))
     int_blue = blue.intersection(set(no_disponibles))
-    # print('cordenas verdes..',int_green)
-    # print('cordenas no disponibles..',no_disponibles)
+
+    # print('cordenas verdes..', int_green)
+    # print('cordenas no disponibles..', no_disponibles)
 
     for element in int_green:
         num = random.randint(0, 10)
         puntos = puntos - num
-        # print("num aleatorio...", num)
+        print("num aleatorio...", num)
     for element in int_blue:
         puntos = puntos // 2
     print('puntos 2..', puntos)
