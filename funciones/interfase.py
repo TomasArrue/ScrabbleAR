@@ -67,7 +67,8 @@ def indice_modificadores():
 def tablero():
     tablero = [
         [sg.Button('', button_color=('grey', 'azure'), size=(1, 1), key=(i, j),
-                   pad=(0, 0)) for j in range(max_Cant_Columnas)] for i in range(max_Cant_Filas)
+                   pad=(0, 0)) for j in range(max_Cant_Columnas)]
+        for i in range(max_Cant_Filas)
     ]
     return tablero
 

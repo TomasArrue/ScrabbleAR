@@ -11,8 +11,8 @@ from funciones import funciones, ia, interfase
 def test_de_archivo():
     '''
         solo para testear si se encuentra el config.json con todos los datos
-        necesarios para que corra el juego, en caso que no se encuentre se 
-        aborta el programa y se informa de la falta del archivo
+        necesarios para que corra el juego, en caso que no se encuentre 
+        se aborta el programa y se informa de la falta del archivo
     '''
     try:
         with open('./texto/config.json', 'r'):
@@ -33,7 +33,7 @@ def iniciar_juego():
 
     bolsa_total = funciones.crear_bolsita_total()
 
-    atril_maquina = funciones.crear_atril(bolsa_total)
+    # atril_maquina = funciones.crear_atril(bolsa_total)
 
     # TEMA DEL PySimpleGUI
     sg.ChangeLookAndFeel('DarkGrey6')
@@ -82,8 +82,9 @@ def iniciar_juego():
     letras_atril_rival = []
     letras_usadas_en_tablero = []  # lleva las letras que ya use
     botones_usados = []           # nombre de los botones que voy usando
-    lugares_no_disponibles = []     # lleva la cuenta de los lugares que ya escribi
-    # para despintar la casilla anterior cuando toco una nueva
+    lugares_no_disponibles = []  # lleva la cuenta de los lugares que ya
+                                 # escribi para despintar la casilla 
+                                 # anterior cuando toco una nueva
     ant = ()
     lugar = ()                    # marca la casilla actual
     layout2 = layout              # esto no se que es
@@ -127,15 +128,15 @@ def iniciar_juego():
             if event in ("Boton_1", "Boton_1", "Boton_2", "Boton_3", "Boton_4",
                          "Boton_5", "Boton_6", "Boton_7") and lugar:
                 letra = window[event].GetText()  # asigno la letra del evento
-                if lugar not in lugares_no_disponibles:  # si el lugar no lo use
-                    # vemos si es la primera letra, seteamos la orientacion
+                if lugar not in lugares_no_disponibles:  # si el lugar no lo
+                    # use vemos si es la primera letra, seteamos la orientacion
                     if len(letras_usadas_en_tablero) == 0:
                         funciones.letra_al_tablero(window,
                                                    letras_usadas_en_tablero,
                                                    botones_usados,
                                                    letras_atril_jugador,
-                                                   lugares_no_disponibles, letra,
-                                                   event, lugar)
+                                                   lugares_no_disponibles, 
+                                                   letra, event, lugar)
 
                         # hay que declarar una variable dific para enviar
                         # en lugar de facil
