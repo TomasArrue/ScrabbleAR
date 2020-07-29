@@ -95,9 +95,11 @@ def iniciar_juego():
     h = False
     v = False
     turno = ''
+    tiempo_limite = 0
 
     while True:
-        event, values = window.read(timeout=10)
+        event, values = window.read(timeout=1)
+        print(counter)
         if event in (None, 'Salir'):
             break
         else:
@@ -222,9 +224,10 @@ def iniciar_juego():
                 nombre = funciones.carga_nombre()
                 [[window[i, j].update(button_color=('black', 'azure')) for j in range(
                     max_Cant_Columnas)] for i in range(max_Cant_Filas)]
-                timer_running, dificult = funciones.cargar_juego(
+                timer_running, dificult, tiempo_limite = funciones.cargar_juego(
                     window, values, timer_running, nombre, bolsa_total,
                     letras_atril_jugador, letras_atril_rival)
+                print('tiempo_limite', tiempo_limite)
                 # random para ver quien inicia la partida
                 quien_inicia = random.choice(range(1, 3))
                 turno = 'player_'+str(quien_inicia)
@@ -307,11 +310,11 @@ def iniciar_juego():
                 # '{:02d}:{:02d}'.format((counter//100)
                 # // 60, (counter // 100) % 60, counter % 100))
                 window['-OUTPUT-'].update('{:02d}:{:02d}'.format(
-                    (counter // 100) // 60, (counter // 100) % 60))
+                    (counter // 100) // 60, (counter // 100) % 60, counter % 100))
                 counter += 1
 
                 # 6000 equivale a 1 minuto, 60000 a 10 minutos
-                if counter == 6000:
+                if counter == tiempo_limite:
                     timer_running = not timer_running
                     sg.Popup('termino el tiempo,analizando ganador:')
                     if puntos_jugador_total > puntos_npc_total:

@@ -50,7 +50,7 @@ def configuracion_de_juego():
     ]
 
     window3 = sg.Window('Configuracion').Layout(layout3)
-    print('tests')
+
     while True:
 
         event3, values3 = window3.Read()
@@ -72,8 +72,8 @@ def configuracion_de_juego():
                 num_tiempo = int(values3['time'])
                 if (num_tiempo > 30):
                     num_tiempo = 30
-                if (num_tiempo < 5):
-                    num_tiempo = 5
+                if (num_tiempo < 1):
+                    num_tiempo = 1
             except (ValueError):
                 # seteamos 10 minutos en caso de cargar erronea de tiempo
                 num_tiempo = 10
@@ -91,11 +91,11 @@ def configuracion_de_juego():
                         values3[k+'_valor'])
                 except (ValueError):
                     diccionario_cantidad_de_puntos[k] = 1
-
+            tiempo={'minutos':num_tiempo}        
             with open('./texto/config.json', 'w') as cf:
                 c['cantidad_de_letras'] = diccionario_cantidad_de_letras
                 c['valor_por_letra'] = diccionario_cantidad_de_puntos
-                c['tiempo'] = num_tiempo
+                c['tiempo'] = tiempo
                 json.dump(c, cf, indent=4)
 
             sg.Popup('La duracion de la partida sera de: ',
@@ -213,7 +213,13 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
 
     timer_running = not timer_running
 
-    return timer_running, very_dificult
+    with open('./texto/config.json', 'r') as t:
+        dic = json.load(t)
+
+    tiempo_limite = dic['tiempo']['minutos']
+    tiempo_limite *= 60000
+
+    return timer_running, very_dificult, tiempo_limite
 
 
 def cargar_partida(window, letras_atril_jugador, botones_usados,
