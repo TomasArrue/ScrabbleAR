@@ -5,7 +5,8 @@ import os
 import random
 import json
 import PySimpleGUI as sg
-from funciones import funciones
+from funciones import funciones,ia
+
 import interfase
 
 def test_de_archivo():
@@ -102,7 +103,7 @@ def iniciar_juego():
             break
         else:
             if turno == 'player_2':
-                puntos_npc, turno = funciones.turno_maquina(window, letras_atril_rival,
+                puntos_npc, turno = ia.turno_maquina(window, letras_atril_rival,
                                                             lugar, lugares_no_disponibles,
                                                             turno, bolsa_total,
                                                             letras_usadas_en_tablero,

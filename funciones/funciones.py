@@ -471,7 +471,7 @@ def horizontal(pos_actual, pos_anterior):
     else:
         return False
 
-
+'''
 # ============================= IA =============================
 
 
@@ -750,3 +750,4 @@ def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
     return puntos, 'player_1'
 
 # ============================= FIN IA =============================
+'''
