@@ -6,6 +6,8 @@ import random
 import json
 import PySimpleGUI as sg
 from funciones import funciones, ia, interfase
+import time
+from datetime import date
 
 
 def test_de_archivo():
@@ -96,9 +98,11 @@ def iniciar_juego():
     v = False
     turno = ''
     tiempo_limite = 0
+    start_time = int(round(time.time() * 100))
 
     while True:
-        event, values = window.read(timeout=1)
+        event, values = window.read(timeout=0)
+        
         print(counter)
         if event in (None, 'Salir'):
             break
@@ -221,6 +225,8 @@ def iniciar_juego():
 
             # para inicializar el juego
             elif event == "Comenzar":
+                start_time = int(round(time.time() * 100))
+                counter = int(round(time.time() * 100)) - start_time
                 nombre = funciones.carga_nombre()
                 [[window[i, j].update(button_color=('black', 'azure')) for j in range(
                     max_Cant_Columnas)] for i in range(max_Cant_Filas)]
@@ -326,7 +332,7 @@ def iniciar_juego():
                             dicc['id_'+id] = {"Dificultad": dificult.lower(),
                                               "Nombre": nombre,
                                               "Puntos": puntos_jugador_total,
-                                              "Fecha": 0}
+                                              "Fecha": date.today()}
 
                             json.dump(dicc, j, indent=4)
 
