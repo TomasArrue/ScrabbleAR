@@ -4,6 +4,7 @@ from pattern.text.es import lexicon, spelling, verbs
 from itertools import permutations
 from funciones import funciones
 
+
 def validar_palabra(permutaciones, permutaciones_validas):
     """
         Valida palabras que esten dentro de las permutaciones
@@ -16,6 +17,7 @@ def validar_palabra(permutaciones, permutaciones_validas):
             # si la palabra es valida va a la lista de permutaciones
             permutaciones_validas.append(pal)
     return permutaciones_validas
+
 
 def buscar_palabras_rival(letras_atril_rival):
     """
@@ -34,6 +36,7 @@ def buscar_palabras_rival(letras_atril_rival):
             # guardando en una lista
             validar_palabra(permutaciones_temp, permutaciones_validas)
     return permutaciones_validas
+
 
 def todas_los_posiciones_validas(tamanio_pal, lugar, lugar_aux,
                                  lugares_no_disponibles, orientacion):
@@ -54,6 +57,7 @@ def todas_los_posiciones_validas(tamanio_pal, lugar, lugar_aux,
             ok = False
     # print('Se puede poner?.....', ok)  # test
     return ok
+
 
 def colocar_en_tablero(window, palabra_a_colocar, letras_usadas_en_tablero,
                        lugar, letras_atril_rival, lugares_no_disponibles, x,
@@ -77,6 +81,7 @@ def colocar_en_tablero(window, palabra_a_colocar, letras_usadas_en_tablero,
         lugares_no_disponibles.append(lugar_aux)
         l2_guar.extend(l.upper())
 
+
 def chequeo_y_colocacion(tamanio_pal, x, y, lugar, lugar_aux,
                          lugares_no_disponibles, orientacion, window,
                          palabra_a_colocar, letras_usadas_en_tablero,
@@ -96,6 +101,7 @@ def chequeo_y_colocacion(tamanio_pal, x, y, lugar, lugar_aux,
             tamanio_pal, l2_guar)
 
     return ok
+
 
 def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
                          lugares_no_disponibles, orientacion, window,
@@ -170,6 +176,7 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
         sg.popup('No entra la palabra')
     return ok
 
+
 def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                             lugares_no_disponibles, cant,
                             bolsa_total, letras_usadas_en_tablero,
@@ -215,24 +222,26 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                                           letras_usadas_en_tablero,
                                           letras_atril_rival, l2_guar)
         ##########################################################################################################################################
-        # necesito una lista de coords que son los ultimos de lugares_no_disponibles
+        # necesito una lista de coords que son los ultimos de
+        # lugares_no_disponibles
         lista_coords = []
         for i in range(1, tamanio_pal+1):
             element = lugares_no_disponibles[-i]
             lista_coords.append(element)
         lista_coords.reverse()
-        # ahora tengo "letras_usadas_en_tablero" y "lista_coords" si esta bien hecho puedo recorrer las dos listas y usar las funciones de
+        # ahora tengo "letras_usadas_en_tablero" y "lista_coords" si esta bien
+        # hecho puedo recorrer las dos listas y usar las funciones de
         # que ya tenemos y no nececitams hacer otro
         for i in range(tamanio_pal):
-            aux = funciones.puntos_de_letra(letras_usadas_en_tablero[i], dificultad,
-                                  lista_coords[i])
-            # print('valor de letra...',aux, 'letra',letras_usadas_en_tablero[i])
+            aux = funciones.puntos_de_letra(letras_usadas_en_tablero[i],
+                                            dificultad, lista_coords[i])
+            # print('valor de letra.',aux, 'letra',letras_usadas_en_tablero[i])
             puntos_npc = puntos_npc + aux
         # print('valor de total...',puntos_npc)
         for i in range(tamanio_pal):
             puntos_npc2 = funciones.puntos_de_palabra(
                 dificultad, lista_coords[i], puntos_npc)
-        # print('valor de total con modificador...',puntos_npc2)
+        print('valor de total con modificador...', puntos_npc2)
         ##########################################################################################################################################
         for i in range(len(letras_usadas_en_tablero)):
             letra = funciones.crear_atril(bolsa_total)
@@ -244,8 +253,10 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                  'colocar pasa el turno')
         return 0
 
+
 def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
-                  turno, bolsa_total, letras_usadas_en_tablero, dificultad, l2_guar):
+                  turno, bolsa_total, letras_usadas_en_tablero, dificultad,
+                  l2_guar):
     """
         Comienza el turno de la maquina:
         - La maquina tendra 3 intentos para buscar lugar disponible,

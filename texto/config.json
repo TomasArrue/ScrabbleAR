@@ -3,8 +3,8 @@
         "fila": 15,
         "columna": 15
     },
-    "tiempo":{
-        "minutos":10
+    "tiempo": {
+        "minutos": 10
     },
     "cantidad_de_letras": {
         "A": 11,
@@ -62,19 +62,18 @@
         "Y": 4,
         "Z": 10
     },
-     "easter_eggs":
-        [ "MONTY",
-          "PYTHON",
-          "PLUS",
-          "GUIDO", 
-          "TOMY",
-          "DANI",
-          "TINDI",
-          "FEDE",
-          "PATTERN",
-          "RICKROLL"
-        ]
-    ,
+    "easter_eggs": [
+        "MONTY",
+        "PYTHON",
+        "PLUS",
+        "GUIDO",
+        "TOMY",
+        "DANI",
+        "TINDI",
+        "FEDE",
+        "PATTERN",
+        "RICKROLL"
+    ],
     "Dificil": {
         "indianred": [
             [

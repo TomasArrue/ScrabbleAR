@@ -4,18 +4,20 @@ import random
 from pattern.text.es import lexicon, spelling, verbs
 from itertools import permutations
 
+
 def dibujo_python(window):
     '''
        Pinta el tablero con el simbolo de python
     '''
     with open('./texto/dibujo.json', 'r') as t:
-            dic = json.load(t)
+        dic = json.load(t)
     tablero_config = dic["Dibujo"]
     for colores, cc in tablero_config.items():
         lista_de_cord = tablero_config[colores]
         for par_de_cord in lista_de_cord:
             x, y = par_de_cord
             window[x, y].update(button_color=(colores, colores))
+
 
 def configuracion_de_juego():
     """
@@ -30,15 +32,21 @@ def configuracion_de_juego():
     diccionario_cantidad_de_puntos = c['valor_por_letra']
 
     layout3 = [
-        [sg.Text("Configuracion", size=(10, 1), justification='left',font=("Chalkboard", 25), relief=sg.RELIEF_RIDGE)],
-        [sg.Text(k, size=(3, 1), justification='center') for k, v in diccionario_cantidad_de_letras.items()],
+        [sg.Text("Configuracion", size=(10, 1), justification='left',
+                 font=("Chalkboard", 25), relief=sg.RELIEF_RIDGE)],
+        [sg.Text(k, size=(3, 1), justification='center')
+         for k, v in diccionario_cantidad_de_letras.items()],
         [sg.Text('PARA MODIFICAR LA CANTIDAD DE LETRAS POR LETRA CAMBIE EL VALOR A LA LETRA CORRESPONDIENTE :')],
-        [sg.Input(v, size=(3, 1), key=(k+'_cant')) for k, v in diccionario_cantidad_de_letras.items()],
+        [sg.Input(v, size=(3, 1), key=(k+'_cant'))
+         for k, v in diccionario_cantidad_de_letras.items()],
         [sg.Text('PARA MODIFICAR EL VALOR DE LAS LETRAS POR LETRA CAMBIE EL VALOR A LA LETRA CORRESPONDIENTE:')],
-        [sg.Input(v, size=(3, 1), key=(k+'_valor')) for k, v in diccionario_cantidad_de_puntos.items()],
-        [sg.Text('')],[sg.Text('PARA MODIFICAR EL TIEMPO INGRESE EL TIEMPO EN MINUTOS (de 5 a 30) QUE QUIERES QUE DURE LA PARTIDA')],
+        [sg.Input(v, size=(3, 1), key=(k+'_valor'))
+         for k, v in diccionario_cantidad_de_puntos.items()],
+        [sg.Text('')], [sg.Text(
+            'PARA MODIFICAR EL TIEMPO INGRESE EL TIEMPO EN MINUTOS (de 5 a 30) QUE QUIERES QUE DURE LA PARTIDA')],
         [sg.Input(size=(9, 1), key=('time'))],
-        [sg.Button('CONFIGURACION POR DEFECTO'), sg.Button('GUARDAR CONFIGURACION'), sg.Button('CANCELAR')]
+        [sg.Button('CONFIGURACION POR DEFECTO'), sg.Button(
+            'GUARDAR CONFIGURACION'), sg.Button('CANCELAR')]
     ]
 
     window3 = sg.Window('Configuracion').Layout(layout3)
@@ -54,10 +62,9 @@ def configuracion_de_juego():
             with open('./texto/config_default.json', 'r') as cf:
                 c = json.load(cf)
             with open('./texto/config.json', 'w') as cf:
-                json.dump(c,cf, indent=4)    
-            sg.popup('Se restauro la configuracion inicial :D')    
+                json.dump(c, cf, indent=4)
+            sg.popup('Se restauro la configuracion inicial :D')
             break
-
 
         if event3 == 'GUARDAR CONFIGURACION':
             # with open('config.json','w') as cf:
@@ -72,27 +79,29 @@ def configuracion_de_juego():
                 num_tiempo = 10
                 sg.Popup('El tiempo se cargo de maneara erronea, pero ',
                          'cargamos la partida de 10 minutos')
-            
+
             for k, v in diccionario_cantidad_de_letras.items():
 
                 try:
-                    diccionario_cantidad_de_letras[k]= int(values3[k+'_cant'])
+                    diccionario_cantidad_de_letras[k] = int(values3[k+'_cant'])
                 except (ValueError):
                     diccionario_cantidad_de_letras[k] = 1
                 try:
-                    diccionario_cantidad_de_puntos[k]= int(values3[k+'_valor'])
+                    diccionario_cantidad_de_puntos[k] = int(
+                        values3[k+'_valor'])
                 except (ValueError):
-                    diccionario_cantidad_de_puntos[k] = 1    
+                    diccionario_cantidad_de_puntos[k] = 1
 
             with open('./texto/config.json', 'w') as cf:
-                c['cantidad_de_letras']=diccionario_cantidad_de_letras 
-                c['valor_por_letra']=diccionario_cantidad_de_puntos 
-                c['tiempo']= num_tiempo   
-                json.dump(c,cf, indent=4)   
-                
-            sg.Popup('La duracion de la partida sera de: ',num_tiempo, ' minutos')
+                c['cantidad_de_letras'] = diccionario_cantidad_de_letras
+                c['valor_por_letra'] = diccionario_cantidad_de_puntos
+                c['tiempo'] = num_tiempo
+                json.dump(c, cf, indent=4)
+
+            sg.Popup('La duracion de la partida sera de: ',
+                     num_tiempo, ' minutos')
             sg.popup('Se configuro la partida')
-            break              
+            break
 
     window3.close()
 
@@ -135,7 +144,7 @@ def carga_nombre():
     window3 = sg.Window('Ingresa datos', layout3)
     while True:
         event, values = window3.read()
-        if event == 'Listo' or event== None:
+        if event == 'Listo' or event is None:
             nombre = values['name']
             break
     window3.close()
@@ -185,8 +194,8 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
     try:
         texto = nombre.upper()+' TU PUNTAJE ES:'
     except AttributeError:
-        nombre = 'NN' 
-        texto = nombre.upper()+' TU PUNTAJE ES:' 
+        nombre = 'NN'
+        texto = nombre.upper()+' TU PUNTAJE ES:'
     window['tu_puntaje_propio'].update(texto)
     window['puntaje'].update(visible=True)
     window['indice'].update(visible=True)
@@ -208,15 +217,16 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
 
 
 def cargar_partida(window, letras_atril_jugador, botones_usados,
-                   lugares_no_disponibles, letras_guardadas, letras_atril_rival):
+                   lugares_no_disponibles, letras_guardadas,
+                   letras_atril_rival):
     """
        asdasd
     """
     try:
         with open('./texto/save.json', 'r') as archivo_carga:
             dic = json.load(archivo_carga)
-    except FileNotFoundError:  
-        sg.popup('No se encontro el archivo de la partida guardad')      
+    except FileNotFoundError:
+        sg.popup('No se encontro el archivo de la partida guardad')
         return 'Error'
     asignar_colores_al_tablero(window, dic["otros"]["dificultad"])
     window['opcionesJuego'].update(visible=True)
@@ -225,7 +235,7 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
     window['Cargar Partida'].update(visible=False)
     window['Guardar Partida'].update(visible=True)
     window['Salir'].update(visible=True)
-    texto=dic['nombre'].upper()+' TU PUNTAJE ES:'
+    texto = dic['nombre'].upper()+' TU PUNTAJE ES:'
     window['tu_puntaje_propio'].update(texto)
     window['puntaje_propio'].update("PUNTAJE DE {0} ES :0".format("pepe"))
     window['puntaje'].update(visible=True)
@@ -470,6 +480,7 @@ def horizontal(pos_actual, pos_anterior):
         return True
     else:
         return False
+
 
 '''
 # ============================= IA =============================

@@ -5,7 +5,8 @@ import os
 import random
 import json
 import PySimpleGUI as sg
-from funciones import funciones,ia,interfase
+from funciones import funciones, ia, interfase
+
 
 def test_de_archivo():
     '''
@@ -14,18 +15,19 @@ def test_de_archivo():
         aborta el programa y se informa de la falta del archivo
     '''
     try:
-        with open('./texto/config.json', 'r') as cf:
+        with open('./texto/config.json', 'r'):
             pass
     except FileNotFoundError:
         sg.Popup('ERROR ---> config.json NO ENCONTRADO')
         sys.exit()
+
 
 def iniciar_juego():
 
     # INICIA EL PROGRAMA PRINCIPAL
 
     # TAMANIO DE LA MATRIZ
-    max_Cant_Filas = max_Cant_Columnas = 15  
+    max_Cant_Filas = max_Cant_Columnas = 15
 
     test_de_archivo()
 
@@ -34,7 +36,7 @@ def iniciar_juego():
     atril_maquina = funciones.crear_atril(bolsa_total)
 
     # TEMA DEL PySimpleGUI
-    sg.ChangeLookAndFeel('DarkGrey6')  
+    sg.ChangeLookAndFeel('DarkGrey6')
 
     # VENTANA PRINCIPAL
     opciones_de_inicio = interfase.ventan_principal()
@@ -49,26 +51,26 @@ def iniciar_juego():
     fichas_rival = interfase.fichas_cpu()
 
     # MODIFICADORES CORRESPONDIENTES A CADA CASILLA ESPECIAL
-    botones_indieces=interfase.indice_modificadores()
+    botones_indieces = interfase.indice_modificadores()
 
-    # BOTONES TABLERO 
+    # BOTONES TABLERO
     tablero = interfase.tablero()
 
     # MARCADORES DE TIEMPO Y PUNTAJE
     puntaje_y_tiempo = interfase.marcadore_puntaje_tiempo()
 
     # LAYOUT CON LA CARGA GENERAL DE LA VENTANA
-    layout = interfase.layout_general(fichas_rival, opciones_de_inicio, 
-                                      tablero, puntaje_y_tiempo, 
-                                      botones_indieces, fichas, 
+    layout = interfase.layout_general(fichas_rival, opciones_de_inicio,
+                                      tablero, puntaje_y_tiempo,
+                                      botones_indieces, fichas,
                                       opciones_de_juego)
-       
+
     # SE GENERA LA VENTANA
     window = sg.Window('SCRABBLE AR', layout, default_button_element_size=(
         2, 2), finalize=True, resizable=True,  auto_size_buttons=True)
 
     # METODO PARA PINTAR EL TABLERO PARA LA PRESENTACION
-    funciones.dibujo_python(window)    
+    funciones.dibujo_python(window)
 
     l2_guar = []
     # puntos del jugdador,(en realidad hay que tener 2)
@@ -93,8 +95,6 @@ def iniciar_juego():
     v = False
     turno = ''
 
-
-
     while True:
         event, values = window.read(timeout=10)
         if event in (None, 'Salir'):
@@ -102,10 +102,10 @@ def iniciar_juego():
         else:
             if turno == 'player_2':
                 puntos_npc, turno = ia.turno_maquina(window, letras_atril_rival,
-                                                            lugar, lugares_no_disponibles,
-                                                            turno, bolsa_total,
-                                                            letras_usadas_en_tablero,
-                                                            dificult, l2_guar)
+                                                     lugar, lugares_no_disponibles,
+                                                     turno, bolsa_total,
+                                                     letras_usadas_en_tablero,
+                                                     dificult, l2_guar)
                 puntos_npc_total = puntos_npc_total+puntos_npc
                 window["puntaje_PC"].update(puntos_npc_total)
                 print('turno vuelta', turno)
@@ -119,22 +119,23 @@ def iniciar_juego():
                     print(lugar)
                 # digo que si anterior tiene algo que despinte lo anterior
                 if (ant) and (ant not in lugares_no_disponibles):
-                    funciones.volver_a_pintar_la_casilla(lugar, window, dificult)
+                    funciones.volver_a_pintar_la_casilla(
+                        lugar, window, dificult)
                     ant = lugar
 
             # si el evento seria una letra y lugar tiene algo es xq marque algo
-            if event in ("Boton_1","Boton_1", "Boton_2", "Boton_3", "Boton_4", 
-                        "Boton_5", "Boton_6", "Boton_7") and lugar:
+            if event in ("Boton_1", "Boton_1", "Boton_2", "Boton_3", "Boton_4",
+                         "Boton_5", "Boton_6", "Boton_7") and lugar:
                 letra = window[event].GetText()  # asigno la letra del evento
                 if lugar not in lugares_no_disponibles:  # si el lugar no lo use
                     # vemos si es la primera letra, seteamos la orientacion
                     if len(letras_usadas_en_tablero) == 0:
                         funciones.letra_al_tablero(window,
-                                                letras_usadas_en_tablero,
-                                                botones_usados,
-                                                letras_atril_jugador,
-                                                lugares_no_disponibles, letra,
-                                                event, lugar)
+                                                   letras_usadas_en_tablero,
+                                                   botones_usados,
+                                                   letras_atril_jugador,
+                                                   lugares_no_disponibles, letra,
+                                                   event, lugar)
 
                         # hay que declarar una variable dific para enviar
                         # en lugar de facil
@@ -151,11 +152,11 @@ def iniciar_juego():
                             lugar, lugares_no_disponibles
                             [len(lugares_no_disponibles)-1])
                         funciones.letra_al_tablero(window,
-                                                letras_usadas_en_tablero,
-                                                botones_usados,
-                                                letras_atril_jugador,
-                                                lugares_no_disponibles, letra,
-                                                event, lugar)
+                                                   letras_usadas_en_tablero,
+                                                   botones_usados,
+                                                   letras_atril_jugador,
+                                                   lugares_no_disponibles, letra,
+                                                   event, lugar)
 
                         # hay que declarar una variable dific para enviar en lugar
                         # de facil
@@ -166,11 +167,11 @@ def iniciar_juego():
                         if funciones.horizontal(lugar, lugares_no_disponibles
                                                 [len(lugares_no_disponibles)-1]) and h:
                             funciones.letra_al_tablero(window,
-                                                    letras_usadas_en_tablero,
-                                                    botones_usados,
-                                                    letras_atril_jugador,
-                                                    lugares_no_disponibles,
-                                                    letra, event, lugar)
+                                                       letras_usadas_en_tablero,
+                                                       botones_usados,
+                                                       letras_atril_jugador,
+                                                       lugares_no_disponibles,
+                                                       letra, event, lugar)
 
                             puntos_jugador += funciones.puntos_de_letra(
                                 letra, dificult, lugar)
@@ -178,11 +179,11 @@ def iniciar_juego():
                         elif funciones.vertical(lugar, lugares_no_disponibles
                                                 [len(lugares_no_disponibles)-1]) and v:
                             funciones.letra_al_tablero(window,
-                                                    letras_usadas_en_tablero,
-                                                    botones_usados,
-                                                    letras_atril_jugador,
-                                                    lugares_no_disponibles,
-                                                    letra, event, lugar)
+                                                       letras_usadas_en_tablero,
+                                                       botones_usados,
+                                                       letras_atril_jugador,
+                                                       lugares_no_disponibles,
+                                                       letra, event, lugar)
 
                             puntos_jugador += funciones.puntos_de_letra(
                                 letra, dificult, lugar)
@@ -213,7 +214,8 @@ def iniciar_juego():
             # para inicializar el juego
             elif event == "Comenzar":
                 nombre = funciones.carga_nombre()
-                [[window[i, j].update(button_color=('black', 'azure')) for j in range(max_Cant_Columnas)] for i in range(max_Cant_Filas)]
+                [[window[i, j].update(button_color=('black', 'azure')) for j in range(
+                    max_Cant_Columnas)] for i in range(max_Cant_Filas)]
                 timer_running, dificult = funciones.cargar_juego(
                     window, values, timer_running, nombre, bolsa_total,
                     letras_atril_jugador, letras_atril_rival)
@@ -224,20 +226,18 @@ def iniciar_juego():
                     try:
                         sg.popup('Empezas vos {}!'.format(nombre.upper()))
                     except AttributeError:
-                        nombre = 'NN'    
+                        nombre = 'NN'
                         sg.popup('Empezas vos {}!'.format(nombre.upper()))
                 else:
                     sg.popup('Comienza la maquina!')
 
             elif event == "Cargar Partida":
-                if os.path.isfile('./texto/save.json') :   
+                if os.path.isfile('./texto/save.json'):
                     counter, dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v = funciones.cargar_partida(
                         window, letras_atril_jugador, botones_usados, lugares_no_disponibles, l2_guar, letras_atril_rival)
                     timer_running = not timer_running
-                else:  
+                else:
                     sg.popup('No tenes partidas guardadas')
-
-
 
             elif event == "Configuracion":
                 funciones.configuracion_de_juego()
@@ -246,21 +246,25 @@ def iniciar_juego():
                 with open('./texto/ranking_test.json', 'r') as r:
                     dicc = json.load(r)
 
-                fac={}
-                med={}
-                dif={}
+                fac = {}
+                med = {}
+                dif = {}
                 for k, v in dicc.items():
-                    if v["Dificultad"]=='facil':
-                        fac[k] = v 
-                    elif v["Dificultad"]=='medio':
-                        med[k] = v      
-                    elif v["Dificultad"]=='dificil':
-                        dif[k] = v      
+                    if v["Dificultad"] == 'facil':
+                        fac[k] = v
+                    elif v["Dificultad"] == 'medio':
+                        med[k] = v
+                    elif v["Dificultad"] == 'dificil':
+                        dif[k] = v
 
-                f = sorted(fac.items(), key=lambda k: k[1]["Puntos"], reverse=True)
-                m = sorted(med.items(), key=lambda k: k[1]["Puntos"], reverse=True)
-                d = sorted(dif.items(), key=lambda k: k[1]["Puntos"], reverse=True)
-                total=  sorted(dicc.items(), key=lambda k: k[1]["Puntos"], reverse=True)
+                f = sorted(
+                    fac.items(), key=lambda k: k[1]["Puntos"], reverse=True)
+                m = sorted(
+                    med.items(), key=lambda k: k[1]["Puntos"], reverse=True)
+                d = sorted(
+                    dif.items(), key=lambda k: k[1]["Puntos"], reverse=True)
+                total = sorted(
+                    dicc.items(), key=lambda k: k[1]["Puntos"], reverse=True)
 
                 print(total)
 
@@ -278,9 +282,9 @@ def iniciar_juego():
                     [sg.Text('RANKING'), sg.Text('', key='_OUTPUT_')],
                     [sg.TabGroup([
                         [sg.Tab('Ranking General', tab1_layout, tooltip='tip'),
-                        sg.Tab('Ranking Facil', tab2_layout, tooltip='tip2'),
-                        sg.Tab('Ranking Medio', tab3_layout, tooltip='tip3'),
-                        sg.Tab('Ranking Dificil', tab4_layout, tooltip='tip4')]
+                         sg.Tab('Ranking Facil', tab2_layout, tooltip='tip2'),
+                         sg.Tab('Ranking Medio', tab3_layout, tooltip='tip3'),
+                         sg.Tab('Ranking Dificil', tab4_layout, tooltip='tip4')]
                     ])],
                     [sg.Button('Salir')]
                 ]
@@ -308,15 +312,14 @@ def iniciar_juego():
                         with open('./texto/ranking_test.json', 'r') as j:
                             dicc = json.load(j)
                         with open('./texto/ranking_test.json', 'w') as j:
-                            id=str(random.choice(range(0,10000)))
+                            id = str(random.choice(range(0, 10000)))
                             dicc['id_'+id] = {"Dificultad": dificult.lower(),
-                                            "Nombre":nombre,
-                                            "Puntos": puntos_jugador_total,
-                                            "Fecha": 0}
+                                              "Nombre": nombre,
+                                              "Puntos": puntos_jugador_total,
+                                              "Fecha": 0}
 
-                            json.dump(dicc, j, indent=4)                 
-                    
-                        
+                            json.dump(dicc, j, indent=4)
+
                     elif puntos_jugador_total == puntos_npc_total:
                         sg.Popup('¡Hubo un empate!')
                     else:
@@ -355,7 +358,7 @@ def iniciar_juego():
                     for i in range(len(letras_usadas_en_tablero)):
                         funciones.quitar_fichas(
                             window, letras_usadas_en_tablero, botones_usados,
-                            lugares_no_disponibles, letras_atril_jugador,dificult)
+                            lugares_no_disponibles, letras_atril_jugador, dificult)
                     window["puntaje_de_jugada"].update("0")
                     puntos_jugador = 0
 
@@ -365,10 +368,10 @@ def iniciar_juego():
                         dic = {}
                         dic["nombre"] = nombre
                         dic["puntos"] = {"puntos_jugador": puntos_jugador,
-                                        "puntos_jugador_total":
-                                        puntos_jugador_total,
-                                        "puntos_npc": puntos_npc,
-                                        "puntos_npc_total": puntos_npc_total}
+                                         "puntos_jugador_total":
+                                         puntos_jugador_total,
+                                         "puntos_npc": puntos_npc,
+                                         "puntos_npc_total": puntos_npc_total}
                         dic["atril"] = {"atril_jugador": letras_atril_jugador}
                         dic["atril_rival"] = {
                             "letras_atril_rival": letras_atril_rival}
@@ -383,6 +386,7 @@ def iniciar_juego():
                         "el atril completo")
         window.Refresh()
     window.close()
+
 
 if __name__ == "__main__":
     iniciar_juego()
