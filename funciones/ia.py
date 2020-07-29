@@ -226,7 +226,6 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
         for i in range(tamanio_pal):
             aux = funciones.puntos_de_letra(letras_usadas_en_tablero[i], dificultad,
                                   lista_coords[i])
-                                  f
             # print('valor de letra...',aux, 'letra',letras_usadas_en_tablero[i])
             puntos_npc = puntos_npc + aux
         # print('valor de total...',puntos_npc)
