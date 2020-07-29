@@ -217,7 +217,7 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
         dic = json.load(t)
 
     tiempo_limite = dic['tiempo']['minutos']
-    tiempo_limite *= 60000
+    tiempo_limite *= 600
 
     return timer_running, very_dificult, tiempo_limite
 

@@ -329,10 +329,12 @@ def iniciar_juego():
                             dicc = json.load(j)
                         with open('./texto/ranking_test.json', 'w') as j:
                             id = str(random.choice(range(0, 10000)))
+                            fecha=str(date.today())
                             dicc['id_'+id] = {"Dificultad": dificult.lower(),
                                               "Nombre": nombre,
                                               "Puntos": puntos_jugador_total,
-                                              "Fecha": date.today()}
+                                              "Fecha": fecha
+                                              }
 
                             json.dump(dicc, j, indent=4)
 
