@@ -1,0 +1,99 @@
+{
+    "nombre": "lucas",
+    "puntos": {
+        "puntos_jugador": 0,
+        "puntos_jugador_total": 32,
+        "puntos_npc": 4,
+        "puntos_npc_total": 14
+    },
+    "atril": {
+        "atril_jugador": [
+            "W",
+            "Y",
+            "H",
+            "Q",
+            "T",
+            "P",
+            "F"
+        ]
+    },
+    "atril_rival": {
+        "letras_atril_rival": [
+            "J",
+            "I",
+            "R",
+            "K",
+            "P",
+            "B",
+            "U"
+        ]
+    },
+    "otros": {
+        "lugares": [
+            [
+                14,
+                13
+            ],
+            [
+                14,
+                14
+            ],
+            [
+                10,
+                6
+            ],
+            [
+                10,
+                7
+            ],
+            [
+                1,
+                12
+            ],
+            [
+                1,
+                13
+            ],
+            [
+                4,
+                6
+            ],
+            [
+                4,
+                7
+            ],
+            [
+                1,
+                10
+            ],
+            [
+                2,
+                10
+            ],
+            [
+                3,
+                10
+            ]
+        ],
+        "letras_usadas": [
+            "N",
+            "G",
+            "V",
+            "M",
+            "N",
+            "M",
+            "H",
+            "A",
+            "L",
+            "I",
+            "L"
+        ],
+        "dificultad": "Facil",
+        "hor": false,
+        "ver": false
+    },
+    "tiempo": {
+        "reloj": 4210,
+        "fin": 60000
+    }
+}
