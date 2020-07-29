@@ -174,6 +174,7 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
     """
     very_dificult = values['dificultad']
     asignar_colores_al_tablero(window, very_dificult)
+    window['logo'].Update(visible=False)
     window['opcionesJuego'].update(visible=True)
     window['Comenzar'].update(visible=False)
     window['Configuracion'].update(visible=False)
