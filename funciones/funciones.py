@@ -280,7 +280,7 @@ def volver_a_pintar_la_casilla(cord, window, dificult):
     elif list(cord) in tablero_actual["skyblue"]:
         window[cord].update(button_color=('skyblue', 'skyblue'))
     else:
-        window[cord].update(button_color=('grey', 'white'))
+        window[cord].update(button_color=('grey', 'azure'))
 
 
 def verificar_palabra(palabra):
@@ -749,19 +749,4 @@ def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
 
     return puntos, 'player_1'
 
-
-#############################################################
-# Aca escribo para los puntos de la IA
-#
-# Con:
-# reutilizar las funciones "puntos_de_letra" y "puntos_de_palabra"
-# agrego una var aux: "puntos_npc"
-#
-# Como:
-#
-# 'puntos_npc = puntos_de_letra(letra, dificultad, coord)'
-#
-# 'return puntos_de_palabra(dificultad, lugares_no_disponibles, puntos_npc)'
-#
-# ver lineas 647
 # ============================= FIN IA =============================
