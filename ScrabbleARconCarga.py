@@ -5,9 +5,7 @@ import os
 import random
 import json
 import PySimpleGUI as sg
-from funciones import funciones,ia
-
-import interfase
+from funciones import funciones,ia,interfase
 
 def test_de_archivo():
     '''
