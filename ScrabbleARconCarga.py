@@ -11,7 +11,7 @@ from funciones import funciones, ia, interfase
 def test_de_archivo():
     '''
         solo para testear si se encuentra el config.json con todos los datos
-        necesarios para que corra el juego, en caso que no se encuentre 
+        necesarios para que corra el juego, en caso que no se encuentre
         se aborta el programa y se informa de la falta del archivo
     '''
     try:
@@ -83,8 +83,8 @@ def iniciar_juego():
     letras_usadas_en_tablero = []  # lleva las letras que ya use
     botones_usados = []           # nombre de los botones que voy usando
     lugares_no_disponibles = []  # lleva la cuenta de los lugares que ya
-                                 # escribi para despintar la casilla 
-                                 # anterior cuando toco una nueva
+    # escribi para despintar la casilla
+    # anterior cuando toco una nueva
     ant = ()
     lugar = ()                    # marca la casilla actual
     layout2 = layout              # esto no se que es
@@ -102,8 +102,10 @@ def iniciar_juego():
             break
         else:
             if turno == 'player_2':
-                puntos_npc, turno = ia.turno_maquina(window, letras_atril_rival,
-                                                     lugar, lugares_no_disponibles,
+                puntos_npc, turno = ia.turno_maquina(window,
+                                                     letras_atril_rival,
+                                                     lugar,
+                                                     lugares_no_disponibles,
                                                      turno, bolsa_total,
                                                      letras_usadas_en_tablero,
                                                      dificult, l2_guar)
@@ -135,7 +137,7 @@ def iniciar_juego():
                                                    letras_usadas_en_tablero,
                                                    botones_usados,
                                                    letras_atril_jugador,
-                                                   lugares_no_disponibles, 
+                                                   lugares_no_disponibles,
                                                    letra, event, lugar)
 
                         # hay que declarar una variable dific para enviar
@@ -156,11 +158,12 @@ def iniciar_juego():
                                                    letras_usadas_en_tablero,
                                                    botones_usados,
                                                    letras_atril_jugador,
-                                                   lugares_no_disponibles, letra,
+                                                   lugares_no_disponibles,
+                                                   letra,
                                                    event, lugar)
 
-                        # hay que declarar una variable dific para enviar en lugar
-                        # de facil
+                        # hay que declarar una variable dific para enviar en
+                        # lugar de facil
                         puntos_jugador += funciones.puntos_de_letra(
                             letra, dificult, lugar)
                         window["puntaje_de_jugada"].update(puntos_jugador)
@@ -195,12 +198,13 @@ def iniciar_juego():
             elif event == "Repartir De Nuevo":
                 if not botones_usados:
                     cantidad_de_veces_Repartidas = funciones.repartir_fichas_de_nuevo(
-                        window, cantidad_de_veces_Repartidas, letras_atril_jugador,
+                        window, cantidad_de_veces_Repartidas,
+                        letras_atril_jugador,
                         bolsa_total)
                 else:
                     sg.Popup(
-                        'Estas en medio de una mano, tenes q tener 7 fichas para',
-                        ' cambiar')
+                        'Estas en medio de una mano, tenes q tener 7 fichas ',
+                        ' para cambiar')
             # quita elementos del tablero, desde el ultimo al primero
             elif event == "Borrar":
                 if puntos_jugador != 0:
@@ -209,7 +213,8 @@ def iniciar_juego():
                         lugares_no_disponibles[len(lugares_no_disponibles)-1])
                     window["puntaje_de_jugada"].update(puntos_jugador)
                     funciones.quitar_fichas(window, letras_usadas_en_tablero,
-                                            botones_usados, lugares_no_disponibles,
+                                            botones_usados,
+                                            lugares_no_disponibles,
                                             letras_atril_jugador, dificult)
 
             # para inicializar el juego
@@ -292,13 +297,14 @@ def iniciar_juego():
                 window2 = sg.Window('TOP TEN').Layout(layout2)
                 while True:
                     event2, values2 = window2.Read()
-                    if event2 == 'Salir' or event2 == None:
+                    if event2 == 'Salir' or event2 is None:
                         break
                 window2.Close()
 
             # esto es para que corra el tiempo
             elif timer_running:
-                # window['-OUTPUT-'].update('{:02d}:{:02d}'.format((counter // 100)
+                # window['-OUTPUT-'].update(
+                # '{:02d}:{:02d}'.format((counter//100)
                 # // 60, (counter // 100) % 60, counter % 100))
                 window['-OUTPUT-'].update('{:02d}:{:02d}'.format(
                     (counter // 100) // 60, (counter // 100) % 60))
@@ -352,14 +358,16 @@ def iniciar_juego():
                     puntos_jugador = 0
                     window["puntaje_de_jugada"].update("0")
                     funciones.pedir_fichas(
-                        window, botones_usados, letras_atril_jugador, bolsa_total)
+                        window, botones_usados, letras_atril_jugador,
+                        bolsa_total)
                     turno = 'player_2'
                 else:
                     print("palabra invalida")
                     for i in range(len(letras_usadas_en_tablero)):
                         funciones.quitar_fichas(
                             window, letras_usadas_en_tablero, botones_usados,
-                            lugares_no_disponibles, letras_atril_jugador, dificult)
+                            lugares_no_disponibles, letras_atril_jugador,
+                            dificult)
                     window["puntaje_de_jugada"].update("0")
                     puntos_jugador = 0
 
@@ -378,7 +386,8 @@ def iniciar_juego():
                             "letras_atril_rival": letras_atril_rival}
                         dic["otros"] = {"lugares": lugares_no_disponibles,
                                         "letras_usadas": l2_guar,
-                                        "dificultad": dificult, "hor": h, "ver": v}
+                                        "dificultad": dificult, "hor": h,
+                                        "ver": v}
                         dic['tiempo'] = {'reloj': counter}
                         json.dump(dic, j, indent=4)
                 else:

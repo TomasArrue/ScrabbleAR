@@ -1,108 +1,98 @@
 {
-    "nombre": "sad",
+    "nombre": "lucas",
     "puntos": {
         "puntos_jugador": 0,
-        "puntos_jugador_total": 9,
-        "puntos_npc": 22,
-        "puntos_npc_total": 28
+        "puntos_jugador_total": 32,
+        "puntos_npc": 4,
+        "puntos_npc_total": 14
     },
     "atril": {
         "atril_jugador": [
-            "L",
-            "V",
-            "J",
-            "U",
-            "B",
+            "W",
+            "Y",
+            "H",
+            "Q",
+            "T",
             "P",
-            "W"
+            "F"
         ]
     },
     "atril_rival": {
         "letras_atril_rival": [
-            "V",
-            "K",
-            "R",
+            "J",
             "I",
-            "F",
+            "R",
+            "K",
             "P",
-            "S"
+            "B",
+            "U"
         ]
     },
     "otros": {
         "lugares": [
             [
-                11,
+                14,
+                13
+            ],
+            [
+                14,
+                14
+            ],
+            [
+                10,
                 6
             ],
             [
-                9,
-                4
-            ],
-            [
-                9,
-                5
-            ],
-            [
-                9,
-                6
-            ],
-            [
-                8,
-                10
-            ],
-            [
-                8,
-                11
-            ],
-            [
-                5,
-                2
-            ],
-            [
-                6,
-                2
-            ],
-            [
-                9,
+                10,
                 7
             ],
             [
-                9,
-                8
+                1,
+                12
             ],
             [
-                13,
-                9
+                1,
+                13
             ],
             [
-                13,
+                4,
+                6
+            ],
+            [
+                4,
+                7
+            ],
+            [
+                1,
                 10
             ],
             [
-                13,
-                11
+                2,
+                10
+            ],
+            [
+                3,
+                10
             ]
         ],
         "letras_usadas": [
+            "N",
+            "G",
+            "V",
+            "M",
+            "N",
+            "M",
+            "H",
             "A",
             "L",
-            "A",
-            "T",
-            "T",
-            "O",
-            "S",
-            "O",
-            "D",
-            "E",
-            "M",
             "I",
-            "X"
+            "L"
         ],
-        "dificultad": "Dificil",
+        "dificultad": "Facil",
         "hor": false,
         "ver": false
     },
     "tiempo": {
-        "reloj": 1811
+        "reloj": 4210
     }
 }

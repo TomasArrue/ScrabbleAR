@@ -82,5 +82,11 @@
         "Nombre": "sada",
         "Puntos": 45,
         "Fecha": 0
+    },
+    "id_785": {
+        "Dificultad": "facil",
+        "Nombre": "",
+        "Puntos": 101,
+        "Fecha": 0
     }
 }
