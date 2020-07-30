@@ -34,6 +34,11 @@ def iniciar_juego():
     test_de_archivo()
 
     bolsa_total = funciones.crear_bolsita_total()
+    total_letras=0
+    for k,v in bolsa_total.items():
+        total_letras+=v    
+    print(total_letras)        
+    print('bolsa_total',bolsa_total)
 
     # atril_maquina = funciones.crear_atril(bolsa_total)
 
@@ -85,7 +90,6 @@ def iniciar_juego():
     letras_usadas_en_tablero = []  # lleva las letras que ya use
     botones_usados = []           # nombre de los botones que voy usando
     lugares_no_disponibles = []  # lleva la cuenta de los lugares que ya
-    total_letras = 96
     # escribi para despintar la casilla
     # anterior cuando toco una nueva
     ant = ()
@@ -332,7 +336,7 @@ def iniciar_juego():
                 counter += 1
 
                 # 6000 equivale a 1 minuto, 60000 a 10 minutos
-                if counter == tiempo_limite or event == "Terminar partida" and cantidad_de_veces_Repartidas == 3:
+                if counter == tiempo_limite or event == "Terminar partida" and cantidad_de_veces_Repartidas == 3 or total_letras==0:
                     timer_running = not timer_running
                     sg.Popup('termino el tiempo,analizando ganador:')
                     if puntos_jugador_total > puntos_npc_total:

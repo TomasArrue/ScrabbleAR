@@ -123,9 +123,11 @@ def crear_atril(bolsa_total, total_letras):
     """
     if total_letras > 0:
         letra = random.choice(list(bolsa_total.keys()))
+        #print('bolsa_total[letra]',bolsa_total[letra] )
         while bolsa_total[letra] == 0:
             letra = random.choice(list(bolsa_total.keys()))
             bolsa_total[letra] -= 1
+        #print('bolsa_total[letra] despues ',bolsa_total[letra] )    
     total_letras -= 1
     return letra, total_letras
 
