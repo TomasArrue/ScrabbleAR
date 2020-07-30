@@ -2,7 +2,6 @@ import json
 import PySimpleGUI as sg
 import random
 from pattern.text.es import lexicon, spelling, verbs
-from itertools import permutations
 
 
 def dibujo_python(window):
@@ -91,7 +90,7 @@ def configuracion_de_juego():
                         values3[k+'_valor'])
                 except (ValueError):
                     diccionario_cantidad_de_puntos[k] = 1
-            tiempo={'minutos':num_tiempo}        
+            tiempo = {'minutos': num_tiempo}
             with open('./texto/config.json', 'w') as cf:
                 c['cantidad_de_letras'] = diccionario_cantidad_de_letras
                 c['valor_por_letra'] = diccionario_cantidad_de_puntos
@@ -118,15 +117,16 @@ def crear_bolsita_total():
     return bolsa
 
 
-def crear_atril(bolsa_total):
+def crear_atril(bolsa_total, total_letras):
     """
         Toma las letras de a una desde el archivo configuracion
     """
-    letra = random.choice(list(bolsa_total.keys()))
-    while bolsa_total[letra] == 0:
+    if total_letras > 0:
         letra = random.choice(list(bolsa_total.keys()))
-    bolsa_total[letra] -= 1
-
+        while bolsa_total[letra] == 0:
+            letra = random.choice(list(bolsa_total.keys()))
+            bolsa_total[letra] -= 1
+    total_letras -= 1
     return letra
 
 
@@ -172,7 +172,7 @@ def asignar_colores_al_tablero(window, dificultad):
 
 
 def cargar_juego(window, values, timer_running, nombre, bolsa_total,
-                 letras_atril_jugador, letras_atril_rival):
+                 letras_atril_jugador, letras_atril_rival, total_letras):
     """
         iniciamos todo el seteo inicial del juego:
             -la dificultad segun la seleccionada en el menu
@@ -206,9 +206,10 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
     for i in range(7):  # carga de las 7 fichas al inicio
 
         nro_de_boton = 'Boton_'+str(i+1)
-        obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total)
+        total_letras = obtener_fichas(window, nro_de_boton, letras_atril_jugador,
+                                      bolsa_total, total_letras)
         # generamos las fichas del rival tambien
-        letra_rival = crear_atril(bolsa_total)
+        letra_rival = crear_atril(bolsa_total, total_letras)
         letras_atril_rival.append(letra_rival)  # Las agregamos a su lista
 
     timer_running = not timer_running
@@ -219,7 +220,7 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
     tiempo_limite = dic['tiempo']['minutos']
     tiempo_limite *= 600
 
-    return timer_running, very_dificult, tiempo_limite
+    return timer_running, very_dificult, tiempo_limite, total_letras
 
 
 def cargar_partida(window, letras_atril_jugador, botones_usados,
@@ -311,22 +312,23 @@ def verificar_palabra(palabra):
         return(False)  # cambiar a false
 
 
-def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total):
+def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total, total_letras):
     """
         Este metodo nos da una ficha "nueva".
         Generamos una letra random la agregamos a la lista de letras de
         nuestro atril, luego con la key del boton recibida como parametro
         actualizamos el valor del boton con la nueva letra
     """
-    letra = crear_atril(bolsa_total)
+    letra = crear_atril(bolsa_total, total_letras)
     letras_atril_jugador.append(letra)
     window[nro_de_boton].update(letra)
     window[nro_de_boton].update(button_color=('black', 'oldlace'))
     window.Refresh()
+    return total_letras
 
 
 def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas,
-                             letras_atril_jugador, bolsa_total):
+                             letras_atril_jugador, bolsa_total, total_letras):
     """
         Utilizamos este metodo para poder cambiar la mano de fichas que
         tenemos, y tenemos permitido hacerlo hasta 3 veces
@@ -336,12 +338,12 @@ def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas,
         cantidad_de_veces_Repartidas = cantidad_de_veces_Repartidas+1
         for i in range(7):  # carga de las 7 fichas
             nro_de_boton = 'Boton_'+str(i+1)
-            obtener_fichas(window, nro_de_boton,
-                           letras_atril_jugador, bolsa_total)
+            total_letras = obtener_fichas(window, nro_de_boton,
+                                          letras_atril_jugador, bolsa_total, total_letras)
     else:
         sg.Popup('Ya hiciste el maximo de cambios de mano')
 
-    return cantidad_de_veces_Repartidas
+    return cantidad_de_veces_Repartidas, total_letras
 
 
 def quitar_fichas(window, usados, botones_usados, no_disponibles,
@@ -353,9 +355,6 @@ def quitar_fichas(window, usados, botones_usados, no_disponibles,
         a poder retirar fichas que ingresamos, en caso de que no se pueda no
         podremos quitar mas
     """
-    # print(len(usados),' ',len(no_disponibles),' ',len(botones_usados))
-    # Aca antes de borrar una letra vamos a preguntar si hay letras para borrar
-    # en caso contrario no podras borrar mas letras
     if len(usados) > 0:
         # Saca la ultima letra de la palabra cargada - el pop saca de usados
         # el elemento de la ultima posicion de la lista de usados
@@ -377,7 +376,7 @@ def quitar_fichas(window, usados, botones_usados, no_disponibles,
         sg.Popup('No hay fichas para borrar')
 
 
-def pedir_fichas(window, botones_usados, letras_atril_jugador, bolsa_total):
+def pedir_fichas(window, botones_usados, letras_atril_jugador, bolsa_total, total_letras):
     """
        El pedir fichas nos permite pedir la cantidad de fichas usadas en el
        ultimo turno hasta llegar a tener 7 nuevamente.
@@ -385,7 +384,8 @@ def pedir_fichas(window, botones_usados, letras_atril_jugador, bolsa_total):
     for i in botones_usados:
         letra = letras_atril_jugador[len(letras_atril_jugador)-1]
         window[i].update(letra, disabled=False)
-        obtener_fichas(window, i, letras_atril_jugador, bolsa_total)
+        total_letras = obtener_fichas(
+            window, i, letras_atril_jugador, bolsa_total, total_letras)
     for i in range(len(botones_usados)):
         botones_usados.pop()
 

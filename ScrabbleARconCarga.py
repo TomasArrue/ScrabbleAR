@@ -85,6 +85,7 @@ def iniciar_juego():
     letras_usadas_en_tablero = []  # lleva las letras que ya use
     botones_usados = []           # nombre de los botones que voy usando
     lugares_no_disponibles = []  # lleva la cuenta de los lugares que ya
+    total_letras = 96
     # escribi para despintar la casilla
     # anterior cuando toco una nueva
     ant = ()
@@ -102,19 +103,19 @@ def iniciar_juego():
 
     while True:
         event, values = window.read(timeout=0)
-        
+
         print(counter)
         if event in (None, 'Salir'):
             break
         else:
             if turno == 'player_2':
-                puntos_npc, turno = ia.turno_maquina(window,
-                                                     letras_atril_rival,
-                                                     lugar,
-                                                     lugares_no_disponibles,
-                                                     turno, bolsa_total,
-                                                     letras_usadas_en_tablero,
-                                                     dificult, l2_guar)
+                puntos_npc, turno, total_letras = ia.turno_maquina(window,
+                                                                   letras_atril_rival,
+                                                                   lugar,
+                                                                   lugares_no_disponibles,
+                                                                   turno, bolsa_total,
+                                                                   letras_usadas_en_tablero,
+                                                                   dificult, l2_guar, total_letras)
                 puntos_npc_total = puntos_npc_total+puntos_npc
                 window["puntaje_PC"].update(puntos_npc_total)
                 print('turno vuelta', turno)
@@ -203,10 +204,10 @@ def iniciar_juego():
             # pide 7 fichas nuevas en la mano
             elif event == "Repartir De Nuevo":
                 if not botones_usados:
-                    cantidad_de_veces_Repartidas = funciones.repartir_fichas_de_nuevo(
+                    cantidad_de_veces_Repartidas, total_letras = funciones.repartir_fichas_de_nuevo(
                         window, cantidad_de_veces_Repartidas,
                         letras_atril_jugador,
-                        bolsa_total)
+                        bolsa_total, total_letras)
                 else:
                     sg.Popup(
                         'Estas en medio de una mano, tenes q tener 7 fichas ',
@@ -230,9 +231,9 @@ def iniciar_juego():
                 nombre = funciones.carga_nombre()
                 [[window[i, j].update(button_color=('black', 'azure')) for j in range(
                     max_Cant_Columnas)] for i in range(max_Cant_Filas)]
-                timer_running, dificult, tiempo_limite = funciones.cargar_juego(
+                timer_running, dificult, tiempo_limite, total_letras = funciones.cargar_juego(
                     window, values, timer_running, nombre, bolsa_total,
-                    letras_atril_jugador, letras_atril_rival)
+                    letras_atril_jugador, letras_atril_rival, total_letras)
                 print('tiempo_limite', tiempo_limite)
                 # random para ver quien inicia la partida
                 quien_inicia = random.choice(range(1, 3))
@@ -320,7 +321,7 @@ def iniciar_juego():
                 counter += 1
 
                 # 6000 equivale a 1 minuto, 60000 a 10 minutos
-                if counter == tiempo_limite:
+                if counter == tiempo_limite or event == "Terminar partida" and cantidad_de_veces_Repartidas == 3:
                     timer_running = not timer_running
                     sg.Popup('termino el tiempo,analizando ganador:')
                     if puntos_jugador_total > puntos_npc_total:
@@ -329,7 +330,7 @@ def iniciar_juego():
                             dicc = json.load(j)
                         with open('./texto/ranking_test.json', 'w') as j:
                             id = str(random.choice(range(0, 10000)))
-                            fecha=str(date.today())
+                            fecha = str(date.today())
                             dicc['id_'+id] = {"Dificultad": dificult.lower(),
                                               "Nombre": nombre,
                                               "Puntos": puntos_jugador_total,
@@ -370,7 +371,7 @@ def iniciar_juego():
                     window["puntaje_de_jugada"].update("0")
                     funciones.pedir_fichas(
                         window, botones_usados, letras_atril_jugador,
-                        bolsa_total)
+                        bolsa_total, total_letras)
                     turno = 'player_2'
                 else:
                     print("palabra invalida")

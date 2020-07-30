@@ -180,7 +180,7 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
 def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                             lugares_no_disponibles, cant,
                             bolsa_total, letras_usadas_en_tablero,
-                            dificultad, l2_guar):
+                            dificultad, l2_guar, total_letras):
     """
         Para el turno de la maquina Buscamos un lugar en el tablero de forma
         aleatoria en el cual colocaremos la palabra, en caso de no tener
@@ -245,19 +245,19 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
         #####################################################################
         #####################################################################
         for i in range(len(letras_usadas_en_tablero)):
-            letra = funciones.crear_atril(bolsa_total)
+            letra = funciones.crear_atril(bolsa_total, total_letras)
             letras_atril_rival.append(letra)
         letras_usadas_en_tablero.clear()
-        return puntos_npc2
+        return puntos_npc2, total_letras
     except (IndexError):
         sg.Popup('La maquina no tiene palabras validas para',
                  'colocar pasa el turno')
-        return 0
+        return 0, total_letras
 
 
 def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
                   turno, bolsa_total, letras_usadas_en_tablero, dificultad,
-                  l2_guar):
+                  l2_guar, total_letras):
     """
         Comienza el turno de la maquina:
         - La maquina tendra 3 intentos para buscar lugar disponible,
@@ -268,9 +268,9 @@ def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
     """
     sg.Popup('Turno de la maquina')
     cant = 0  # intentos para buscar palabras en cada turno inicializa en 0
-    puntos = buscar_lugar_disponible(window, letras_atril_rival,
-                                     lugar, lugares_no_disponibles, cant,
-                                     bolsa_total, letras_usadas_en_tablero,
-                                     dificultad, l2_guar)
+    puntos, total_letras = buscar_lugar_disponible(window, letras_atril_rival,
+                                                   lugar, lugares_no_disponibles, cant,
+                                                   bolsa_total, letras_usadas_en_tablero,
+                                                   dificultad, l2_guar, total_letras)
 
-    return puntos, 'player_1'
+    return puntos, 'player_1', total_letras

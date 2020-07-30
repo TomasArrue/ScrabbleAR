@@ -4,8 +4,9 @@
         "columna": 15
     },
     "tiempo": {
-        "minutos": 1
+        "minutos": 15
     },
+    "total_letra": 96,
     "cantidad_de_letras": {
         "A": 11,
         "B": 3,
