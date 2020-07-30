@@ -83,14 +83,16 @@ def configuracion_de_juego():
 
                 try:
                     if int(values3[k+'_cant']) > 0:
-                        diccionario_cantidad_de_letras[k] = int(values3[k+'_cant'])
+                        diccionario_cantidad_de_letras[k] = int(
+                            values3[k+'_cant'])
                     else:
                         diccionario_cantidad_de_letras[k] = 1
                 except (ValueError):
                     diccionario_cantidad_de_letras[k] = 1
                 try:
                     if int(values3[k+'_valor']) > 0:
-                        diccionario_cantidad_de_puntos[k] = int(values3[k+'_valor'])
+                        diccionario_cantidad_de_puntos[k] = int(
+                            values3[k+'_valor'])
                     else:
                         diccionario_cantidad_de_puntos[k] = 1
                 except (ValueError):
@@ -128,11 +130,14 @@ def crear_atril(bolsa_total, total_letras):
     """
     if total_letras > 0:
         letra = random.choice(list(bolsa_total.keys()))
-        #print('bolsa_total[letra]',bolsa_total[letra] )
+        # print('bolsa_total[letra]',bolsa_total[letra] )
         while bolsa_total[letra] == 0:
+            print("while", bolsa_total[letra])
             letra = random.choice(list(bolsa_total.keys()))
-            bolsa_total[letra] -= 1
-        #print('bolsa_total[letra] despues ',bolsa_total[letra] )    
+
+            print("while", bolsa_total[letra])
+        bolsa_total[letra] -= 1
+        # print('bolsa_total[letra] despues ',bolsa_total[letra] )
     total_letras -= 1
     return letra, total_letras
 
@@ -301,21 +306,22 @@ def volver_a_pintar_la_casilla(cord, window, dificult):
         elif list(cord) in tablero_actual["goldenrod"]:
             window[cord].update(button_color=('goldenrod', 'goldenrod'))
         elif list(cord) in tablero_actual["mediumseagreen"]:
-            window[cord].update(button_color=('mediumseagreen', 'mediumseagreen'))
+            window[cord].update(button_color=(
+                'mediumseagreen', 'mediumseagreen'))
         elif list(cord) in tablero_actual["skyblue"]:
-            window[cord].update(button_color=('skyblue', 'skyblue')) 
+            window[cord].update(button_color=('skyblue', 'skyblue'))
         else:
             window[cord].update(button_color=('grey', 'azure'))
     except KeyError:
         with open('./texto/dibujo.json', 'r') as p:
             dicc = json.load(p)
-            tablero_actual= dicc['Dibujo']
+            tablero_actual = dicc['Dibujo']
         if list(cord) in tablero_actual["gold"]:
             window[cord].update(button_color=('gold', 'gold'))
         elif list(cord) in tablero_actual["steel blue"]:
-            window[cord].update(button_color=('steel blue', 'steel blue'))    
+            window[cord].update(button_color=('steel blue', 'steel blue'))
         else:
-            window[cord].update(button_color=('grey', 'azure'))  
+            window[cord].update(button_color=('grey', 'azure'))
 
 
 def verificar_palabra(palabra):
@@ -486,7 +492,7 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
 def formet(d):
     '''
        formato de texto para mostrar en el ranking
-    '''    
+    '''
     lista = []
     for k, v in d.items():
         variable = '{} {} --- '.format("Jugador:", v["Nombre"]) + '{} {} --- '.format(
