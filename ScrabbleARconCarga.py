@@ -317,7 +317,7 @@ def iniciar_juego():
                 # '{:02d}:{:02d}'.format((counter//100)
                 # // 60, (counter // 100) % 60, counter % 100))
                 window['-OUTPUT-'].update('{:02d}:{:02d}'.format(
-                    (counter // 100) // 60, (counter // 100) % 60, counter % 100))
+                    (counter // 500) // 60, (counter // 500) % 60, counter % 500))
                 counter += 1
 
                 # 6000 equivale a 1 minuto, 60000 a 10 minutos
