@@ -34,11 +34,11 @@ def iniciar_juego():
     test_de_archivo()
 
     bolsa_total = funciones.crear_bolsita_total()
-    total_letras=0
-    for k,v in bolsa_total.items():
-        total_letras+=v    
-    print(total_letras)        
-    print('bolsa_total',bolsa_total)
+    total_letras = 0
+    for k, v in bolsa_total.items():
+        total_letras += v
+    print(total_letras)
+    print('bolsa_total', bolsa_total)
 
     # atril_maquina = funciones.crear_atril(bolsa_total)
 
@@ -108,7 +108,7 @@ def iniciar_juego():
     while True:
         event, values = window.read(timeout=0)
         print(total_letras)
-        #print(counter)
+        # print(counter)
         if event in (None, 'Salir'):
             break
         else:
@@ -165,24 +165,24 @@ def iniciar_juego():
                         v = funciones.vertical(
                             lugar, lugares_no_disponibles
                             [len(lugares_no_disponibles)-1])
-                        if h:    
+                        if h:
                             funciones.letra_al_tablero(window,
-                                                    letras_usadas_en_tablero,
-                                                    botones_usados,
-                                                    letras_atril_jugador,
-                                                    lugares_no_disponibles,
-                                                    letra,
-                                                    event, lugar)
+                                                       letras_usadas_en_tablero,
+                                                       botones_usados,
+                                                       letras_atril_jugador,
+                                                       lugares_no_disponibles,
+                                                       letra,
+                                                       event, lugar)
                         elif v:
                             funciones.letra_al_tablero(window,
-                                                    letras_usadas_en_tablero,
-                                                    botones_usados,
-                                                    letras_atril_jugador,
-                                                    lugares_no_disponibles,
-                                                    letra,
-                                                    event, lugar)
+                                                       letras_usadas_en_tablero,
+                                                       botones_usados,
+                                                       letras_atril_jugador,
+                                                       lugares_no_disponibles,
+                                                       letra,
+                                                       event, lugar)
                         else:
-                            sg.popup('lugar invalido') 
+                            sg.popup('lugar invalido')
 
                         # hay que declarar una variable dific para enviar en
                         # lugar de facil
@@ -245,9 +245,13 @@ def iniciar_juego():
                 counter = int(round(time.time() * 100)) - start_time
                 nombre = funciones.carga_nombre()
                 interfase.tablero_default(window)
-                timer_running, dificult, tiempo_limite, total_letras = funciones.cargar_juego(
-                    window, values, timer_running, nombre, bolsa_total,
-                    letras_atril_jugador, letras_atril_rival, total_letras)
+                if total_letras >= 14:
+                    timer_running, dificult, tiempo_limite, total_letras = funciones.cargar_juego(
+                        window, values, timer_running, nombre, bolsa_total, letras_atril_jugador, letras_atril_rival, total_letras)
+                else:
+                    sg.popup(
+                        "La cantidad de letras registras es invalida,configure el juego nuevamente")
+                    sys.exit()
                 print('tiempo_limite', tiempo_limite)
                 # random para ver quien inicia la partida
                 quien_inicia = random.choice(range(1, 3))
@@ -336,7 +340,7 @@ def iniciar_juego():
                 counter += 1
 
                 # 6000 equivale a 1 minuto, 60000 a 10 minutos
-                if counter == tiempo_limite or event == "Terminar partida" and cantidad_de_veces_Repartidas == 3 or total_letras==0:
+                if counter == tiempo_limite or event == "Terminar partida" and cantidad_de_veces_Repartidas == 3 or total_letras == 0:
                     timer_running = not timer_running
                     sg.Popup('termino el tiempo,analizando ganador:')
                     if puntos_jugador_total > puntos_npc_total:
@@ -366,7 +370,7 @@ def iniciar_juego():
                 palabra_final = "".join(letras_usadas_en_tablero)
                 v = False
                 h = False
-                if funciones.verificar_palabra(palabra_final) and len(palabra_final)>1:
+                if funciones.verificar_palabra(palabra_final) and len(palabra_final) > 1:
                     lista_coords = []
                     tamanio_pal = len(palabra_final)
                     for i in range(1, tamanio_pal+1):
