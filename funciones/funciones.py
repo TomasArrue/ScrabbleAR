@@ -209,7 +209,7 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
         total_letras = obtener_fichas(window, nro_de_boton, letras_atril_jugador,
                                       bolsa_total, total_letras)
         # generamos las fichas del rival tambien
-        letra_rival = crear_atril(bolsa_total, total_letras)
+        letra_rival, total_letras = crear_atril(bolsa_total, total_letras)
         letras_atril_rival.append(letra_rival)  # Las agregamos a su lista
 
     timer_running = not timer_running
@@ -388,6 +388,7 @@ def pedir_fichas(window, botones_usados, letras_atril_jugador, bolsa_total, tota
             window, i, letras_atril_jugador, bolsa_total, total_letras)
     for i in range(len(botones_usados)):
         botones_usados.pop()
+    return total_letras
 
 
 def letra_al_tablero(window, usados, botones_usados, letras_atril_jugador,
