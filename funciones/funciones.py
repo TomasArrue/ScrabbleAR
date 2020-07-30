@@ -127,9 +127,11 @@ def crear_atril(bolsa_total, total_letras):
         while bolsa_total[letra] == 0:
             letra = random.choice(list(bolsa_total.keys()))
             bolsa_total[letra] -= 1
-        #print('bolsa_total[letra] despues ',bolsa_total[letra] )    
-    total_letras -= 1
-    return letra, total_letras
+        #print('bolsa_total[letra] despues ',bolsa_total[letra] )
+        total_letras -= 1
+        return letra, total_letras
+    else:
+        return "*", 0
 
 
 def carga_nombre():
@@ -296,21 +298,22 @@ def volver_a_pintar_la_casilla(cord, window, dificult):
         elif list(cord) in tablero_actual["goldenrod"]:
             window[cord].update(button_color=('goldenrod', 'goldenrod'))
         elif list(cord) in tablero_actual["mediumseagreen"]:
-            window[cord].update(button_color=('mediumseagreen', 'mediumseagreen'))
+            window[cord].update(button_color=(
+                'mediumseagreen', 'mediumseagreen'))
         elif list(cord) in tablero_actual["skyblue"]:
-            window[cord].update(button_color=('skyblue', 'skyblue')) 
+            window[cord].update(button_color=('skyblue', 'skyblue'))
         else:
             window[cord].update(button_color=('grey', 'azure'))
     except KeyError:
         with open('./texto/dibujo.json', 'r') as p:
             dicc = json.load(p)
-            tablero_actual= dicc['Dibujo']
+            tablero_actual = dicc['Dibujo']
         if list(cord) in tablero_actual["gold"]:
             window[cord].update(button_color=('gold', 'gold'))
         elif list(cord) in tablero_actual["steel blue"]:
-            window[cord].update(button_color=('steel blue', 'steel blue'))    
+            window[cord].update(button_color=('steel blue', 'steel blue'))
         else:
-            window[cord].update(button_color=('grey', 'azure'))  
+            window[cord].update(button_color=('grey', 'azure'))
 
 
 def verificar_palabra(palabra):
@@ -394,14 +397,17 @@ def pedir_fichas(window, botones_usados, letras_atril_jugador, bolsa_total, tota
        El pedir fichas nos permite pedir la cantidad de fichas usadas en el
        ultimo turno hasta llegar a tener 7 nuevamente.
     """
-    for i in botones_usados:
-        letra = letras_atril_jugador[len(letras_atril_jugador)-1]
-        window[i].update(letra, disabled=False)
-        total_letras = obtener_fichas(
-            window, i, letras_atril_jugador, bolsa_total, total_letras)
-    for i in range(len(botones_usados)):
-        botones_usados.pop()
-    return total_letras
+    if len(botones_usados - 1) > total_letras:
+        return 0
+    else:
+        for i in botones_usados:
+            letra = letras_atril_jugador[len(letras_atril_jugador)-1]
+            window[i].update(letra, disabled=False)
+            total_letras = obtener_fichas(
+                window, i, letras_atril_jugador, bolsa_total, total_letras)
+        for i in range(len(botones_usados)):
+            botones_usados.pop()
+        return total_letras
 
 
 def letra_al_tablero(window, usados, botones_usados, letras_atril_jugador,
@@ -481,7 +487,7 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
 def formet(d):
     '''
        formato de texto para mostrar en el ranking
-    '''    
+    '''
     lista = []
     for k, v in d.items():
         variable = '{} {} --- '.format("Jugador:", v["Nombre"]) + '{} {} --- '.format(
