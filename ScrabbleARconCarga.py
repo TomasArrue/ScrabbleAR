@@ -37,8 +37,6 @@ def iniciar_juego():
     total_letras = 0
     for k, v in bolsa_total.items():
         total_letras += v
-    print(total_letras)
-    print('bolsa_total', bolsa_total)
 
     # atril_maquina = funciones.crear_atril(bolsa_total)
 
@@ -335,6 +333,7 @@ def iniciar_juego():
                 # window['-OUTPUT-'].update(
                 # '{:02d}:{:02d}'.format((counter//100)
                 # // 60, (counter // 100) % 60, counter % 100))
+
                 window['-OUTPUT-'].update('{:02d}:{:02d}'.format(
                     (counter // 500) // 60, (counter // 500) % 60, counter % 500))
                 counter += 1
