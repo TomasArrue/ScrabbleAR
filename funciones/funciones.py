@@ -1,3 +1,4 @@
+import sys
 import json
 import PySimpleGUI as sg
 import random
@@ -515,3 +516,26 @@ def horizontal(pos_actual, pos_anterior):
         return True
     else:
         return False
+
+
+def analizar_ganador(puntos_jugador_total,puntos_npc_total):
+    if puntos_jugador_total > puntos_npc_total:
+        sg.Popup('¡Ganaste!')
+        with open('./texto/ranking_test.json', 'r') as j:
+            dicc = json.load(j)
+        with open('./texto/ranking_test.json', 'w') as j:
+            id = str(random.choice(range(0, 10000)))
+            fecha = str(date.today())
+            dicc['id_'+id] = {"Dificultad": dificult.lower(),
+                                "Nombre": nombre,
+                                "Puntos": puntos_jugador_total,
+                                "Fecha": fecha
+                                }
+
+            json.dump(dicc, j, indent=4)
+
+    elif puntos_jugador_total == puntos_npc_total:
+        sg.Popup('¡Hubo un empate!')
+    else:
+        sg.Popup('¡YOU DIED!,GIT GUD M8')
+    sys.exit()        

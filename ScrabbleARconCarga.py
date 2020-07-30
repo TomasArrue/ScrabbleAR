@@ -110,6 +110,11 @@ def iniciar_juego():
         if event in (None, 'Salir'):
             break
         else:
+            if total_letras == 0:
+               sg.popup('No hay mas letras en la bolsa') 
+               funciones.analizar_ganador(puntos_jugador_total,puntos_npc_total)
+            if total_letras <= 7:   
+                window['Repartir De Nuevo'].update(disabled=True) 
             if turno == 'player_2':
                 puntos_npc, turno, total_letras = ia.turno_maquina(window,
                                                                    letras_atril_rival,
@@ -339,29 +344,10 @@ def iniciar_juego():
                 counter += 1
 
                 # 6000 equivale a 1 minuto, 60000 a 10 minutos
-                if counter == tiempo_limite or event == "Terminar partida" and cantidad_de_veces_Repartidas == 3 or total_letras == 0:
+                if counter == tiempo_limite or event == "Terminar partida" and cantidad_de_veces_Repartidas == 3:
                     timer_running = not timer_running
                     sg.Popup('termino el tiempo,analizando ganador:')
-                    if puntos_jugador_total > puntos_npc_total:
-                        sg.Popup('¡Ganaste!')
-                        with open('./texto/ranking_test.json', 'r') as j:
-                            dicc = json.load(j)
-                        with open('./texto/ranking_test.json', 'w') as j:
-                            id = str(random.choice(range(0, 10000)))
-                            fecha = str(date.today())
-                            dicc['id_'+id] = {"Dificultad": dificult.lower(),
-                                              "Nombre": nombre,
-                                              "Puntos": puntos_jugador_total,
-                                              "Fecha": fecha
-                                              }
-
-                            json.dump(dicc, j, indent=4)
-
-                    elif puntos_jugador_total == puntos_npc_total:
-                        sg.Popup('¡Hubo un empate!')
-                    else:
-                        sg.Popup('¡YOU DIED!,GIT GUD M8')
-                    sys.exit()
+                    funciones.analizar_ganador(puntos_jugador_total,puntos_npc_total)
 
             # aca va evaluar,evalua la palabra y resetea las orientaciones
             if event == "Evaluar":
