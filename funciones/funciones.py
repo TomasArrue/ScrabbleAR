@@ -238,6 +238,7 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
     asignar_colores_al_tablero(window, dic["otros"]["dificultad"])
     window['opcionesJuego'].update(visible=True)
     window['Comenzar'].update(visible=False)
+    window['TOP'].update(visible=False)
     window['Configuracion'].update(visible=False)
     window['Cargar Partida'].update(visible=False)
     window['Guardar Partida'].update(visible=True)
@@ -286,18 +287,28 @@ def volver_a_pintar_la_casilla(cord, window, dificult):
     with open('./texto/config.json', 'r') as p:
         dicc = json.load(p)
     # la dific tiene que vernir como parametro para saber que tablero abrir
-    tablero_actual = dicc[dificult]
-
-    if list(cord) in tablero_actual["indianred"]:
-        window[cord].update(button_color=('indianred', 'indianred'))
-    elif list(cord) in tablero_actual["goldenrod"]:
-        window[cord].update(button_color=('goldenrod', 'goldenrod'))
-    elif list(cord) in tablero_actual["mediumseagreen"]:
-        window[cord].update(button_color=('mediumseagreen', 'mediumseagreen'))
-    elif list(cord) in tablero_actual["skyblue"]:
-        window[cord].update(button_color=('skyblue', 'skyblue'))
-    else:
-        window[cord].update(button_color=('grey', 'azure'))
+    try:
+        tablero_actual = dicc[dificult]
+        if list(cord) in tablero_actual["indianred"]:
+            window[cord].update(button_color=('indianred', 'indianred'))
+        elif list(cord) in tablero_actual["goldenrod"]:
+            window[cord].update(button_color=('goldenrod', 'goldenrod'))
+        elif list(cord) in tablero_actual["mediumseagreen"]:
+            window[cord].update(button_color=('mediumseagreen', 'mediumseagreen'))
+        elif list(cord) in tablero_actual["skyblue"]:
+            window[cord].update(button_color=('skyblue', 'skyblue')) 
+        else:
+            window[cord].update(button_color=('grey', 'azure'))
+    except KeyError:
+        with open('./texto/dibujo.json', 'r') as p:
+            dicc = json.load(p)
+            tablero_actual= dicc['Dibujo']
+        if list(cord) in tablero_actual["gold"]:
+            window[cord].update(button_color=('gold', 'gold'))
+        elif list(cord) in tablero_actual["steel blue"]:
+            window[cord].update(button_color=('steel blue', 'steel blue'))    
+        else:
+            window[cord].update(button_color=('grey', 'azure'))  
 
 
 def verificar_palabra(palabra):
@@ -466,6 +477,9 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
 
 
 def formet(d):
+    '''
+       formato de texto para mostrar en el ranking
+    '''    
     lista = []
     for k, v in d.items():
         variable = '{} {} --- '.format("Jugador:", v["Nombre"]) + '{} {} --- '.format(

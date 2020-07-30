@@ -104,7 +104,7 @@ def iniciar_juego():
     while True:
         event, values = window.read(timeout=0)
         print(total_letras)
-        print(counter)
+        #print(counter)
         if event in (None, 'Salir'):
             break
         else:
@@ -131,7 +131,7 @@ def iniciar_juego():
                 if (ant) and (ant not in lugares_no_disponibles):
                     funciones.volver_a_pintar_la_casilla(
                         lugar, window, dificult)
-                    ant = lugar
+                ant = lugar
 
             # si el evento seria una letra y lugar tiene algo es xq marque algo
             if event in ("Boton_1", "Boton_1", "Boton_2", "Boton_3", "Boton_4",
@@ -161,13 +161,24 @@ def iniciar_juego():
                         v = funciones.vertical(
                             lugar, lugares_no_disponibles
                             [len(lugares_no_disponibles)-1])
-                        funciones.letra_al_tablero(window,
-                                                   letras_usadas_en_tablero,
-                                                   botones_usados,
-                                                   letras_atril_jugador,
-                                                   lugares_no_disponibles,
-                                                   letra,
-                                                   event, lugar)
+                        if h:    
+                            funciones.letra_al_tablero(window,
+                                                    letras_usadas_en_tablero,
+                                                    botones_usados,
+                                                    letras_atril_jugador,
+                                                    lugares_no_disponibles,
+                                                    letra,
+                                                    event, lugar)
+                        elif v:
+                            funciones.letra_al_tablero(window,
+                                                    letras_usadas_en_tablero,
+                                                    botones_usados,
+                                                    letras_atril_jugador,
+                                                    lugares_no_disponibles,
+                                                    letra,
+                                                    event, lugar)
+                        else:
+                            sg.popup('lugar invalido') 
 
                         # hay que declarar una variable dific para enviar en
                         # lugar de facil
@@ -229,8 +240,7 @@ def iniciar_juego():
                 start_time = int(round(time.time() * 100))
                 counter = int(round(time.time() * 100)) - start_time
                 nombre = funciones.carga_nombre()
-                [[window[i, j].update(button_color=('black', 'azure')) for j in range(
-                    max_Cant_Columnas)] for i in range(max_Cant_Filas)]
+                interfase.tablero_default(window)
                 timer_running, dificult, tiempo_limite, total_letras = funciones.cargar_juego(
                     window, values, timer_running, nombre, bolsa_total,
                     letras_atril_jugador, letras_atril_rival, total_letras)
@@ -248,6 +258,7 @@ def iniciar_juego():
                     sg.popup('Comienza la maquina!')
 
             elif event == "Cargar Partida":
+                interfase.tablero_default(window)
                 if os.path.isfile('./texto/save.json'):
                     counter, dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v = funciones.cargar_partida(
                         window, letras_atril_jugador, botones_usados, lugares_no_disponibles, l2_guar, letras_atril_rival)
@@ -347,10 +358,11 @@ def iniciar_juego():
 
             # aca va evaluar,evalua la palabra y resetea las orientaciones
             if event == "Evaluar":
+
                 palabra_final = "".join(letras_usadas_en_tablero)
                 v = False
                 h = False
-                if funciones.verificar_palabra(palabra_final):
+                if funciones.verificar_palabra(palabra_final) and len(palabra_final)>1:
                     lista_coords = []
                     tamanio_pal = len(palabra_final)
                     for i in range(1, tamanio_pal+1):

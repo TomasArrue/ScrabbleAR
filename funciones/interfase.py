@@ -109,3 +109,7 @@ def layout_general(fichas_rival, opciones_de_inicio, tablero, puntaje_y_tiempo,
                    justification='center', visible=False)],
     ]
     return layout
+
+def tablero_default(window):
+    [[window[i, j].update(button_color=('black', 'azure')) for j in range(
+        max_Cant_Columnas)] for i in range(max_Cant_Filas)]   
