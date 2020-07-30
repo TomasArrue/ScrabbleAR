@@ -187,8 +187,9 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
         palabras validas, pasa el turno
     """
     # pasa la lista a minusculas xq las permutaciones no las reconocen las
+    print("letras", letras_atril_rival)
     # letras en mayuscula
-    letras_atril_rival_aux = [x.lower() for x in letras_atril_rival]
+    letras_atril_rival_aux = [letra.lower() for letra in letras_atril_rival]
     # obtenemos una lista con las posibles palabras
     palabras_posibles = buscar_palabras_rival(
         letras_atril_rival_aux)
@@ -245,7 +246,8 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
         #####################################################################
         #####################################################################
         for i in range(len(letras_usadas_en_tablero)):
-            letra = funciones.crear_atril(bolsa_total, total_letras)
+            letra, total_letras = funciones.crear_atril(
+                bolsa_total, total_letras)
             letras_atril_rival.append(letra)
         letras_usadas_en_tablero.clear()
         return puntos_npc2, total_letras

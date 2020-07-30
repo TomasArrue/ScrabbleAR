@@ -103,7 +103,7 @@ def iniciar_juego():
 
     while True:
         event, values = window.read(timeout=0)
-
+        print(total_letras)
         print(counter)
         if event in (None, 'Salir'):
             break
@@ -369,7 +369,7 @@ def iniciar_juego():
                     letras_usadas_en_tablero.clear()
                     puntos_jugador = 0
                     window["puntaje_de_jugada"].update("0")
-                    funciones.pedir_fichas(
+                    total_letras = funciones.pedir_fichas(
                         window, botones_usados, letras_atril_jugador,
                         bolsa_total, total_letras)
                     turno = 'player_2'

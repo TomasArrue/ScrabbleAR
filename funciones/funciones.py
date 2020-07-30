@@ -127,7 +127,7 @@ def crear_atril(bolsa_total, total_letras):
             letra = random.choice(list(bolsa_total.keys()))
             bolsa_total[letra] -= 1
     total_letras -= 1
-    return letra
+    return letra, total_letras
 
 
 def carga_nombre():
@@ -319,7 +319,7 @@ def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total, tota
         nuestro atril, luego con la key del boton recibida como parametro
         actualizamos el valor del boton con la nueva letra
     """
-    letra = crear_atril(bolsa_total, total_letras)
+    letra, total_letras = crear_atril(bolsa_total, total_letras)
     letras_atril_jugador.append(letra)
     window[nro_de_boton].update(letra)
     window[nro_de_boton].update(button_color=('black', 'oldlace'))
