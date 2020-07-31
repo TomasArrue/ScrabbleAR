@@ -5,7 +5,7 @@ import os
 import random
 import json
 import PySimpleGUI as sg
-from funciones import funciones, ia, interfase
+from funciones import funciones, ia, interfase, ranking
 import time
 from datetime import date
 
@@ -113,8 +113,21 @@ def iniciar_juego():
             if total_letras == 0:
                sg.popup('No hay mas letras en la bolsa') 
                funciones.analizar_ganador(puntos_jugador_total,puntos_npc_total)
-            if total_letras <= 7:   
+
+            if total_letras <= 7 or cantidad_de_veces_Repartidas > 3 :   
                 window['Repartir De Nuevo'].update(disabled=True) 
+
+            if cantidad_de_veces_Repartidas == 3:   
+                window['Terminar partida'].update(disabled=False)
+                sg.popup('NO puedes repartir de nuevo otra vez! ',
+                'En caso de no tener palabras posibles ahora puedes terminar la partida')
+                # este aumento de la variable es para que no entre mas aca
+                cantidad_de_veces_Repartidas+=1
+
+            if event == "Terminar partida":
+                sg.popup('ok terminaste la partida, vamos a analizar el ganador')
+                funciones.analizar_ganador(puntos_jugador_total,puntos_npc_total)    
+
             if turno == 'player_2':
                 puntos_npc, turno, total_letras = ia.turno_maquina(window,
                                                                    letras_atril_rival,
@@ -281,57 +294,7 @@ def iniciar_juego():
                 funciones.configuracion_de_juego()
 
             elif event == "TOP":
-                with open('./texto/ranking_test.json', 'r') as r:
-                    dicc = json.load(r)
-
-                fac = {}
-                med = {}
-                dif = {}
-                for k, v in dicc.items():
-                    if v["Dificultad"] == 'facil':
-                        fac[k] = v
-                    elif v["Dificultad"] == 'medio':
-                        med[k] = v
-                    elif v["Dificultad"] == 'dificil':
-                        dif[k] = v
-
-                f = sorted(
-                    fac.items(), key=lambda k: k[1]["Puntos"], reverse=True)
-                m = sorted(
-                    med.items(), key=lambda k: k[1]["Puntos"], reverse=True)
-                d = sorted(
-                    dif.items(), key=lambda k: k[1]["Puntos"], reverse=True)
-                total = sorted(
-                    dicc.items(), key=lambda k: k[1]["Puntos"], reverse=True)
-
-                print(total)
-
-                rank_facil = funciones.formet(dict(f))
-                rank_medio = funciones.formet(dict(m))
-                rank_dif = funciones.formet(dict(d))
-                rank_total = funciones.formet(dict(total))
-
-                tab1_layout = [[sg.Listbox(values=rank_total, size=(50, 10))]]
-                tab2_layout = [[sg.Listbox(values=rank_facil, size=(50, 10))]]
-                tab3_layout = [[sg.Listbox(values=rank_medio, size=(50, 10))]]
-                tab4_layout = [[sg.Listbox(values=rank_dif, size=(50, 10))]]
-
-                layout2 = [
-                    [sg.Text('RANKING'), sg.Text('', key='_OUTPUT_')],
-                    [sg.TabGroup([
-                        [sg.Tab('Ranking General', tab1_layout, tooltip='tip'),
-                         sg.Tab('Ranking Facil', tab2_layout, tooltip='tip2'),
-                         sg.Tab('Ranking Medio', tab3_layout, tooltip='tip3'),
-                         sg.Tab('Ranking Dificil', tab4_layout, tooltip='tip4')]
-                    ])],
-                    [sg.Button('Salir')]
-                ]
-                window2 = sg.Window('TOP TEN').Layout(layout2)
-                while True:
-                    event2, values2 = window2.Read()
-                    if event2 == 'Salir' or event2 is None:
-                        break
-                window2.Close()
+               ranking.ranking()
 
             # esto es para que corra el tiempo
             elif timer_running:
@@ -344,7 +307,7 @@ def iniciar_juego():
                 counter += 1
 
                 # 6000 equivale a 1 minuto, 60000 a 10 minutos
-                if counter == tiempo_limite or event == "Terminar partida" and cantidad_de_veces_Repartidas == 3:
+                if counter == tiempo_limite:
                     timer_running = not timer_running
                     sg.Popup('termino el tiempo,analizando ganador:')
                     funciones.analizar_ganador(puntos_jugador_total,puntos_npc_total)

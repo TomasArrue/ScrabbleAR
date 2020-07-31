@@ -135,7 +135,6 @@ def crear_atril(bolsa_total, total_letras):
         while bolsa_total[letra] == 0:
             print("while", bolsa_total[letra])
             letra = random.choice(list(bolsa_total.keys()))
-
             print("while", bolsa_total[letra])
         bolsa_total[letra] -= 1
         # print('bolsa_total[letra] despues ',bolsa_total[letra] )
@@ -488,19 +487,6 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
         puntos = puntos // 2
     print('puntos 2..', puntos)
     return puntos
-
-
-def formet(d):
-    '''
-       formato de texto para mostrar en el ranking
-    '''
-    lista = []
-    for k, v in d.items():
-        variable = '{} {} --- '.format("Jugador:", v["Nombre"]) + '{} {} --- '.format(
-            "Puntaje:", v["Puntos"]) + '{} {}'.format("Fecha:", v["Fecha"])
-        lista.append(variable)
-    return lista
-
 
 def vertical(pos_actual, pos_anterior):
 

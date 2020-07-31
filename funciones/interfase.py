@@ -33,7 +33,8 @@ def ventana_opciones_de_juego():
         [sg.Button('Borrar', size=tamanio_Boton_De_Control),
          sg.Button("Evaluar", size=tamanio_Boton_De_Control),
          sg.Button("Repartir De Nuevo", size=tamanio_Boton_De_Control),
-         sg.Button("Terminar partida", size=tamanio_Boton_De_Control)
+         sg.Button("Terminar partida", size=tamanio_Boton_De_Control,
+          disabled=True)
          ]
     ]
     return opciones_de_juego
