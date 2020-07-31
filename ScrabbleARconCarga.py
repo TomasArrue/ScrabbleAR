@@ -5,7 +5,7 @@ import os
 import random
 import json
 import PySimpleGUI as sg
-from funciones import funciones, ia, interfase, ranking
+from funciones import funciones, ia, interfase, ranking, configuracion
 import time
 from datetime import date
 
@@ -292,7 +292,7 @@ def iniciar_juego():
                     sg.popup('No tenes partidas guardadas')
 
             elif event == "Configuracion":
-                funciones.configuracion_de_juego()
+                configuracion.configuracion_de_juego()
 
             elif event == "TOP":
                ranking.ranking()
