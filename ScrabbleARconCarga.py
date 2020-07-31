@@ -146,6 +146,7 @@ def iniciar_juego():
                     turno = 'player_1'    
                 print('turno vuelta', turno)
                 sg.Popup('Tu Turno!')
+
             if type(event) is tuple:
                 lugar = event
                 # pinto el lugar que estoy seleccionando,hago esa pregunta para
@@ -237,6 +238,7 @@ def iniciar_juego():
                             window["puntaje_de_jugada"].update(puntos_jugador)
                         else:
                             sg.Popup('Lugar Invalido')
+            
             # pide 7 fichas nuevas en la mano
             elif event == "Repartir De Nuevo":
                 if not botones_usados and cantidad_de_veces_Repartidas < 3 :
@@ -251,6 +253,7 @@ def iniciar_juego():
                     sg.Popup(
                         'Estas en medio de una mano, tenes q tener 7 fichas ',
                         ' para cambiar')
+            
             # quita elementos del tablero, desde el ultimo al primero
             elif event == "Borrar":
                 if puntos_jugador != 0:
