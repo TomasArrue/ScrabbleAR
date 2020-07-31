@@ -116,10 +116,8 @@ def iniciar_juego():
                sg.popup('No hay mas letras en la bolsa') 
                funciones.analizar_ganador(puntos_jugador_total,puntos_npc_total)
 
-            if cantidad_de_veces_Repartidas > 3 :   
-                window['Repartir De Nuevo'].update(disabled=True) 
-
             if cantidad_de_veces_Repartidas == 3:   
+                window['Repartir De Nuevo'].update(disabled=True) 
                 window['Terminar partida'].update(disabled=False)
                 sg.popup('NO puedes repartir de nuevo otra vez! ',
                 'En caso de no tener palabras posibles ahora puedes terminar la partida')
@@ -241,12 +239,14 @@ def iniciar_juego():
                             sg.Popup('Lugar Invalido')
             # pide 7 fichas nuevas en la mano
             elif event == "Repartir De Nuevo":
-                if not botones_usados:
+                if not botones_usados and cantidad_de_veces_Repartidas < 3 :
                     cantidad_de_veces_Repartidas, total_letras = funciones.repartir_fichas_de_nuevo(
                         window, cantidad_de_veces_Repartidas,
                         letras_atril_jugador,
                         bolsa_total, total_letras)
                     turno= 'player_2'   
+                elif cantidad_de_veces_Repartidas >= 3 :
+                    sg.Popup('Ya hiciste el maximo de cambios de mano')
                 else:
                     sg.Popup(
                         'Estas en medio de una mano, tenes q tener 7 fichas ',

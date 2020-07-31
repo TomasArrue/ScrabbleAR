@@ -5,6 +5,20 @@ from itertools import permutations
 from funciones import funciones
 
 
+
+def devolver_posibles(total_letras,letras_atril_rival,bolsa_total,letras_usadas_en_tablero):
+    """
+       En caso de no poder devolver el atril por compleo se devuelven las que
+       se puedan
+    """
+    while(total_letras>0):
+        letra, total_letras = funciones.crear_atril(
+            bolsa_total, total_letras)
+        letras_atril_rival.append(letra)   
+    letras_usadas_en_tablero.clear()  
+    return total_letras
+
+
 def validar_palabra(permutaciones, permutaciones_validas):
     """
         Valida palabras que esten dentro de las permutaciones
@@ -256,11 +270,7 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
             letras_usadas_en_tablero.clear()
         else:
             sg.popup('No se pueden reponer las fichas porque no hay suficiente en la bolsa') 
-            while(total_letras>0):
-                letra, total_letras = funciones.crear_atril(
-                    bolsa_total, total_letras)
-                letras_atril_rival.append(letra)   
-            letras_usadas_en_tablero.clear()    
+            total_letras=devolver_posibles(total_letras,letras_atril_rival,bolsa_total,letras_usadas_en_tablero)
         return puntos_npc2, total_letras, True
     except (IndexError):
         sg.Popup('La maquina no tiene palabras validas para',

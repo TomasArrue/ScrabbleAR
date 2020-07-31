@@ -276,19 +276,15 @@ def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas,
         Utilizamos este metodo para poder cambiar la mano de fichas que
         tenemos, y tenemos permitido hacerlo hasta 3 veces
     """
-    if (cantidad_de_veces_Repartidas < 3):
-        print('antes',bolsa_total,'total letras',total_letras)
-        total_letras=devolver_fichas_a_la_bolsa(letras_atril_jugador,bolsa_total,total_letras)
-        letras_atril_jugador.clear()
-        print('despues',bolsa_total,'total letrs',total_letras)
-        cantidad_de_veces_Repartidas = cantidad_de_veces_Repartidas+1
-        for i in range(7):  # carga de las 7 fichas
-            nro_de_boton = 'Boton_'+str(i+1)
-            total_letras = obtener_fichas(window, nro_de_boton,
-                                          letras_atril_jugador, bolsa_total, total_letras)
-    else:
-        sg.Popup('Ya hiciste el maximo de cambios de mano')
-
+    print('antes',bolsa_total,'total letras',total_letras)
+    total_letras=devolver_fichas_a_la_bolsa(letras_atril_jugador,bolsa_total,total_letras)
+    letras_atril_jugador.clear()
+    print('despues',bolsa_total,'total letrs',total_letras)
+    cantidad_de_veces_Repartidas = cantidad_de_veces_Repartidas+1
+    for i in range(7):  # carga de las 7 fichas
+        nro_de_boton = 'Boton_'+str(i+1)
+        total_letras = obtener_fichas(window, nro_de_boton,
+                                        letras_atril_jugador, bolsa_total, total_letras)
     return cantidad_de_veces_Repartidas, total_letras
 
 
