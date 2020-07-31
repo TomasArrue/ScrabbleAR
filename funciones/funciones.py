@@ -234,9 +234,11 @@ def verificar_palabra(palabra):
     """
         verificamos si la palabra es valida
     """
-    print(palabra)
+    
+    pal=palabra.lower()
+    
     # if palabra in verbs or ((palabra in lexicon) and (palabra in spelling)):
-    if palabra in lexicon and spelling or palabra in verbs:
+    if pal in lexicon and spelling or palabra in verbs:
         return(True)
     else:
         return(False)  # cambiar a false
@@ -249,6 +251,7 @@ def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total, tota
         nuestro atril, luego con la key del boton recibida como parametro
         actualizamos el valor del boton con la nueva letra
     """
+
     letra, total_letras = crear_atril(bolsa_total, total_letras)
     letras_atril_jugador.append(letra)
     window[nro_de_boton].update(letra)
@@ -256,13 +259,15 @@ def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total, tota
     window.Refresh()
     return total_letras
 
-def devolver_fichas_a_la_bolsa(letras_atril_jugador,bolsa_total):
+def devolver_fichas_a_la_bolsa(letras_atril_jugador,bolsa_total,total_letras):
     """
        devuelve la cantidad de fichas a la bolsa
     """
     for i in letras_atril_jugador:
         print ('letra',i)
         bolsa_total[i]+=1
+        total_letras+=1
+    return total_letras    
 
 
 def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas,
@@ -272,8 +277,10 @@ def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas,
         tenemos, y tenemos permitido hacerlo hasta 3 veces
     """
     if (cantidad_de_veces_Repartidas < 3):
-        devolver_fichas_a_la_bolsa(letras_atril_jugador,bolsa_total)
+        print('antes',bolsa_total,'total letras',total_letras)
+        total_letras=devolver_fichas_a_la_bolsa(letras_atril_jugador,bolsa_total,total_letras)
         letras_atril_jugador.clear()
+        print('despues',bolsa_total,'total letrs',total_letras)
         cantidad_de_veces_Repartidas = cantidad_de_veces_Repartidas+1
         for i in range(7):  # carga de las 7 fichas
             nro_de_boton = 'Boton_'+str(i+1)

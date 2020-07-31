@@ -35,6 +35,7 @@ def buscar_palabras_rival(letras_atril_rival):
             # vemos cuales de esas permutaciones son validas, y las vamos
             # guardando en una lista
             validar_palabra(permutaciones_temp, permutaciones_validas)
+    print ('permutaciones_validas, ',permutaciones_validas)       
     return permutaciones_validas
 
 
@@ -245,21 +246,31 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
         print('valor de total con modificador...', puntos_npc2)
         #####################################################################
         #####################################################################
-        for i in range(len(letras_usadas_en_tablero)):
-            letra, total_letras = funciones.crear_atril(
-                bolsa_total, total_letras)
-            letras_atril_rival.append(letra)
-        letras_usadas_en_tablero.clear()
-        return puntos_npc2, total_letras
+        if len(letras_usadas_en_tablero)<=total_letras:
+            print(total_letras)
+            print(len(letras_usadas_en_tablero),' ',total_letras)
+            for i in range(len(letras_usadas_en_tablero)):
+                letra, total_letras = funciones.crear_atril(
+                    bolsa_total, total_letras)
+                letras_atril_rival.append(letra)
+            letras_usadas_en_tablero.clear()
+        else:
+            sg.popup('No se pueden reponer las fichas porque no hay suficiente en la bolsa') 
+            while(total_letras>0):
+                letra, total_letras = funciones.crear_atril(
+                    bolsa_total, total_letras)
+                letras_atril_rival.append(letra)   
+            letras_usadas_en_tablero.clear()    
+        return puntos_npc2, total_letras, True
     except (IndexError):
         sg.Popup('La maquina no tiene palabras validas para',
                  'colocar pasa el turno')
-        return 0, total_letras
+        return 0, total_letras, False
 
 
 def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
                   turno, bolsa_total, letras_usadas_en_tablero, dificultad,
-                  l2_guar, total_letras):
+                  l2_guar, total_letras, disponbles):
     """
         Comienza el turno de la maquina:
         - La maquina tendra 3 intentos para buscar lugar disponible,
@@ -270,9 +281,10 @@ def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
     """
     sg.Popup('Turno de la maquina')
     cant = 0  # intentos para buscar palabras en cada turno inicializa en 0
-    puntos, total_letras = buscar_lugar_disponible(window, letras_atril_rival,
+    puntos, total_letras, disponibles = buscar_lugar_disponible(window, letras_atril_rival,
                                                    lugar, lugares_no_disponibles, cant,
                                                    bolsa_total, letras_usadas_en_tablero,
                                                    dificultad, l2_guar, total_letras)
+                                               
 
-    return puntos, 'player_1', total_letras
+    return puntos, 'player_1', total_letras, disponibles

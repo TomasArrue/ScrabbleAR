@@ -102,20 +102,21 @@ def iniciar_juego():
     turno = ''
     tiempo_limite = 0
     start_time = int(round(time.time() * 100))
+    disponibles = True # variable para saber si la maquina tiene palabras disponibles
 
     while True:
         event, values = window.read(timeout=0)
-        #print(total_letras)
+        print(total_letras)
         
         # print(counter)
         if event in (None, 'Salir'):
             break
         else:
-            if total_letras == 0:
+            if total_letras < 1:
                sg.popup('No hay mas letras en la bolsa') 
                funciones.analizar_ganador(puntos_jugador_total,puntos_npc_total)
 
-            if total_letras <= 7 or cantidad_de_veces_Repartidas > 3 :   
+            if cantidad_de_veces_Repartidas > 3 :   
                 window['Repartir De Nuevo'].update(disabled=True) 
 
             if cantidad_de_veces_Repartidas == 3:   
@@ -130,15 +131,21 @@ def iniciar_juego():
                 funciones.analizar_ganador(puntos_jugador_total,puntos_npc_total)    
 
             if turno == 'player_2':
-                puntos_npc, turno, total_letras = ia.turno_maquina(window,
-                                                                   letras_atril_rival,
-                                                                   lugar,
-                                                                   lugares_no_disponibles,
-                                                                   turno, bolsa_total,
-                                                                   letras_usadas_en_tablero,
-                                                                   dificult, l2_guar, total_letras)
-                puntos_npc_total = puntos_npc_total+puntos_npc
-                window["puntaje_PC"].update(puntos_npc_total)
+                if disponibles:
+                    print(total_letras)
+                    puntos_npc, turno, total_letras, disponibles = ia.turno_maquina(window,
+                                                                    letras_atril_rival,
+                                                                    lugar,
+                                                                    lugares_no_disponibles,
+                                                                    turno, bolsa_total,
+                                                                    letras_usadas_en_tablero,
+                                                                    dificult, l2_guar, total_letras,
+                                                                    disponibles)
+                    puntos_npc_total = puntos_npc_total+puntos_npc
+                    window["puntaje_PC"].update(puntos_npc_total)
+                else:
+                    sg.popup('la maquina no puede jugar mas!')
+                    turno = 'player_1'    
                 print('turno vuelta', turno)
                 sg.Popup('Tu Turno!')
             if type(event) is tuple:
@@ -147,7 +154,6 @@ def iniciar_juego():
                 # que no trate  de marcar un casillero que ya tiene una letra
                 if lugar not in lugares_no_disponibles:
                     window[lugar].update(button_color=('white', 'darkgrey'))
-                    print(lugar)
                 # digo que si anterior tiene algo que despinte lo anterior
                 if (ant) and (ant not in lugares_no_disponibles):
                     funciones.volver_a_pintar_la_casilla(
@@ -336,12 +342,17 @@ def iniciar_juego():
                     # print('puntos_jugador',puntos_jugador)
                     window["puntaje_propio"].update(puntos_jugador_total)
                     l2_guar.extend(letras_usadas_en_tablero)
-                    letras_usadas_en_tablero.clear()
+                    
                     puntos_jugador = 0
                     window["puntaje_de_jugada"].update("0")
-                    total_letras = funciones.pedir_fichas(
-                        window, botones_usados, letras_atril_jugador,
-                        bolsa_total, total_letras)
+                    print(len(letras_usadas_en_tablero),' ',total_letras)
+                    if len(letras_usadas_en_tablero)<=total_letras:
+                        total_letras = funciones.pedir_fichas(
+                            window, botones_usados, letras_atril_jugador,
+                            bolsa_total, total_letras)
+                    else:
+                        sg.popup('No se pueden reponer las fichas porque no hay suficiente en la bolsa')
+                    letras_usadas_en_tablero.clear()    
                     turno = 'player_2'
                 else:
                     print("palabra invalida")
