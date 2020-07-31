@@ -104,7 +104,7 @@ def iniciar_juego():
     while True:
         event, values = window.read(timeout=0)
         # print(total_letras)
-        # print(counter)
+        print(counter)
         if event in (None, 'Salir'):
             break
         else:

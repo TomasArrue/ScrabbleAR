@@ -139,7 +139,7 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
 
     tiempo_limite = dic['tiempo']['minutos']
     print('tiempo', tiempo_limite)
-    tiempo_limite *= 6000
+    tiempo_limite *= 3600
     print('tiemp d', tiempo_limite)
     return timer_running, very_dificult, tiempo_limite, total_letras
 
