@@ -1,6 +1,6 @@
 import PySimpleGUI as sg
 import random
-from pattern.text.es import lexicon, spelling, verbs
+from pattern.text.es import lexicon, spelling, verbs, parse, split
 from itertools import permutations
 from funciones import funciones
 
@@ -19,21 +19,28 @@ def devolver_posibles(total_letras, letras_atril_rival, bolsa_total,
     return total_letras
 
 
-def validar_palabra(permutaciones, permutaciones_validas):
+def validar_palabra(permutaciones, permutaciones_validas, dificultad):
     """
         Valida palabras que esten dentro de las permutaciones
         pasadas por parametro y las agrega a una lista de palabras
         validas
     """
     for pal in permutaciones:
-        if pal in lexicon and spelling or pal in verbs:
-            # if pal in verbs or ((pal in lexicon) and (pal in spelling)):
-            # si la palabra es valida va a la lista de permutaciones
-            permutaciones_validas.append(pal)
+        if dificultad == 'facil':
+        #if pal in lexicon and spelling or pal in verbs:
+            if pal in verbs or ((pal in lexicon) and (pal in spelling)):
+                # si la palabra es valida va a la lista de permutaciones
+                permutaciones_validas.append(pal)
+        else:  
+            # print(dificultad)
+            palabra=parse(pal).split('/')  
+            # print(palabra)
+            if  (pal in verbs) or (palabra[1] == 'JJ'): # si palabra es verbo o adjetivo es valida
+                permutaciones_validas.append(pal)     
     return permutaciones_validas
 
 
-def buscar_palabras_rival(letras_atril_rival):
+def buscar_palabras_rival(letras_atril_rival, dificultad):
     """
         recibe el las fichas del atril del rival y genera una lista de
         palabras validas
@@ -48,7 +55,7 @@ def buscar_palabras_rival(letras_atril_rival):
                 "".join(p) for p in permutations(letras_atril_rival, i+1)}
             # vemos cuales de esas permutaciones son validas, y las vamos
             # guardando en una lista
-            validar_palabra(permutaciones_temp, permutaciones_validas)
+            validar_palabra(permutaciones_temp, permutaciones_validas, dificultad)
     print('permutaciones_validas, ', permutaciones_validas)
     return permutaciones_validas
 
@@ -207,7 +214,7 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
     letras_atril_rival_aux = [letra.lower() for letra in letras_atril_rival]
     # obtenemos una lista con las posibles palabras
     palabras_posibles = buscar_palabras_rival(
-        letras_atril_rival_aux)
+        letras_atril_rival_aux, dificultad)
     # intentamos obtener alguna palabra de la lista, en caso que la lista no
     # tenga palabras validas
     # se pasa el turno

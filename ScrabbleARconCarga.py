@@ -329,7 +329,7 @@ def iniciar_juego():
                 palabra_final = "".join(letras_usadas_en_tablero)
                 v = False
                 h = False
-                if funciones.verificar_palabra(palabra_final) and len(palabra_final) > 1:
+                if funciones.verificar_palabra(palabra_final,dificult) and len(palabra_final) > 1:
                     lista_coords = []
                     tamanio_pal = len(palabra_final)
                     for i in range(1, tamanio_pal+1):

@@ -2,7 +2,7 @@ import sys
 import json
 import PySimpleGUI as sg
 import random
-from pattern.text.es import lexicon, spelling, verbs
+from pattern.text.es import lexicon, spelling, verbs, parse, split
 from datetime import date
 
 
@@ -233,16 +233,25 @@ def volver_a_pintar_la_casilla(cord, window, dificult):
             window[cord].update(button_color=('grey', 'azure'))
 
 
-def verificar_palabra(palabra):
+def verificar_palabra(palabra,dificultad):
     """
         verificamos si la palabra es valida
     """
     pal = palabra.lower()
-    # if palabra in verbs or ((palabra in lexicon) and (palabra in spelling)):
-    if pal in lexicon and spelling or pal in verbs:
-        return(True)
-    else:
-        return(False)  # cambiar a false
+    
+    if dificultad == 'facil':
+        if pal in verbs or ((pal in lexicon) and (pal in spelling)):
+            return(True)
+        else:
+            return(False) 
+    else:  
+        pal=parse(palabra).split('/')  
+        # print(pal)
+        if  (palabra in verbs) or (pal[1] == 'JJ'): # si palabra es verbo o adjetivo es valida
+            return(True)
+        else:
+            return(False)   
+        
 
 
 def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total,
