@@ -5,17 +5,17 @@ from itertools import permutations
 from funciones import funciones
 
 
-
-def devolver_posibles(total_letras,letras_atril_rival,bolsa_total,letras_usadas_en_tablero):
+def devolver_posibles(total_letras, letras_atril_rival, bolsa_total,
+                      letras_usadas_en_tablero):
     """
        En caso de no poder devolver el atril por compleo se devuelven las que
        se puedan
     """
-    while(total_letras>0):
+    while(total_letras > 0):
         letra, total_letras = funciones.crear_atril(
             bolsa_total, total_letras)
-        letras_atril_rival.append(letra)   
-    letras_usadas_en_tablero.clear()  
+        letras_atril_rival.append(letra)
+    letras_usadas_en_tablero.clear()
     return total_letras
 
 
@@ -49,7 +49,7 @@ def buscar_palabras_rival(letras_atril_rival):
             # vemos cuales de esas permutaciones son validas, y las vamos
             # guardando en una lista
             validar_palabra(permutaciones_temp, permutaciones_validas)
-    print ('permutaciones_validas, ',permutaciones_validas)       
+    print('permutaciones_validas, ', permutaciones_validas)
     return permutaciones_validas
 
 
@@ -260,9 +260,9 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
         print('valor de total con modificador...', puntos_npc2)
         #####################################################################
         #####################################################################
-        if len(letras_usadas_en_tablero)<=total_letras:
+        if len(letras_usadas_en_tablero) <= total_letras:
             print(total_letras)
-            print(len(letras_usadas_en_tablero),' ',total_letras)
+            print(len(letras_usadas_en_tablero), ' ', total_letras)
             for i in range(len(letras_usadas_en_tablero)):
                 letra, total_letras = funciones.crear_atril(
                     bolsa_total, total_letras)
@@ -294,7 +294,5 @@ def turno_maquina(window, letras_atril_rival, lugar, lugares_no_disponibles,
     puntos, total_letras, disponibles = buscar_lugar_disponible(window, letras_atril_rival,
                                                    lugar, lugares_no_disponibles, cant,
                                                    bolsa_total, letras_usadas_en_tablero,
-                                                   dificultad, l2_guar, total_letras)
-                                               
-
+                                                   dificultad, l2_guar, total_letras)                                
     return puntos, 'player_1', total_letras, disponibles

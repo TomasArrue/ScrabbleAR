@@ -1,12 +1,14 @@
 import json
 import PySimpleGUI as sg
 
+
 def config_por_defecto():
     with open('./texto/config_default.json', 'r') as cf:
         c = json.load(cf)
     with open('./texto/config.json', 'w') as cf:
         json.dump(c, cf, indent=4)
     sg.popup('Se restauro la configuracion inicial :D')
+
 
 def configuracion_de_juego():
     """
@@ -44,7 +46,7 @@ def configuracion_de_juego():
 
         event3, values3 = window3.Read()
 
-        if event3 == 'CANCELAR' or event3 == None:
+        if event3 == 'CANCELAR' or event3 is None:
             break
 
         if event3 == 'CONFIGURACION POR DEFECTO':

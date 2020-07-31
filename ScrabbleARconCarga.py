@@ -28,9 +28,6 @@ def iniciar_juego():
 
     # INICIA EL PROGRAMA PRINCIPAL
 
-    # TAMANIO DE LA MATRIZ
-    max_Cant_Filas = max_Cant_Columnas = 15
-
     test_de_archivo()
 
     bolsa_total = funciones.crear_bolsita_total()
@@ -91,8 +88,7 @@ def iniciar_juego():
     # escribi para despintar la casilla
     # anterior cuando toco una nueva
     ant = ()
-    lugar = ()                    # marca la casilla actual
-    layout2 = layout              # esto no se que es
+    lugar = ()       # marca la casilla actual
     # cantidad de veces de pedidos para hacer el cambio de fichas totales
     cantidad_de_veces_Repartidas = 0
     timer_running, counter = False, 0  # seteos para el timer,
@@ -100,33 +96,36 @@ def iniciar_juego():
     h = False
     v = False
     turno = ''
+    nombre = ''
     tiempo_limite = 0
     start_time = int(round(time.time() * 100))
-    disponibles = True # variable para saber si la maquina tiene palabras disponibles
+    disponibles = True  # variable para saber si la maquina tiene palabras disp
 
     while True:
         event, values = window.read(timeout=0)
-        print(total_letras)
-        
+        # print(total_letras)
         # print(counter)
         if event in (None, 'Salir'):
             break
         else:
             if total_letras < 1:
-               sg.popup('No hay mas letras en la bolsa') 
-               funciones.analizar_ganador(puntos_jugador_total,puntos_npc_total)
+                sg.popup('No hay mas letras en la bolsa')
+                funciones.analizar_ganador(puntos_jugador_total,
+                                           puntos_npc_total, nombre, dificult)
 
-            if cantidad_de_veces_Repartidas == 3:   
-                window['Repartir De Nuevo'].update(disabled=True) 
+            if cantidad_de_veces_Repartidas == 3:
+                window['Repartir De Nuevo'].update(disabled=True)
                 window['Terminar partida'].update(disabled=False)
                 sg.popup('NO puedes repartir de nuevo otra vez! ',
-                'En caso de no tener palabras posibles ahora puedes terminar la partida')
+                         'En caso de no tener palabras posibles ahora puedes',
+                         ' terminar la partida')
                 # este aumento de la variable es para que no entre mas aca
-                cantidad_de_veces_Repartidas+=1
+                cantidad_de_veces_Repartidas += 1
 
             if event == "Terminar partida":
                 sg.popup('ok terminaste la partida, vamos a analizar el ganador')
-                funciones.analizar_ganador(puntos_jugador_total,puntos_npc_total)    
+                funciones.analizar_ganador(puntos_jugador_total,
+                                           puntos_npc_total, nombre, dificult)
 
             if turno == 'player_2':
                 if disponibles:
@@ -143,7 +142,7 @@ def iniciar_juego():
                     window["puntaje_PC"].update(puntos_npc_total)
                 else:
                     sg.popup('la maquina no puede jugar mas!')
-                    turno = 'player_1'    
+                    turno = 'player_1'
                 print('turno vuelta', turno)
                 sg.Popup('Tu Turno!')
 
@@ -238,7 +237,6 @@ def iniciar_juego():
                             window["puntaje_de_jugada"].update(puntos_jugador)
                         else:
                             sg.Popup('Lugar Invalido')
-            
             # pide 7 fichas nuevas en la mano
             elif event == "Repartir De Nuevo":
                 if not botones_usados and cantidad_de_veces_Repartidas < 3 :
@@ -246,14 +244,13 @@ def iniciar_juego():
                         window, cantidad_de_veces_Repartidas,
                         letras_atril_jugador,
                         bolsa_total, total_letras)
-                    turno= 'player_2'   
+                    turno = 'player_2'
                 elif cantidad_de_veces_Repartidas >= 3 :
                     sg.Popup('Ya hiciste el maximo de cambios de mano')
                 else:
                     sg.Popup(
                         'Estas en medio de una mano, tenes q tener 7 fichas ',
                         ' para cambiar')
-            
             # quita elementos del tablero, desde el ultimo al primero
             elif event == "Borrar":
                 if puntos_jugador != 0:
@@ -274,10 +271,12 @@ def iniciar_juego():
                 interfase.tablero_default(window)
                 if total_letras >= 14:
                     timer_running, dificult, tiempo_limite, total_letras = funciones.cargar_juego(
-                        window, values, timer_running, nombre, bolsa_total, letras_atril_jugador, letras_atril_rival, total_letras)
+                        window, values, timer_running, nombre, bolsa_total,
+                        letras_atril_jugador, letras_atril_rival, total_letras)
                 else:
                     sg.popup(
-                        "La cantidad de letras registras es invalida,configure el juego nuevamente")
+                        'La cantidad de letras registras es invalida,',
+                        ' configure el juego nuevamente')
                     sys.exit()
                 print('tiempo_limite', tiempo_limite)
                 # random para ver quien inicia la partida
@@ -305,7 +304,7 @@ def iniciar_juego():
                 configuracion.configuracion_de_juego()
 
             elif event == "TOP":
-               ranking.ranking()
+                ranking.ranking()
 
             # esto es para que corra el tiempo
             elif timer_running:
@@ -314,18 +313,19 @@ def iniciar_juego():
                 # // 60, (counter // 100) % 60, counter % 100))
 
                 window['-OUTPUT-'].update('{:02d}:{:02d}'.format(
-                    (counter // 100) // 60, (counter // 100) % 60, counter % 100))
+                    (counter // 60) // 60, (counter // 60) % 60))
                 counter += 1
 
                 # 6000 equivale a 1 minuto, 60000 a 10 minutos
                 if counter == tiempo_limite:
                     timer_running = not timer_running
                     sg.Popup('termino el tiempo,analizando ganador:')
-                    funciones.analizar_ganador(puntos_jugador_total,puntos_npc_total)
+                    funciones.analizar_ganador(puntos_jugador_total,
+                                               puntos_npc_total, nombre,
+                                               dificult)
 
             # aca va evaluar,evalua la palabra y resetea las orientaciones
             if event == "Evaluar":
-
                 palabra_final = "".join(letras_usadas_en_tablero)
                 v = False
                 h = False
@@ -336,26 +336,21 @@ def iniciar_juego():
                         element = lugares_no_disponibles[-i]
                         lista_coords.append(element)
                     lista_coords.reverse()
-                    # print("palabra valida")
                     puntos_jugador_total_aux = funciones.puntos_de_palabra(
                         dificult, lista_coords, puntos_jugador)
                     puntos_jugador_total += puntos_jugador_total_aux
-                    # print('total',puntos_jugador_total )
-                    # print('total auzx',puntos_jugador_total_aux )
-                    # print('puntos_jugador',puntos_jugador)
                     window["puntaje_propio"].update(puntos_jugador_total)
                     l2_guar.extend(letras_usadas_en_tablero)
-                    
                     puntos_jugador = 0
                     window["puntaje_de_jugada"].update("0")
-                    print(len(letras_usadas_en_tablero),' ',total_letras)
-                    if len(letras_usadas_en_tablero)<=total_letras:
+                    if len(letras_usadas_en_tablero) <= total_letras:
                         total_letras = funciones.pedir_fichas(
                             window, botones_usados, letras_atril_jugador,
                             bolsa_total, total_letras)
                     else:
-                        sg.popup('No se pueden reponer las fichas porque no hay suficiente en la bolsa')
-                    letras_usadas_en_tablero.clear()    
+                        sg.popup('No se pueden reponer las fichas porque no',
+                                 ' hay suficiente en la bolsa')
+                    letras_usadas_en_tablero.clear()
                     turno = 'player_2'
                 else:
                     print("palabra invalida")

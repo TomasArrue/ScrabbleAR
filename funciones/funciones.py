@@ -3,6 +3,7 @@ import json
 import PySimpleGUI as sg
 import random
 from pattern.text.es import lexicon, spelling, verbs
+from datetime import date
 
 
 def dibujo_python(window):
@@ -39,9 +40,9 @@ def crear_atril(bolsa_total, total_letras):
         letra = random.choice(list(bolsa_total.keys()))
         # print('bolsa_total[letra]',bolsa_total[letra] )
         while bolsa_total[letra] == 0:
-            #print("while", bolsa_total[letra])
+            # print("while", bolsa_total[letra])
             letra = random.choice(list(bolsa_total.keys()))
-            #print("while", bolsa_total[letra])
+            # print("while", bolsa_total[letra])
         bolsa_total[letra] -= 1
         # print('bolsa_total[letra] despues ',bolsa_total[letra] )
     total_letras -= 1
@@ -124,7 +125,8 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
     for i in range(7):  # carga de las 7 fichas al inicio
 
         nro_de_boton = 'Boton_'+str(i+1)
-        total_letras = obtener_fichas(window, nro_de_boton, letras_atril_jugador,
+        total_letras = obtener_fichas(window, nro_de_boton,
+                                      letras_atril_jugador,
                                       bolsa_total, total_letras)
         # generamos las fichas del rival tambien
         letra_rival, total_letras = crear_atril(bolsa_total, total_letras)
@@ -136,8 +138,9 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
         dic = json.load(t)
 
     tiempo_limite = dic['tiempo']['minutos']
-    tiempo_limite *= 600
-
+    print('tiempo', tiempo_limite)
+    tiempo_limite *= 6000
+    print('tiemp d', tiempo_limite)
     return timer_running, very_dificult, tiempo_limite, total_letras
 
 
@@ -234,17 +237,16 @@ def verificar_palabra(palabra):
     """
         verificamos si la palabra es valida
     """
-    
-    pal=palabra.lower()
-    
+    pal = palabra.lower()
     # if palabra in verbs or ((palabra in lexicon) and (palabra in spelling)):
-    if pal in lexicon and spelling or palabra in verbs:
+    if pal in lexicon and spelling or pal in verbs:
         return(True)
     else:
         return(False)  # cambiar a false
 
 
-def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total, total_letras):
+def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total,
+                   total_letras):
     """
         Este metodo nos da una ficha "nueva".
         Generamos una letra random la agregamos a la lista de letras de
@@ -259,15 +261,17 @@ def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total, tota
     window.Refresh()
     return total_letras
 
-def devolver_fichas_a_la_bolsa(letras_atril_jugador,bolsa_total,total_letras):
+
+def devolver_fichas_a_la_bolsa(letras_atril_jugador, bolsa_total,
+                               total_letras):
     """
        devuelve la cantidad de fichas a la bolsa
     """
     for i in letras_atril_jugador:
-        print ('letra',i)
-        bolsa_total[i]+=1
-        total_letras+=1
-    return total_letras    
+        print('letra', i)
+        bolsa_total[i] += 1
+        total_letras += 1
+    return total_letras
 
 
 def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas,
@@ -276,15 +280,17 @@ def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas,
         Utilizamos este metodo para poder cambiar la mano de fichas que
         tenemos, y tenemos permitido hacerlo hasta 3 veces
     """
-    print('antes',bolsa_total,'total letras',total_letras)
-    total_letras=devolver_fichas_a_la_bolsa(letras_atril_jugador,bolsa_total,total_letras)
+    # print('antes',bolsa_total,'total letras',total_letras)
+    total_letras = devolver_fichas_a_la_bolsa(letras_atril_jugador,
+                                              bolsa_total, total_letras)
     letras_atril_jugador.clear()
-    print('despues',bolsa_total,'total letrs',total_letras)
+    # print('despues',bolsa_total,'total letrs',total_letras)
     cantidad_de_veces_Repartidas = cantidad_de_veces_Repartidas+1
     for i in range(7):  # carga de las 7 fichas
         nro_de_boton = 'Boton_'+str(i+1)
         total_letras = obtener_fichas(window, nro_de_boton,
-                                        letras_atril_jugador, bolsa_total, total_letras)
+                                      letras_atril_jugador, bolsa_total,
+                                      total_letras)
     return cantidad_de_veces_Repartidas, total_letras
 
 
@@ -318,7 +324,8 @@ def quitar_fichas(window, usados, botones_usados, no_disponibles,
         sg.Popup('No hay fichas para borrar')
 
 
-def pedir_fichas(window, botones_usados, letras_atril_jugador, bolsa_total, total_letras):
+def pedir_fichas(window, botones_usados, letras_atril_jugador, bolsa_total,
+                 total_letras):
     """
        El pedir fichas nos permite pedir la cantidad de fichas usadas en el
        ultimo turno hasta llegar a tener 7 nuevamente.
@@ -423,7 +430,7 @@ def horizontal(pos_actual, pos_anterior):
         return False
 
 
-def analizar_ganador(puntos_jugador_total,puntos_npc_total):
+def analizar_ganador(puntos_jugador_total, puntos_npc_total, nombre, dificult):
     if puntos_jugador_total > puntos_npc_total:
         sg.Popup('¡Ganaste!')
         with open('./texto/ranking_test.json', 'r') as j:
@@ -432,10 +439,9 @@ def analizar_ganador(puntos_jugador_total,puntos_npc_total):
             id = str(random.choice(range(0, 10000)))
             fecha = str(date.today())
             dicc['id_'+id] = {"Dificultad": dificult.lower(),
-                                "Nombre": nombre,
-                                "Puntos": puntos_jugador_total,
-                                "Fecha": fecha
-                                }
+                              "Nombre": nombre,
+                              "Puntos": puntos_jugador_total,
+                              "Fecha": fecha}
 
             json.dump(dicc, j, indent=4)
 
@@ -443,4 +449,4 @@ def analizar_ganador(puntos_jugador_total,puntos_npc_total):
         sg.Popup('¡Hubo un empate!')
     else:
         sg.Popup('¡YOU DIED!,GIT GUD M8')
-    sys.exit()        
+    sys.exit()
