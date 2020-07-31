@@ -133,9 +133,9 @@ def crear_atril(bolsa_total, total_letras):
         letra = random.choice(list(bolsa_total.keys()))
         # print('bolsa_total[letra]',bolsa_total[letra] )
         while bolsa_total[letra] == 0:
-            print("while", bolsa_total[letra])
+            #print("while", bolsa_total[letra])
             letra = random.choice(list(bolsa_total.keys()))
-            print("while", bolsa_total[letra])
+            #print("while", bolsa_total[letra])
         bolsa_total[letra] -= 1
         # print('bolsa_total[letra] despues ',bolsa_total[letra] )
     total_letras -= 1
@@ -350,6 +350,14 @@ def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total, tota
     window.Refresh()
     return total_letras
 
+def devolver_fichas_a_la_bolsa(letras_atril_jugador,bolsa_total):
+    """
+       devuelve la cantidad de fichas a la bolsa
+    """
+    for i in letras_atril_jugador:
+        print ('letra',i)
+        bolsa_total[i]+=1
+
 
 def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas,
                              letras_atril_jugador, bolsa_total, total_letras):
@@ -357,8 +365,9 @@ def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas,
         Utilizamos este metodo para poder cambiar la mano de fichas que
         tenemos, y tenemos permitido hacerlo hasta 3 veces
     """
-    letras_atril_jugador.clear()
     if (cantidad_de_veces_Repartidas < 3):
+        devolver_fichas_a_la_bolsa(letras_atril_jugador,bolsa_total)
+        letras_atril_jugador.clear()
         cantidad_de_veces_Repartidas = cantidad_de_veces_Repartidas+1
         for i in range(7):  # carga de las 7 fichas
             nro_de_boton = 'Boton_'+str(i+1)

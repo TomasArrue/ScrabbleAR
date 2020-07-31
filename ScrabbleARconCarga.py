@@ -239,6 +239,7 @@ def iniciar_juego():
                         window, cantidad_de_veces_Repartidas,
                         letras_atril_jugador,
                         bolsa_total, total_letras)
+                    turno= 'player_2'   
                 else:
                     sg.Popup(
                         'Estas en medio de una mano, tenes q tener 7 fichas ',

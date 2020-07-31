@@ -7,9 +7,9 @@ max_Cant_Filas = max_Cant_Columnas = 15  # tamanio de las matrices
 
 
 def ventan_principal():
-    '''
+    """
         genera el layout con la ventana de inicio del juego
-    '''    
+    """    
     opciones_de_inicio = [
         [sg.Button("Comenzar", size=tamanio_Boton_De_Control)],
         [sg.Button("Cargar Partida", size=tamanio_Boton_De_Control)],
@@ -25,10 +25,10 @@ def ventan_principal():
 
 
 def ventana_opciones_de_juego():
-    '''
+    """
         se genera el layout con los botones que se podran usar durante la 
         partida
-    '''     
+    """     
     opciones_de_juego = [
         [sg.Button('Borrar', size=tamanio_Boton_De_Control),
          sg.Button("Evaluar", size=tamanio_Boton_De_Control),
@@ -41,9 +41,9 @@ def ventana_opciones_de_juego():
 
 
 def fichas_propias():
-    '''
+    """
         Genera el layout con las 7 fichas nuestras
-    '''     
+    """     
     fichas = [[sg.Text("Tus Fichas: ", font=("Chalkboard", 15))],
               [sg.Button('', button_color=('black', 'oldlace'),
                          size=(tamanio_Boton_De_Fichas),
@@ -54,9 +54,9 @@ def fichas_propias():
 
 
 def fichas_cpu():
-    '''
+    """
         Genera el layout con las 7 fichas del rival
-    '''     
+    """     
     fichas_rival = [[sg.Text("Fichas CPU: ", font=("Chalkboard", 15))],
                     [sg.Button('??', size=(
                         tamanio_Boton_De_Fichas), key=("Boton_2_"+str(i+1)),
@@ -66,9 +66,9 @@ def fichas_cpu():
 
 
 def indice_modificadores():
-    '''
+    """
         Genera el layout con los indicadores de puntos de cada modificador
-    '''    
+    """    
     botones_indieces = [
         [sg.Button(size=(1, 1), button_color=(
             'black', 'indianred')), sg.Text('Letra +5')],
@@ -83,9 +83,9 @@ def indice_modificadores():
 
 
 def tablero():
-    '''
+    """
        genera el layout del tablero, con calumnas x filas de botones
-    '''      
+    """      
     tablero = [
         [sg.Button('', button_color=('grey', 'azure'), size=(1, 1), key=(i, j),
                    pad=(0, 0)) for j in range(max_Cant_Columnas)]
@@ -95,9 +95,9 @@ def tablero():
 
 
 def marcadore_puntaje_tiempo():
-    '''
+    """
         genera el layout de los indicadores de puntajes y tiempo
-    '''     
+    """     
     puntaje_y_tiempo = [
         [sg.Text(' ------ TU PUNTAJE ES:', key='tu_puntaje_propio',
                  size=(20, 1), font=("Chalkboard", 10))],
@@ -115,9 +115,9 @@ def marcadore_puntaje_tiempo():
 
 def layout_general(fichas_rival, opciones_de_inicio, tablero, puntaje_y_tiempo,
                    botones_indieces, fichas, opciones_de_juego):
-    '''
+    """
         genera el layout principal con los demas generados previamente
-    '''                      
+    """                      
     layout = [
         # [sg.Text("Scrabble", size=(8, 1), justification='left',
         #        font=("Chalkboard", 25), relief=sg.RELIEF_RIDGE)],
@@ -138,8 +138,8 @@ def layout_general(fichas_rival, opciones_de_inicio, tablero, puntaje_y_tiempo,
 
 
 def tablero_default(window):
-    '''
+    """
        vuelve el tablero a su estado inicial para poder pintarse de 0
-    '''  
+    """  
     [[window[i, j].update(button_color=('black', 'azure')) for j in range(
         max_Cant_Columnas)] for i in range(max_Cant_Filas)]

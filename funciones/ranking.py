@@ -2,9 +2,9 @@ import json
 import PySimpleGUI as sg
 
 def formet(d):
-    '''
+    """
        formato de texto para mostrar en el ranking
-    '''
+    """
     lista = []
     for k, v in d.items():
         variable = '{} {} --- '.format("Jugador:", v["Nombre"]) + '{} {} --- '.format(
@@ -13,10 +13,10 @@ def formet(d):
     return lista
 
 def ranking():
-    '''
+    """
         generamos una ventana con el ranking en sus diferentes dificulades
          y un ranking general
-    ''' 
+    """ 
     with open('./texto/ranking_test.json', 'r') as r:
         dicc = json.load(r)
 
