@@ -65,6 +65,8 @@ def carga_nombre():
         event, values = window3.read()
         if event == 'Listo' or event is None:
             nombre = values['name']
+            if nombre == "":
+                nombre = "null"
             break
     window3.close()
 

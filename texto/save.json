@@ -1,42 +1,54 @@
 {
-    "nombre": "tom",
+    "nombre": "fds",
     "puntos": {
         "puntos_jugador": 0,
         "puntos_jugador_total": 0,
-        "puntos_npc": 0,
-        "puntos_npc_total": 0
+        "puntos_npc": 9,
+        "puntos_npc_total": 9
     },
     "atril": {
         "atril_jugador": [
             "F",
-            "D",
-            "B",
+            "R",
+            "Y",
             "C",
-            "C",
-            "E",
-            "D"
+            "P",
+            "I",
+            "L"
         ]
     },
     "atril_rival": {
         "letras_atril_rival": [
+            "T",
             "D",
-            "B",
+            "U",
+            "K",
+            "D",
             "E",
-            "C",
-            "F",
-            "E",
-            "A"
+            "Z"
         ]
     },
     "otros": {
-        "lugares": [],
-        "letras_usadas": [],
+        "lugares": [
+            [
+                12,
+                4
+            ],
+            [
+                12,
+                5
+            ]
+        ],
+        "letras_usadas": [
+            "N",
+            "H"
+        ],
         "dificultad": "Facil",
         "hor": false,
         "ver": false
     },
     "tiempo": {
-        "reloj": 13164,
+        "reloj": 673,
         "fin": 36000
     }
 }
