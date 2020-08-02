@@ -131,13 +131,13 @@ def iniciar_juego():
                 if disponibles:
                     print(total_letras)
                     puntos_npc, turno, total_letras, disponibles = ia.turno_maquina(window,
-                                                                                    letras_atril_rival,
-                                                                                    lugar,
-                                                                                    lugares_no_disponibles,
-                                                                                    turno, bolsa_total,
-                                                                                    letras_usadas_en_tablero,
-                                                                                    dificult, l2_guar, total_letras,
-                                                                                    disponibles)
+                                                                    letras_atril_rival,
+                                                                    lugar,
+                                                                    lugares_no_disponibles,
+                                                                    turno, bolsa_total,
+                                                                    letras_usadas_en_tablero,
+                                                                    dificult, l2_guar, total_letras,
+                                                                    disponibles)
                     puntos_npc_total = puntos_npc_total+puntos_npc
                     window["puntaje_PC"].update(puntos_npc_total)
                 else:
@@ -239,13 +239,13 @@ def iniciar_juego():
                             sg.Popup('Lugar Invalido')
             # pide 7 fichas nuevas en la mano
             elif event == "Repartir De Nuevo":
-                if not botones_usados and cantidad_de_veces_Repartidas < 3:
+                if not botones_usados and cantidad_de_veces_Repartidas < 3 :
                     cantidad_de_veces_Repartidas, total_letras = funciones.repartir_fichas_de_nuevo(
                         window, cantidad_de_veces_Repartidas,
                         letras_atril_jugador,
                         bolsa_total, total_letras)
                     turno = 'player_2'
-                elif cantidad_de_veces_Repartidas >= 3:
+                elif cantidad_de_veces_Repartidas >= 3 :
                     sg.Popup('Ya hiciste el maximo de cambios de mano')
                 else:
                     sg.Popup(
@@ -294,8 +294,8 @@ def iniciar_juego():
             elif event == "Cargar Partida":
                 interfase.tablero_default(window)
                 if os.path.isfile('./texto/save.json'):
-                    counter, dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v = funciones.cargar_partida(
-                        window, letras_atril_jugador, botones_usados, lugares_no_disponibles, l2_guar, letras_atril_rival)
+                    counter, dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v, tiempo_limite = funciones.cargar_partida(
+                        window, letras_atril_jugador, botones_usados, lugares_no_disponibles, l2_guar, letras_atril_rival, tiempo_limite)
                     timer_running = not timer_running
                 else:
                     sg.popup('No tenes partidas guardadas')
@@ -325,11 +325,11 @@ def iniciar_juego():
                                                dificult)
 
             # aca va evaluar,evalua la palabra y resetea las orientaciones
-            if event == "Evaluar" and len(botones_usados) >= 1:
+            if event == "Evaluar":
                 palabra_final = "".join(letras_usadas_en_tablero)
                 v = False
                 h = False
-                if funciones.verificar_palabra(palabra_final, dificult) and len(palabra_final) > 1:
+                if funciones.verificar_palabra(palabra_final,dificult) and len(palabra_final) > 1:
                     lista_coords = []
                     tamanio_pal = len(palabra_final)
                     for i in range(1, tamanio_pal+1):
@@ -379,7 +379,7 @@ def iniciar_juego():
                                         "letras_usadas": l2_guar,
                                         "dificultad": dificult, "hor": h,
                                         "ver": v}
-                        dic['tiempo'] = {'reloj': counter}
+                        dic['tiempo'] = {'reloj': counter, 'fin': tiempo_limite}
                         json.dump(dic, j, indent=4)
                 else:
                     sg.Popup(
@@ -391,3 +391,4 @@ def iniciar_juego():
 
 if __name__ == "__main__":
     iniciar_juego()
+
