@@ -1,5 +1,5 @@
 {
-    "nombre": "",
+    "nombre": "tom",
     "puntos": {
         "puntos_jugador": 0,
         "puntos_jugador_total": 0,
@@ -8,24 +8,24 @@
     },
     "atril": {
         "atril_jugador": [
-            "C",
-            "A",
-            "B",
             "F",
+            "D",
             "B",
-            "A",
-            "A"
+            "C",
+            "C",
+            "E",
+            "D"
         ]
     },
     "atril_rival": {
         "letras_atril_rival": [
-            "A",
-            "C",
-            "A",
-            "B",
+            "D",
             "B",
             "E",
-            "E"
+            "C",
+            "F",
+            "E",
+            "A"
         ]
     },
     "otros": {
@@ -36,7 +36,7 @@
         "ver": false
     },
     "tiempo": {
-        "reloj": 1004,
-        "fin": 10800
+        "reloj": 13164,
+        "fin": 36000
     }
 }

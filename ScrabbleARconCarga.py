@@ -294,8 +294,20 @@ def iniciar_juego():
             elif event == "Cargar Partida":
                 interfase.tablero_default(window)
                 if os.path.isfile('./texto/save.json'):
-                    counter, dificult, puntos_jugador, puntos_jugador_total, puntos_npc, puntos_npc_total, h, v, tiempo_limite = funciones.cargar_partida(
-                        window, letras_atril_jugador, botones_usados, lugares_no_disponibles, l2_guar, letras_atril_rival, tiempo_limite)
+                    dic = funciones.cargar_partida(window, letras_atril_jugador,
+                                                   botones_usados,
+                                                   lugares_no_disponibles,
+                                                   l2_guar, letras_atril_rival)
+                        counter = dic['tiempo']['reloj']
+                        dificult = dic["otros"]["dificultad"]
+                        puntos_jugador = dic["puntos"]["puntos_jugador"]
+                        puntos_jugador_total = dic["puntos"]
+                        ["puntos_jugador_total"]
+                        puntos_npc = dic["puntos"]["puntos_npc"]
+                        puntos_npc_total = dic["puntos"]["puntos_npc_total"]
+                        h = dic["otros"]["hor"]
+                        v = dic["otros"]["ver"]
+                        tiempo_limite = dic["tiempo"]["fin"]
                     timer_running = not timer_running
                 else:
                     sg.popup('No tenes partidas guardadas')

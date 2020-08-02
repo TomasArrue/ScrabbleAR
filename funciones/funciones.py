@@ -197,9 +197,7 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
             dic["otros"]["letras_usadas"][i],
             button_color=('black', 'oldlace'))
 
-    return dic['tiempo']['reloj'], dic["otros"]["dificultad"], dic["puntos"]["puntos_jugador"],
-    dic["puntos"]["puntos_jugador_total"], dic["puntos"]["puntos_npc"], dic["puntos"][
-        "puntos_npc_total"], dic["otros"]["hor"], dic["otros"]["ver"], dic["tiempo"]["fin"]
+    return dic
 
 
 def volver_a_pintar_la_casilla(cord, window, dificult):
