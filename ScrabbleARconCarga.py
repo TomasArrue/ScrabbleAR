@@ -391,6 +391,7 @@ def iniciar_juego():
                                         "ver": v}
                         dic['tiempo'] = {'reloj': counter, 'fin': tiempo_limite}
                         json.dump(dic, j, indent=4)
+                        sg.Popup("Partida Guardada")
                 else:
                     sg.Popup(
                         "Solo se puede guardar una partida teniendo",
