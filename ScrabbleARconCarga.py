@@ -16,12 +16,10 @@ def test_de_archivo():
         necesarios para que corra el juego, en caso que no se encuentre
         se aborta el programa y se informa de la falta del archivo
     '''
-    try:
-        with open('./texto/config.json', 'r'):
-            pass
-    except FileNotFoundError:
-        sg.Popup('ERROR ---> config.json NO ENCONTRADO')
-        sys.exit()
+    if os.path.isfile('./texto/config.json'):
+        return True
+    else:
+        return False
 
 
 def iniciar_juego():
@@ -402,4 +400,8 @@ def iniciar_juego():
 
 
 if __name__ == "__main__":
-    iniciar_juego()
+    if test_de_archivo():
+        iniciar_juego()
+    else:
+        sg.Popup('ERROR ---> config.json NO ENCONTRADO')
+        sys.exit()

@@ -239,7 +239,7 @@ def verificar_palabra(palabra, dificultad):
     """
     pal = palabra.lower()
 
-    if dificultad == 'facil':
+    if dificultad == 'Facil':
         if pal in verbs or ((pal in lexicon) and (pal in spelling)):
             return(True)
         else:
