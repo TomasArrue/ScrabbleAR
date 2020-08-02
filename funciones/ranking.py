@@ -9,7 +9,8 @@ def formet(d):
     for k, v in d.items():
         variable = '{} {} --- '.format("Jugador:", v["Nombre"]) + '{} {} --- '.format(
             "Puntaje:", v["Puntos"]) + '{} {}'.format("Fecha:", v["Fecha"])
-        lista.append(variable)
+        if len(lista)<10:    
+            lista.append(variable)
     return lista
 
 def ranking():
