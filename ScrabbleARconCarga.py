@@ -59,11 +59,13 @@ def iniciar_juego():
     # MARCADORES DE TIEMPO Y PUNTAJE
     puntaje_y_tiempo = interfase.marcadore_puntaje_tiempo()
 
+    pista = interfase.opciones_pista()
+
     # LAYOUT CON LA CARGA GENERAL DE LA VENTANA
     layout = interfase.layout_general(fichas_rival, opciones_de_inicio,
                                       tablero, puntaje_y_tiempo,
                                       botones_indieces, fichas,
-                                      opciones_de_juego)
+                                      opciones_de_juego, pista)
 
     # SE GENERA LA VENTANA
     window = sg.Window('SCRABBLE AR', layout, default_button_element_size=(
@@ -98,6 +100,7 @@ def iniciar_juego():
     tiempo_limite = 0
     start_time = int(round(time.time() * 100))
     disponibles = True  # variable para saber si la maquina tiene palabras disp
+    contador_pistas = 0
 
     while True:
         event, values = window.read(timeout=0)
@@ -142,6 +145,12 @@ def iniciar_juego():
                     sg.popup('la maquina no puede jugar mas!')
                     turno = 'player_1'
                 print('turno vuelta', turno)
+                if (dificult == 'Dificil'): # si es difiultad dificil solo se podra usar 3 veces las pistas
+                    if (contador_pistas < 3): 
+                        window['boton_pista'].update(disabled=False)
+                else: # si es dificultad media se podra usar hasta 6 veces
+                    if (contador_pistas < 6): 
+                        window['boton_pista'].update(disabled=False)
                 sg.Popup('Tu Turno!')
 
             if type(event) is tuple:
@@ -316,6 +325,15 @@ def iniciar_juego():
             elif event == "TOP":
                 ranking.ranking()
 
+            elif event == 'boton_pista':
+                lista=ia.buscar_palabras_rival(letras_atril_jugador,dificult)
+                window['boton_pista'].update(disabled=True) # se podra usar la pistsa una vez por turno en nivel medio
+                contador_pistas += 1
+                if (len(lista))>0:
+                  sg.popup('Con las letras que tienes puedes formar palabras! :D')
+                else:  
+                  sg.popup('Con las letras que tienes NO puedes formar palabras! :(')  
+
             # esto es para que corra el tiempo
             elif timer_running:
                 # window['-OUTPUT-'].update(
@@ -339,7 +357,7 @@ def iniciar_juego():
                 palabra_final = "".join(letras_usadas_en_tablero)
                 v = False
                 h = False
-                if funciones.verificar_palabra(palabra_final, dificult) and len(palabra_final) > 1:
+                if  len(palabra_final) > 1 and funciones.verificar_palabra(palabra_final, dificult) :
                     lista_coords = []
                     tamanio_pal = len(palabra_final)
                     for i in range(1, tamanio_pal+1):

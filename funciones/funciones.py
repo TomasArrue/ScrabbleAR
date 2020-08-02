@@ -123,6 +123,8 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
     window['atrilFichasRival'].update(visible=True)
     window['atrilFichas'].update(visible=True)
     window['dificultad'].update(visible=False)
+    if very_dificult != 'Facil':
+        window['pista'].update(visible=True)
 
     for i in range(7):  # carga de las 7 fichas al inicio
 
@@ -247,10 +249,10 @@ def verificar_palabra(palabra, dificultad):
         else:
             return(False)
     else:
-        pal = parse(palabra).split('/')
+        pala = parse(pal).split('/')
         # print(pal)
         # si palabra es verbo o adjetivo es valida
-        if (palabra in verbs) or (pal[1] == 'JJ'):
+        if (pal in verbs) or (pala[1] == 'JJ'):
             return(True)
         else:
             return(False)
@@ -412,7 +414,7 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
     int_green = green.intersection(set(no_disponibles))
     int_blue = blue.intersection(set(no_disponibles))
 
-    # print('cordenas verdes..', int_green)
+    print('cordenas verdes..', int_green)
     # print('cordenas no disponibles..', no_disponibles)
 
     for element in int_green:

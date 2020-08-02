@@ -112,9 +112,16 @@ def marcadore_puntaje_tiempo():
     ]
     return puntaje_y_tiempo
 
+def opciones_pista():
+    pistas = [
+        [sg.Text('Pista:')],           
+        [sg.Button(size=(1,1),key='boton_pista', 
+                   image_filename='./image/pista.png',
+                   border_width=1)]]
+    return pistas               
 
 def layout_general(fichas_rival, opciones_de_inicio, tablero, puntaje_y_tiempo,
-                   botones_indieces, fichas, opciones_de_juego):
+                   botones_indieces, fichas, opciones_de_juego, pista):
     """
         genera el layout principal con los demas generados previamente
     """
@@ -133,6 +140,7 @@ def layout_general(fichas_rival, opciones_de_inicio, tablero, puntaje_y_tiempo,
                    visible=False)],
         [sg.Column(opciones_de_juego, key='opcionesJuego',
                    justification='center', visible=False)],
+        [sg.Column(pista, key='pista',visible=False )]                      
     ]
     return layout
 
