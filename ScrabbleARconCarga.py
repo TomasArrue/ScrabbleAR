@@ -399,8 +399,6 @@ def iniciar_juego():
     window.close()
 
 
-sg.Popup('ERROR ---> config.json NO ENCONTRADO')
-sys.exit()
 if __name__ == "__main__":
     if test_de_archivo():
         iniciar_juego()
