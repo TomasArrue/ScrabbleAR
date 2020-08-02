@@ -197,8 +197,9 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
             dic["otros"]["letras_usadas"][i],
             button_color=('black', 'oldlace'))
 
-    return dic['tiempo']['reloj'], dic["otros"]["dificultad"], dic["puntos"]["puntos_jugador"], dic["puntos"]["puntos_jugador_total"],
-           dic["puntos"]["puntos_npc"], dic["puntos"]["puntos_npc_total"], dic["otros"]["hor"], dic["otros"]["ver"], dic["tiempo"]["fin"]
+    return dic['tiempo']['reloj'], dic["otros"]["dificultad"], dic["puntos"]["puntos_jugador"],
+    dic["puntos"]["puntos_jugador_total"], dic["puntos"]["puntos_npc"], dic["puntos"][
+        "puntos_npc_total"], dic["otros"]["hor"], dic["otros"]["ver"], dic["tiempo"]["fin"]
 
 
 def volver_a_pintar_la_casilla(cord, window, dificult):
@@ -234,7 +235,7 @@ def volver_a_pintar_la_casilla(cord, window, dificult):
             window[cord].update(button_color=('grey', 'azure'))
 
 
-def verificar_palabra(palabra,dificultad):
+def verificar_palabra(palabra, dificultad):
     """
         verificamos si la palabra es valida
     """
@@ -246,13 +247,13 @@ def verificar_palabra(palabra,dificultad):
         else:
             return(False)
     else:
-        pal=parse(palabra).split('/')
+        pal = parse(palabra).split('/')
         # print(pal)
-        if  (palabra in verbs) or (pal[1] == 'JJ'): # si palabra es verbo o adjetivo es valida
+        # si palabra es verbo o adjetivo es valida
+        if (palabra in verbs) or (pal[1] == 'JJ'):
             return(True)
         else:
             return(False)
-
 
 
 def obtener_fichas(window, nro_de_boton, letras_atril_jugador, bolsa_total,
