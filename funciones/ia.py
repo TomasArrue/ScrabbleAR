@@ -26,8 +26,8 @@ def validar_palabra(permutaciones, permutaciones_validas, dificultad):
         validas
     """
     for pal in permutaciones:
-        if dificultad == 'facil':
-        #if pal in lexicon and spelling or pal in verbs:
+        if dificultad == 'Facil':   
+            #if pal in lexicon and spelling or pal in verbs:
             if pal in verbs or ((pal in lexicon) and (pal in spelling)):
                 # si la palabra es valida va a la lista de permutaciones
                 permutaciones_validas.append(pal)
