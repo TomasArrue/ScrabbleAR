@@ -1,128 +1,116 @@
 {
-    "facil": {
-        "HZH": {
-            "Puntos": 54,
-            "Fecha": 0
-        },
-        "SDJ": {
-            "Puntos": 13,
-            "Fecha": 0
-        },
-        "PTM": {
-            "Puntos": 19,
-            "Fecha": 0
-        },
-        "KZL": {
-            "Puntos": 45,
-            "Fecha": 0
-        },
-        "JIZ": {
-            "Puntos": 99,
-            "Fecha": 0
-        },
-        "LSO": {
-            "Puntos": 8,
-            "Fecha": 0
-        },
-        "XRG": {
-            "Puntos": 16,
-            "Fecha": 0
-        },
-        "GZZ": {
-            "Puntos": 18,
-            "Fecha": 0
-        },
-        "RWB": {
-            "Puntos": 97,
-            "Fecha": 0
-        },
-        "TOL": {
-            "Puntos": 15,
-            "Fecha": 0
-        }
+    "jugador_1": {
+        "Dificultad": "facil",
+        "Nombre": "Lucas",
+        "Puntos": 54,
+        "Fecha": 0
     },
-    "medio": {
-        "YSK": {
-            "Puntos": 89,
-            "Fecha": 0
-        },
-        "SIR": {
-            "Puntos": 83,
-            "Fecha": 0
-        },
-        "YXO": {
-            "Puntos": 93,
-            "Fecha": 0
-        },
-        "PVC": {
-            "Puntos": 28,
-            "Fecha": 0
-        },
-        "PNN": {
-            "Puntos": 49,
-            "Fecha": 0
-        },
-        "DEH": {
-            "Puntos": 91,
-            "Fecha": 0
-        },
-        "BHR": {
-            "Puntos": 34,
-            "Fecha": 0
-        },
-        "XUE": {
-            "Puntos": 73,
-            "Fecha": 0
-        },
-        "ZYQ": {
-            "Puntos": 91,
-            "Fecha": 0
-        },
-        "GCM": {
-            "Puntos": 97,
-            "Fecha": 0
-        }
+    "jugador_2": {
+        "Dificultad": "facil",
+        "Nombre": "Pepe",
+        "Puntos": 70,
+        "Fecha": 0
     },
-    "dificil": {
-        "QEF": {
-            "Puntos": 7,
-            "Fecha": 0
-        },
-        "WKI": {
-            "Puntos": 28,
-            "Fecha": 0
-        },
-        "PSN": {
-            "Puntos": 28,
-            "Fecha": 0
-        },
-        "AOP": {
-            "Puntos": 50,
-            "Fecha": 0
-        },
-        "UNU": {
-            "Puntos": 18,
-            "Fecha": 0
-        },
-        "RPM": {
-            "Puntos": 43,
-            "Fecha": 0
-        },
-        "DWK": {
-            "Puntos": 86,
-            "Fecha": 0
-        },
-        "IHV": {
-            "Puntos": 78,
-            "Fecha": 0
-        },
-        "MPM": {
-            "Puntos": 8,
-            "Fecha": 0
-        },
-        "DSL": {
-            "Puntos": 23,
-            "Fecha": 0
-        }
+    "jugador_3": {
+        "Dificultad": "facil",
+        "Nombre": "Tomy",
+        "Puntos": 34,
+        "Fecha": 0
+    },
+    "jugador_4": {
+        "Dificultad": "medio",
+        "Nombre": "Dani",
+        "Puntos": 54,
+        "Fecha": 0
+    },
+    "jugador_5": {
+        "Dificultad": "medio",
+        "Nombre": "Rick",
+        "Puntos": 70,
+        "Fecha": 0
+    },
+    "jugador_6": {
+        "Dificultad": "medio",
+        "Nombre": "Morty",
+        "Puntos": 34,
+        "Fecha": 0
+    },
+    "jugador_7": {
+        "Dificultad": "medio",
+        "Nombre": "Sumi",
+        "Puntos": 124,
+        "Fecha": 0
+    },
+    "jugador_8": {
+        "Dificultad": "dificil",
+        "Nombre": "Pedoro",
+        "Puntos": 70,
+        "Fecha": 0
+    },
+    "jugador_9": {
+        "Dificultad": "dificil",
+        "Nombre": "Rosa",
+        "Puntos": 34,
+        "Fecha": 0
+    },
+    "id_7955": {
+        "Dificultad": "facil",
+        "Nombre": "Fili",
+        "Puntos": 20,
+        "Fecha": 0
+    },
+    "id_5049": {
+        "Dificultad": "facil",
+        "Nombre": "Tindi",
+        "Puntos": 7,
+        "Fecha": 0
+    },
+    "id_8268": {
+        "Dificultad": "facil",
+        "Nombre": "Dfs",
+        "Puntos": 24,
+        "Fecha": 0
+    },
+    "id_6041": {
+        "Dificultad": "facil",
+        "Nombre": "Tomy",
+        "Puntos": 58,
+        "Fecha": 0
+    },
+    "id_2528": {
+        "Dificultad": "facil",
+        "Nombre": "Sada",
+        "Puntos": 45,
+        "Fecha": 0
+    },
+    "id_785": {
+        "Dificultad": "facil",
+        "Nombre": "Rick",
+        "Puntos": 101,
+        "Fecha": 0
+    },
+    "id_8153": {
+        "Dificultad": "facil",
+        "Nombre": "Rol",
+        "Puntos": 11,
+        "Fecha": 0
+    },
+    "id_753": {
+        "Dificultad": "facil",
+        "Nombre": "Scra",
+        "Puntos": 13,
+        "Fecha": "2020-07-29"
+    },
+    "id_8204": {
+        "Dificultad": "facil",
+        "Nombre": "Pep",
+        "Puntos": 106,
+        "Fecha": "2020-08-02"
+    },
+    "id_966": {
+        "Dificultad": "facil",
+        "Nombre": "sda",
+        "Puntos": 12,
+        "Fecha": "2020-08-02"
     }
 }

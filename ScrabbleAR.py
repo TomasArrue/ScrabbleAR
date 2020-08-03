@@ -19,8 +19,8 @@ def test_de_archivo():
     return os.path.isfile('./texto/config.json') and (
            os.path.isfile('./texto/config_default.json')) and (
            os.path.isfile('./texto/dibujo.json')) and (
-           os.path.isfile('./texto/ranking.json')) and (
-           os.path.isfile('./texto/ranking_test.json'))
+           os.path.isfile('./texto/ranking.json'))
+        
     
 
 

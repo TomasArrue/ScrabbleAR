@@ -18,7 +18,7 @@ def ranking():
         generamos una ventana con el ranking en sus diferentes dificulades
          y un ranking general
     """ 
-    with open('./texto/ranking_test.json', 'r') as r:
+    with open('./texto/ranking.json', 'r') as r:
         dicc = json.load(r)
 
     fac = {}

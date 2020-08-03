@@ -453,9 +453,9 @@ def horizontal(pos_actual, pos_anterior):
 def analizar_ganador(puntos_jugador_total, puntos_npc_total, nombre, dificult):
     if puntos_jugador_total > puntos_npc_total:
         sg.Popup('¡Ganaste!')
-        with open('./texto/ranking_test.json', 'r') as j:
+        with open('./texto/ranking.json', 'r') as j:
             dicc = json.load(j)
-        with open('./texto/ranking_test.json', 'w') as j:
+        with open('./texto/ranking.json', 'w') as j:
             id = str(random.choice(range(0, 10000)))
             fecha = str(date.today())
             dicc['id_'+id] = {"Dificultad": dificult.lower(),
