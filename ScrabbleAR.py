@@ -103,7 +103,7 @@ def iniciar_juego():
     contador_pistas = 0
 
     while True:
-        event, values = window.read(timeout=0)
+        event, values = window.read(timeout=10)
         # print(total_letras)
         # print(counter)
         if event in (None, 'Salir'):
