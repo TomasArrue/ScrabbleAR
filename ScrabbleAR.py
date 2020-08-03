@@ -16,10 +16,8 @@ def test_de_archivo():
         necesarios para que corra el juego, en caso que no se encuentre
         se aborta el programa y se informa de la falta del archivo
     '''
-    if os.path.isfile('./texto/config.json'):
-        return True
-    else:
-        return False
+    return os.path.isfile('./texto/config.json')
+
 
 
 def iniciar_juego():
@@ -109,11 +107,12 @@ def iniciar_juego():
         if event in (None, 'Salir'):
             break
         else:
+            
             if total_letras < 1:
                 sg.popup('No hay mas letras en la bolsa')
                 funciones.analizar_ganador(puntos_jugador_total,
                                            puntos_npc_total, nombre, dificult)
-
+            
             if cantidad_de_veces_Repartidas == 3:
                 window['Repartir De Nuevo'].update(disabled=True)
                 window['Terminar partida'].update(disabled=False)
@@ -244,6 +243,7 @@ def iniciar_juego():
                             window["puntaje_de_jugada"].update(puntos_jugador)
                         else:
                             sg.Popup('Lugar Invalido')
+
             # pide 7 fichas nuevas en la mano
             elif event == "Repartir De Nuevo":
                 if not botones_usados and cantidad_de_veces_Repartidas < 3:
@@ -258,6 +258,7 @@ def iniciar_juego():
                     sg.Popup(
                         'Estas en medio de una mano, tenes q tener 7 fichas ',
                         ' para cambiar')
+
             # quita elementos del tablero, desde el ultimo al primero
             elif event == "Borrar":
                 if puntos_jugador != 0:

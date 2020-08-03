@@ -1,54 +1,54 @@
 {
-    "nombre": "fds",
+    "nombre": "gdfg",
     "puntos": {
         "puntos_jugador": 0,
         "puntos_jugador_total": 0,
-        "puntos_npc": 9,
-        "puntos_npc_total": 9
+        "puntos_npc": -4,
+        "puntos_npc_total": -4
     },
     "atril": {
         "atril_jugador": [
-            "F",
-            "R",
+            "H",
+            "M",
             "Y",
-            "C",
-            "P",
-            "I",
-            "L"
+            "D",
+            "V",
+            "E",
+            "X"
         ]
     },
     "atril_rival": {
         "letras_atril_rival": [
-            "T",
+            "G",
+            "L",
+            "W",
             "D",
-            "U",
-            "K",
-            "D",
-            "E",
-            "Z"
+            "N",
+            "C",
+            "O"
         ]
     },
     "otros": {
         "lugares": [
             [
-                12,
-                4
+                6,
+                14
             ],
             [
-                12,
-                5
+                7,
+                14
             ]
         ],
         "letras_usadas": [
-            "N",
-            "H"
+            "F",
+            "R"
         ],
-        "dificultad": "Facil",
+        "dificultad": "Dificil",
         "hor": false,
         "ver": false
     },
     "tiempo": {
-        "reloj": 673,
+        "reloj": 522,
         "fin": 36000
     }
 }

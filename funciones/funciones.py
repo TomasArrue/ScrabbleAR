@@ -4,6 +4,7 @@ import PySimpleGUI as sg
 import random
 from pattern.text.es import lexicon, spelling, verbs, parse, split
 from datetime import date
+from functools import reduce
 
 
 def dibujo_python(window):
@@ -417,15 +418,21 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
     print('cordenas verdes..', int_green)
     # print('cordenas no disponibles..', no_disponibles)
 
+    puntos = reduce(lambda a, i: a-random.randint(0, 10), int_green, puntos) 
+    puntos = reduce(lambda a, i: a//2 , int_blue, puntos) 
+    '''
     for element in int_green:
-        num = random.randint(0, 10)
-        puntos = puntos - num
-        print("num aleatorio...", num)
+        #num = random.randint(0, 10)
+        puntos = puntos - 2
+        # print("num aleatorio...", num)
     for element in int_blue:
         puntos = puntos // 2
     print('puntos 2..', puntos)
+    '''
+    print('puntos aux..', puntos)
     return puntos
 
+          
 
 def vertical(pos_actual, pos_anterior):
 
