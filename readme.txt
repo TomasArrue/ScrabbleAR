@@ -13,7 +13,7 @@
 >Danilo Paz<
 >Lucas Di Lorenzo<
 
-Para poder ejecutar este archivo se tiene que ejecutar el archivo 'Srcabblear.py'
+Para poder ejecutar este archivo se tiene que ejecutar el archivo 'SrcabbleAR.py'
 
 Asegurese de tener los siguientes archivos en el mismo directorio:
     -config.json
