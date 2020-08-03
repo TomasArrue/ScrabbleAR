@@ -16,7 +16,12 @@ def test_de_archivo():
         necesarios para que corra el juego, en caso que no se encuentre
         se aborta el programa y se informa de la falta del archivo
     '''
-    return os.path.isfile('./texto/config.json')
+    return os.path.isfile('./texto/config.json') and (
+           os.path.isfile('./texto/config_default.json')) and (
+           os.path.isfile('./texto/dibujo.json')) and (
+           os.path.isfile('./texto/ranking.json')) and (
+           os.path.isfile('./texto/ranking_test.json'))
+    
 
 
 
@@ -107,7 +112,7 @@ def iniciar_juego():
         if event in (None, 'Salir'):
             break
         else:
-            
+
             if total_letras < 1:
                 sg.popup('No hay mas letras en la bolsa')
                 funciones.analizar_ganador(puntos_jugador_total,
@@ -423,5 +428,5 @@ if __name__ == "__main__":
     if test_de_archivo():
         iniciar_juego()
     else:
-        sg.Popup('ERROR ---> config.json NO ENCONTRADO')
+        sg.Popup('ERROR ---> Archivo/s no encontrado/s')
         sys.exit()
