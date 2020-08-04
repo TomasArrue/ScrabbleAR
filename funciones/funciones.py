@@ -418,8 +418,8 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
     print('cordenas verdes..', int_green)
     # print('cordenas no disponibles..', no_disponibles)
 
-    puntos = reduce(lambda a, i: a-random.randint(0, 10), int_green, puntos) 
-    puntos = reduce(lambda a, i: a//2 , int_blue, puntos) 
+    puntos = reduce(lambda acumulador, i: acumulador-random.randint(0, 10), int_green, puntos) 
+    puntos = reduce(lambda acumulador, i: acumulador//2 , int_blue, puntos) 
     '''
     for element in int_green:
         #num = random.randint(0, 10)

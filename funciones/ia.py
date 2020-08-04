@@ -246,8 +246,8 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
                                           letras_atril_rival, l2_guar)
         #####################################################################
         #####################################################################
-        # necesito una lista de coords que son los ultimos de
-        # lugares_no_disponibles
+        # necesito una lista de coords en cuales se pusieron letras que son
+        # los ultimos de lugares_no_disponibles
         lista_coords = []
         for i in range(1, tamanio_pal+1):
             element = lugares_no_disponibles[-i]
