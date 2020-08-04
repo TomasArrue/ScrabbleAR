@@ -280,8 +280,22 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
             total_letras=devolver_posibles(total_letras,letras_atril_rival,bolsa_total,letras_usadas_en_tablero)
         return puntos_npc2, total_letras, True
     except (IndexError):
+        # implementar el repartir de nuevo
+        '''
+        if cantidad_de_veces_Repartidas_IA+1 < 3 :
+            funciones.devolver_fichas_a_la_bolsa(letras_atril_rival, bolsa_total,
+                                total_letras) # se devuelven las fichas a la bolas
+            letras_atril_rival.clear() # se limpia el atril rival
+            cantidad_de_veces_Repartidas_IA = cantidad_de_veces_Repartidas_IA+1 # se incrementa el repartir de nuevo                      
+            for i in range(7): # se genera el atril nuevo
+                # generamos las fichas del rival tambien
+                letras_atril_rival, total_letras = funciones.crear_atril(bolsa_total, total_letras)
+                letras_atril_rival.append(letra_rival)  # Las agregamos a su lista  
+            return 0, total_letras, True       
+        else    
+        ''' 
         sg.Popup('La maquina no tiene palabras validas para',
-                 'colocar pasa el turno')
+                 'colocar pasa el turno')      
         return 0, total_letras, False
 
 
