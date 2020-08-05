@@ -20,7 +20,6 @@ def cargar_letra_1(window,letras_usadas_en_tablero,botones_usados,
     funciones.letra_al_tablero(window,letras_usadas_en_tablero,botones_usados,
                                 letras_atril_jugador,lugares_no_disponibles,
                                 letra, event, lugar)
-
     # hay que declarar una variable dific para enviar
     # en lugar de facil
     puntos_jugador += funciones.puntos_de_letra(letra, dificult,
@@ -28,6 +27,7 @@ def cargar_letra_1(window,letras_usadas_en_tablero,botones_usados,
     window["puntaje_de_jugada"].update(puntos_jugador)
     # vemos si es la primera letra, seteamos la orientacion de
     # la palabra
+    return puntos_jugador
 
 
 def cargar_letra_2(window,letras_usadas_en_tablero,botones_usados,
@@ -53,6 +53,7 @@ def cargar_letra_2(window,letras_usadas_en_tablero,botones_usados,
     # lugar de facil
     puntos_jugador += funciones.puntos_de_letra(letra, dificult, lugar)
     window["puntaje_de_jugada"].update(puntos_jugador)
+    return puntos_jugador
 
 
 def cargar_letra_3(window,letras_usadas_en_tablero,botones_usados,
@@ -76,6 +77,7 @@ def cargar_letra_3(window,letras_usadas_en_tablero,botones_usados,
         window["puntaje_de_jugada"].update(puntos_jugador)
     else:
         sg.Popup('Lugar Invalido')
+    return puntos_jugador
 
 
 ###############################################################################
@@ -268,9 +270,9 @@ def iniciar_juego():
                     ###########################################################
                     # NUEVO:
                     try:
-                        diccionario_funciones[letras_usadas_en_tablero]
+                        puntos_jugador = diccionario_funciones[letras_usadas_en_tablero]
                     except KeyError:
-                        diccionario_funciones[2]
+                        puntos_jugador = diccionario_funciones[2]
             # pide 7 fichas nuevas en la mano
             elif event == "Repartir De Nuevo":
                 if not botones_usados and cantidad_de_veces_Repartidas < 3:
