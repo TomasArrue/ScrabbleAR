@@ -29,13 +29,11 @@ def validar_palabra(permutaciones, permutaciones_validas, dificultad):
         if dificultad == 'Facil':   
             #if pal in lexicon and spelling or pal in verbs:
             if pal in verbs or ((pal in lexicon) and (pal in spelling)):
-                # si la palabra es valida va a la lista de permutaciones
                 permutaciones_validas.append(pal)
-        else:  
-            # print(dificultad)
+        else: 
             palabra=parse(pal).split('/')  
-            # print(palabra)
-            if  (pal in verbs) or (palabra[1] == 'JJ'): # si palabra es verbo o adjetivo es valida
+            # si palabra es verbo o adjetivo es valida
+            if  (pal in verbs) or (palabra[1] == 'JJ'): 
                 permutaciones_validas.append(pal)     
     return permutaciones_validas
 
@@ -48,11 +46,13 @@ def buscar_palabras_rival(letras_atril_rival, dificultad):
     # lista vacia para guardar las permutaciones validas
     permutaciones_validas = []
     for i in range(len(letras_atril_rival)):
+
         # este if es para empezar a armar permutaciones de al menos dos
         #  caracteres generamos permutaciones con i+1 caracteres
         if (i+1 >= 2):
             permutaciones_temp = {
                 "".join(p) for p in permutations(letras_atril_rival, i+1)}
+
             # vemos cuales de esas permutaciones son validas, y las vamos
             # guardando en una lista
             validar_palabra(permutaciones_temp, permutaciones_validas, dificultad)
@@ -73,11 +73,8 @@ def todas_los_posiciones_validas(tamanio_pal, lugar, lugar_aux,
             lugar_aux = lugar[0], lugar[1]+i
         else:
             lugar_aux = lugar[0]+i, lugar[1]
-        # print('verificando lugar...', lugar_aux) #test
-        # print('lugares no disponibles ',lugares_no_disponibles) #test
         if lugar_aux in lugares_no_disponibles:
             ok = False
-    # print('Se puede poner?.....', ok)  # test
     return ok
 
 
@@ -95,9 +92,7 @@ def colocar_en_tablero(window, palabra_a_colocar, letras_usadas_en_tablero,
             lugar_aux = lugar[0], lugar[1]+i
         else:
             lugar_aux = lugar[0]+i, lugar[1]
-        # print(lugar, ': lugar=lugar_aux :', lugar_aux) # test
         letras_usadas_en_tablero.append(l)
-        # print('poniendo en el lugar...', lugar_aux)
         window[lugar_aux].update(l.upper(), button_color=('black', 'oldlace'))
         letras_atril_rival.remove(l.upper())
         lugares_no_disponibles.append(lugar_aux)

@@ -21,9 +21,6 @@ def test_de_archivo():
            os.path.isfile('./texto/dibujo.json')) and (
            os.path.isfile('./texto/ranking.json'))
         
-    
-
-
 
 def iniciar_juego():
 
@@ -35,8 +32,6 @@ def iniciar_juego():
     total_letras = 0
     for k, v in bolsa_total.items():
         total_letras += v
-
-    # atril_maquina = funciones.crear_atril(bolsa_total)
 
     # TEMA DEL PySimpleGUI
     sg.ChangeLookAndFeel('DarkGrey6')
@@ -108,8 +103,7 @@ def iniciar_juego():
 
     while True:
         event, values = window.read(timeout=10)
-        # print(total_letras)
-        # print(counter)
+      
         if event in (None, 'Salir'):
             break
         else:
@@ -151,10 +145,12 @@ def iniciar_juego():
                     sg.popup('la maquina no puede jugar mas!')
                     turno = 'player_1'
                 print('turno vuelta', turno)
-                if (dificult == 'Dificil'): # si es difiultad dificil solo se podra usar 3 veces las pistas
+                if (dificult == 'Dificil'): 
+                    # si es difiultad dificil solo se podra usar 3 veces las pistas
                     if (contador_pistas < 3): 
                         window['boton_pista'].update(disabled=False)
-                else: # si es dificultad media se podra usar hasta 6 veces
+                else: 
+                    # si es dificultad media se podra usar hasta 6 veces
                     if (contador_pistas < 6): 
                         window['boton_pista'].update(disabled=False)
                 sg.Popup('Tu Turno!')
@@ -191,7 +187,7 @@ def iniciar_juego():
                             letra, dificult, lugar)
                         window["puntaje_de_jugada"].update(puntos_jugador)
                     # vemos si es la primera letra, seteamos la orientacion de
-                    #  la palabra
+                    # la palabra
                     elif len(letras_usadas_en_tablero) == 1:
                         h = funciones.horizontal(
                             lugar, lugares_no_disponibles
@@ -333,26 +329,28 @@ def iniciar_juego():
             elif event == "TOP":
                 ranking.ranking()
 
+            # se podra usar la pista una vez por turno en nivel medio
             elif event == 'boton_pista':
                 lista=ia.buscar_palabras_rival(letras_atril_jugador,dificult)
-                window['boton_pista'].update(disabled=True) # se podra usar la pistsa una vez por turno en nivel medio
+                window['boton_pista'].update(disabled=True) 
                 contador_pistas += 1
                 if (len(lista))>0:
-                  sg.popup('Con las letras que tienes puedes formar palabras! :D')
+                  print(dificult)    
+                  if dificult == 'Dificil':
+                    sg.popup('Una Palabra podria ser: ',random.choice(lista)) 
+                  else:   
+                    sg.popup('Con las letras que tienes puedes formar palabras! :D')
                 else:  
                   sg.popup('Con las letras que tienes NO puedes formar palabras! :(')  
 
             # esto es para que corra el tiempo
             elif timer_running:
-                # window['-OUTPUT-'].update(
-                # '{:02d}:{:02d}'.format((counter//100)
-                # // 60, (counter // 100) % 60, counter % 100))
-
                 window['-OUTPUT-'].update('{:02d}:{:02d}'.format(
                     (counter // 60) // 60, (counter // 60) % 60))
                 counter += 1
 
                 # 6000 equivale a 1 minuto, 60000 a 10 minutos
+
                 if counter == tiempo_limite:
                     timer_running = not timer_running
                     sg.Popup('termino el tiempo,analizando ganador:')
