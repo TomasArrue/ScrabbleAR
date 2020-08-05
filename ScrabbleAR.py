@@ -94,6 +94,7 @@ def iniciar_juego():
     lugar = ()       # marca la casilla actual
     # cantidad de veces de pedidos para hacer el cambio de fichas totales
     cantidad_de_veces_Repartidas = 0
+    cantidad_de_veces_Repartidas_IA = 0
     timer_running, counter = False, 0  # seteos para el timer,
     dificult = ''     # la dificultad actual que luego sera asignada
     h = False
@@ -135,14 +136,15 @@ def iniciar_juego():
             if turno == 'player_2':
                 if disponibles:
                     print(total_letras)
-                    puntos_npc, turno, total_letras, disponibles = ia.turno_maquina(window,
+                    puntos_npc, turno, total_letras, disponibles, cantidad_de_veces_Repartidas_IA = ia.turno_maquina(window,
                                                                                     letras_atril_rival,
                                                                                     lugar,
                                                                                     lugares_no_disponibles,
                                                                                     turno, bolsa_total,
                                                                                     letras_usadas_en_tablero,
                                                                                     dificult, l2_guar, total_letras,
-                                                                                    disponibles)
+                                                                                    disponibles, 
+                                                                                    cantidad_de_veces_Repartidas_IA)
                     puntos_npc_total = puntos_npc_total+puntos_npc
                     window["puntaje_PC"].update(puntos_npc_total)
                 else:
