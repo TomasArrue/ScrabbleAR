@@ -312,14 +312,17 @@ def iniciar_juego():
                     counter = dic['tiempo']['reloj']
                     dificult = dic["otros"]["dificultad"]
                     puntos_jugador = dic["puntos"]["puntos_jugador"]
-                    puntos_jugador_total = dic["puntos"]
-                    ["puntos_jugador_total"]
+                    puntos_jugador_total = dic["puntos"]["puntos_jugador_total"]
                     puntos_npc = dic["puntos"]["puntos_npc"]
                     puntos_npc_total = dic["puntos"]["puntos_npc_total"]
                     h = dic["otros"]["hor"]
                     v = dic["otros"]["ver"]
                     tiempo_limite = dic["tiempo"]["fin"]
+                    contador_pistas = dic["otros"]["contador_pistas"]
+                    cantidad_de_veces_Repartidas = dic["otros"]["cantidad_de_veces_Repartidas"]
+                    cantidad_de_veces_Repartidas_IA = dic["otros"]["cantidad_de_veces_Repartidas_IA"]
                     timer_running = not timer_running
+
                 else:
                     sg.popup('No tenes partidas guardadas')
 
@@ -360,6 +363,8 @@ def iniciar_juego():
 
             # aca va evaluar,evalua la palabra y resetea las orientaciones
             if event == "Evaluar":
+                print(puntos_jugador_total)
+                print(type(puntos_jugador_total))
                 palabra_final = "".join(letras_usadas_en_tablero)
                 v = False
                 h = False
@@ -412,8 +417,11 @@ def iniciar_juego():
                         dic["otros"] = {"lugares": lugares_no_disponibles,
                                         "letras_usadas": l2_guar,
                                         "dificultad": dificult, "hor": h,
-                                        "ver": v}
+                                        "ver": v,"contador_pistas":contador_pistas,
+                                        "cantidad_de_veces_Repartidas":cantidad_de_veces_Repartidas,
+                                        "cantidad_de_veces_Repartidas_IA":cantidad_de_veces_Repartidas_IA}
                         dic['tiempo'] = {'reloj': counter, 'fin': tiempo_limite}
+                        cantidad_de_veces_Repartidas_IA
                         json.dump(dic, j, indent=4)
                         sg.Popup("Partida Guardada")
                 else:

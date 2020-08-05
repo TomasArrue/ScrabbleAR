@@ -1,54 +1,144 @@
 {
-    "nombre": "gdfg",
+    "nombre": "dany",
     "puntos": {
         "puntos_jugador": 0,
-        "puntos_jugador_total": 0,
-        "puntos_npc": -4,
-        "puntos_npc_total": -4
+        "puntos_jugador_total": 41,
+        "puntos_npc": 11,
+        "puntos_npc_total": 33
     },
     "atril": {
         "atril_jugador": [
-            "H",
-            "M",
-            "Y",
-            "D",
-            "V",
-            "E",
-            "X"
+            "F",
+            "S",
+            "W",
+            "L",
+            "N",
+            "T",
+            "S"
         ]
     },
     "atril_rival": {
         "letras_atril_rival": [
-            "G",
-            "L",
-            "W",
-            "D",
-            "N",
+            "Y",
+            "T",
             "C",
-            "O"
+            "T",
+            "C",
+            "P",
+            "J"
         ]
     },
     "otros": {
         "lugares": [
             [
+                14,
+                2
+            ],
+            [
+                14,
+                3
+            ],
+            [
+                13,
+                6
+            ],
+            [
+                13,
+                7
+            ],
+            [
+                14,
+                5
+            ],
+            [
+                14,
+                6
+            ],
+            [
+                8,
+                1
+            ],
+            [
+                8,
+                2
+            ],
+            [
+                10,
+                7
+            ],
+            [
+                10,
+                8
+            ],
+            [
+                0,
+                6
+            ],
+            [
+                1,
+                6
+            ],
+            [
+                4,
+                6
+            ],
+            [
+                4,
+                7
+            ],
+            [
+                11,
+                0
+            ],
+            [
+                12,
+                0
+            ],
+            [
                 6,
-                14
+                10
             ],
             [
                 7,
-                14
+                10
+            ],
+            [
+                8,
+                11
+            ],
+            [
+                8,
+                12
             ]
         ],
         "letras_usadas": [
             "F",
-            "R"
+            "R",
+            "T",
+            "A",
+            "C",
+            "M",
+            "V",
+            "S",
+            "V",
+            "S",
+            "K",
+            "M",
+            "I",
+            "L",
+            "D",
+            "C",
+            "D",
+            "I",
+            "M",
+            "X"
         ],
-        "dificultad": "Dificil",
+        "dificultad": "Facil",
         "hor": false,
         "ver": false
     },
     "tiempo": {
-        "reloj": 522,
+        "reloj": 1579,
         "fin": 36000
     }
 }

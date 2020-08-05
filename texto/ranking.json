@@ -112,5 +112,23 @@
         "Nombre": "sda",
         "Puntos": 12,
         "Fecha": "2020-08-02"
+    },
+    "id_3888": {
+        "Dificultad": "facil",
+        "Nombre": "null",
+        "Puntos": 11,
+        "Fecha": "2020-08-05"
+    },
+    "id_9350": {
+        "Dificultad": "facil",
+        "Nombre": "null",
+        "Puntos": 28,
+        "Fecha": "2020-08-05"
+    },
+    "id_6515": {
+        "Dificultad": "facil",
+        "Nombre": "",
+        "Puntos": 83,
+        "Fecha": "2020-08-05"
     }
 }

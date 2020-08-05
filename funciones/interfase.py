@@ -99,6 +99,7 @@ def marcadore_puntaje_tiempo():
         genera el layout de los indicadores de puntajes y tiempo
     """
     puntaje_y_tiempo = [
+        [sg.Text('DIFICULTAD',key='que_dificultad')],
         [sg.Text(' ------ TU PUNTAJE ES:', key='tu_puntaje_propio',
                  size=(20, 1), font=("Chalkboard", 10))],
         [sg.Text('0', key='puntaje_propio', font=("Chalkboard", 10))],

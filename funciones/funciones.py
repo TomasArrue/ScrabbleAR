@@ -120,6 +120,7 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
         texto = nombre.upper()+' TU PUNTAJE ES:'
     window['tu_puntaje_propio'].update(texto)
     window['puntaje'].update(visible=True)
+    window['que_dificultad'].update(very_dificult,font=("Chalkboard", 20))
     window['indice'].update(visible=True)
     window['atrilFichasRival'].update(visible=True)
     window['atrilFichas'].update(visible=True)
