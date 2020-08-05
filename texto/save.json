@@ -1,98 +1,74 @@
 {
-    "nombre": "dany",
+    "nombre": "sdasda",
     "puntos": {
         "puntos_jugador": 0,
-        "puntos_jugador_total": 41,
-        "puntos_npc": 11,
-        "puntos_npc_total": 33
+        "puntos_jugador_total": 55,
+        "puntos_npc": 8,
+        "puntos_npc_total": 25
     },
     "atril": {
         "atril_jugador": [
-            "F",
+            "G",
+            "Y",
             "S",
-            "W",
-            "L",
-            "N",
-            "T",
-            "S"
+            "O",
+            "B",
+            "M",
+            "E"
         ]
     },
     "atril_rival": {
         "letras_atril_rival": [
-            "Y",
-            "T",
+            "V",
+            "W",
             "C",
-            "T",
-            "C",
-            "P",
-            "J"
+            "D",
+            "I",
+            "B",
+            "H"
         ]
     },
     "otros": {
         "lugares": [
             [
-                14,
-                2
+                13,
+                3
             ],
             [
                 14,
                 3
             ],
             [
-                13,
+                10,
                 6
-            ],
-            [
-                13,
-                7
-            ],
-            [
-                14,
-                5
-            ],
-            [
-                14,
-                6
-            ],
-            [
-                8,
-                1
-            ],
-            [
-                8,
-                2
             ],
             [
                 10,
                 7
             ],
             [
-                10,
+                5,
+                9
+            ],
+            [
+                5,
+                10
+            ],
+            [
+                4,
+                6
+            ],
+            [
+                4,
+                7
+            ],
+            [
+                4,
                 8
             ],
             [
-                0,
-                6
-            ],
-            [
-                1,
-                6
-            ],
-            [
-                4,
-                6
-            ],
-            [
-                4,
-                7
-            ],
-            [
-                11,
-                0
-            ],
-            [
-                12,
-                0
+                5,
+                8
             ],
             [
                 6,
@@ -104,41 +80,43 @@
             ],
             [
                 8,
-                11
+                10
             ],
             [
-                8,
-                12
+                5,
+                2
+            ],
+            [
+                5,
+                3
             ]
         ],
         "letras_usadas": [
-            "F",
-            "R",
+            "V",
+            "A",
             "T",
             "A",
-            "C",
-            "M",
-            "V",
             "S",
-            "V",
-            "S",
-            "K",
-            "M",
-            "I",
-            "L",
+            "R",
             "D",
             "C",
+            "U",
             "D",
-            "I",
-            "M",
-            "X"
+            "P",
+            "E",
+            "Z",
+            "P",
+            "G"
         ],
         "dificultad": "Facil",
         "hor": false,
-        "ver": false
+        "ver": false,
+        "contador_pistas": 0,
+        "cantidad_de_veces_Repartidas": 0,
+        "cantidad_de_veces_Repartidas_IA": 0
     },
     "tiempo": {
-        "reloj": 1579,
+        "reloj": 932,
         "fin": 36000
     }
 }

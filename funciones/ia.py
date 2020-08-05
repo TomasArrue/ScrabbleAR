@@ -56,7 +56,6 @@ def buscar_palabras_rival(letras_atril_rival, dificultad):
             # vemos cuales de esas permutaciones son validas, y las vamos
             # guardando en una lista
             validar_palabra(permutaciones_temp, permutaciones_validas, dificultad)
-    print('permutaciones_validas, ', permutaciones_validas)
     return permutaciones_validas
 
 
@@ -107,8 +106,6 @@ def chequeo_y_colocacion(tamanio_pal, x, y, lugar, lugar_aux,
         Metodo general en el cual se chequean las palabras y se colocan en el
         tablero
     """
-    print('lugar que va a chequear...', lugar)
-    print('cordenadas check...', x, ' ', y, ' orientacion ', orientacion)
     ok = todas_los_posiciones_validas(
         tamanio_pal, lugar, lugar_aux, lugares_no_disponibles, orientacion)
     if (ok):
@@ -135,11 +132,8 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
     """
     ok = False
     if orientacion == 0:
-        print(tamanio_pal-1, '+', cord2, '< 15')
         # si es horizontal chequeamos que y sea valida
         if (((tamanio_pal-1)+cord2) < 15):
-            print('cordenadas horziontal...', cord1, ' ',
-                  cord2, ' orientacion ', orientacion)
             ok = chequeo_y_colocacion(tamanio_pal, cord1, cord2, lugar,
                                       lugar_aux, lugares_no_disponibles,
                                       orientacion, window,
@@ -147,8 +141,6 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
                                       letras_usadas_en_tablero,
                                       letras_atril_rival, l2_guar)
         else:
-            print('cordenadas horziontal NO ENTRAN, VEAMOS SI ENTRAN DE FORMA',
-                  'VERTICAL...', tamanio_pal-1, '+', cord2, '< 15')
             orientacion = 1
             if (((tamanio_pal-1)+cord1) < 15):
                 ok = chequeo_y_colocacion(tamanio_pal, cord2, cord1, lugar,
@@ -159,11 +151,8 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
                                           letras_atril_rival, l2_guar)
 
     elif orientacion == 1:
-        print(tamanio_pal-1, '+', cord1, '< 15')
         # si es vertical chequeamos que x sea valida
         if (((tamanio_pal-1)+cord1) < 15):
-            print('cordenadas vertical...', cord1, ' ',
-                  cord2, ' orientacion ', orientacion)
             ok = chequeo_y_colocacion(tamanio_pal, cord1, cord2, lugar,
                                       lugar_aux, lugares_no_disponibles,
                                       orientacion, window,
@@ -171,10 +160,7 @@ def seteando_orientacion(tamanio_pal, cord1, cord2, lugar, lugar_aux,
                                       letras_usadas_en_tablero,
                                       letras_atril_rival, l2_guar)
         else:
-            print('cordenadas vertical NO ENTRAN, VEAMOS SI ENTRAN DE FORMA',
-                  'HORIZONTAL...', tamanio_pal-1, '+', cord2, '< 15')
             orientacion = 0
-            print(tamanio_pal-1, '+', cord2, '< 15')
             if (((tamanio_pal-1)+cord2) < 15):
                 ok = chequeo_y_colocacion(tamanio_pal, cord2, cord1, lugar,
                                           lugar_aux, lugares_no_disponibles,
@@ -264,8 +250,6 @@ def buscar_lugar_disponible(window, letras_atril_rival, lugar,
         # en el tablero por la maquina, en caso de ser imposible se repondran las 
         # que se puedan
         if len(letras_usadas_en_tablero) <= total_letras:
-            print(total_letras)
-            print(len(letras_usadas_en_tablero), ' ', total_letras)
             for i in range(len(letras_usadas_en_tablero)):
                 letra, total_letras = funciones.crear_atril(
                     bolsa_total, total_letras)

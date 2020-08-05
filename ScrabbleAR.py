@@ -129,7 +129,6 @@ def iniciar_juego():
 
             if turno == 'player_2':
                 if disponibles:
-                    print(total_letras)
                     puntos_npc, turno, total_letras, disponibles, cantidad_de_veces_Repartidas_IA = ia.turno_maquina(window,
                                                                                     letras_atril_rival,
                                                                                     lugar,
@@ -144,7 +143,6 @@ def iniciar_juego():
                 else:
                     sg.popup('la maquina no puede jugar mas!')
                     turno = 'player_1'
-                print('turno vuelta', turno)
                 if (dificult == 'Dificil'): 
                     # si es difiultad dificil solo se podra usar 3 veces las pistas
                     if (contador_pistas < 3): 
@@ -289,7 +287,7 @@ def iniciar_juego():
                         'La cantidad de letras registras es invalida,',
                         ' configure el juego nuevamente')
                     sys.exit()
-                print('tiempo_limite', tiempo_limite)
+                
                 # random para ver quien inicia la partida
                 quien_inicia = random.choice(range(1, 3))
                 turno = 'player_'+str(quien_inicia)
@@ -309,6 +307,7 @@ def iniciar_juego():
                                                    botones_usados,
                                                    lugares_no_disponibles,
                                                    l2_guar, letras_atril_rival)
+                    nombre = dic['nombre']                       
                     counter = dic['tiempo']['reloj']
                     dificult = dic["otros"]["dificultad"]
                     puntos_jugador = dic["puntos"]["puntos_jugador"]
@@ -338,7 +337,7 @@ def iniciar_juego():
                 window['boton_pista'].update(disabled=True) 
                 contador_pistas += 1
                 if (len(lista))>0:
-                  print(dificult)    
+                   
                   if dificult == 'Dificil':
                     sg.popup('Una Palabra podria ser: ',random.choice(lista)) 
                   else:   
@@ -363,8 +362,6 @@ def iniciar_juego():
 
             # aca va evaluar,evalua la palabra y resetea las orientaciones
             if event == "Evaluar":
-                print(puntos_jugador_total)
-                print(type(puntos_jugador_total))
                 palabra_final = "".join(letras_usadas_en_tablero)
                 v = False
                 h = False
@@ -392,7 +389,6 @@ def iniciar_juego():
                     letras_usadas_en_tablero.clear()
                     turno = 'player_2'
                 else:
-                    print("palabra invalida")
                     for i in range(len(letras_usadas_en_tablero)):
                         funciones.quitar_fichas(
                             window, letras_usadas_en_tablero, botones_usados,

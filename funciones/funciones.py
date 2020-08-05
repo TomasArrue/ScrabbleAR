@@ -39,13 +39,9 @@ def crear_atril(bolsa_total, total_letras):
     """
     if total_letras > 0:
         letra = random.choice(list(bolsa_total.keys()))
-        # print('bolsa_total[letra]',bolsa_total[letra] )
         while bolsa_total[letra] == 0:
-            # print("while", bolsa_total[letra])
             letra = random.choice(list(bolsa_total.keys()))
-            # print("while", bolsa_total[letra])
         bolsa_total[letra] -= 1
-        # print('bolsa_total[letra] despues ',bolsa_total[letra] )
     total_letras -= 1
     return letra, total_letras
 
@@ -82,10 +78,7 @@ def asignar_colores_al_tablero(window, dificultad):
     """
     with open('./texto/config.json', 'r') as t:
         dic = json.load(t)
-
-    # print(dificultad)
     tablero_config = dic[dificultad]
-
     for colores in tablero_config.keys():
         lista_de_cord = tablero_config[colores]
         for par_de_cord in lista_de_cord:
@@ -144,9 +137,7 @@ def cargar_juego(window, values, timer_running, nombre, bolsa_total,
         dic = json.load(t)
 
     tiempo_limite = dic['tiempo']['minutos']
-    print('tiempo', tiempo_limite)
     tiempo_limite *= 3600
-    print('tiemp d', tiempo_limite)
     return timer_running, very_dificult, tiempo_limite, total_letras
 
 
@@ -154,7 +145,8 @@ def cargar_partida(window, letras_atril_jugador, botones_usados,
                    lugares_no_disponibles, letras_guardadas,
                    letras_atril_rival):
     """
-       asdasd
+        Carga la partida previamente guardad, recupera todos los datos del
+        save.json
     """
     try:
         with open('./texto/save.json', 'r') as archivo_carga:
@@ -252,7 +244,6 @@ def verificar_palabra(palabra, dificultad):
             return(False)
     else:
         pala = parse(pal).split('/')
-        # print(pal)
         # si palabra es verbo o adjetivo es valida
         if (pal in verbs) or (pala[1] == 'JJ'):
             return(True)
@@ -283,7 +274,6 @@ def devolver_fichas_a_la_bolsa(letras_atril_jugador, bolsa_total,
        devuelve la cantidad de fichas a la bolsa
     """
     for i in letras_atril_jugador:
-        print('letra', i)
         bolsa_total[i] += 1
         total_letras += 1
     return total_letras
@@ -295,11 +285,9 @@ def repartir_fichas_de_nuevo(window, cantidad_de_veces_Repartidas,
         Utilizamos este metodo para poder cambiar la mano de fichas que
         tenemos, y tenemos permitido hacerlo hasta 3 veces
     """
-    # print('antes',bolsa_total,'total letras',total_letras)
     total_letras = devolver_fichas_a_la_bolsa(letras_atril_jugador,
                                               bolsa_total, total_letras)
     letras_atril_jugador.clear()
-    # print('despues',bolsa_total,'total letrs',total_letras)
     cantidad_de_veces_Repartidas = cantidad_de_veces_Repartidas+1
     for i in range(7):  # carga de las 7 fichas
         nro_de_boton = 'Boton_'+str(i+1)
@@ -408,7 +396,7 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
     with open('./texto/config.json', 'r') as p:
         dicc = json.load(p)
     tablero_actual = dicc[dificultad]
-    # print('puntos..',puntos)
+
     # conjuntos para hacer la interseccion
     green = set(map(tuple, tablero_actual["mediumseagreen"]))
     blue = set(map(tuple, tablero_actual["skyblue"]))
@@ -416,21 +404,9 @@ def puntos_de_palabra(dificultad, no_disponibles, puntos):
     int_green = green.intersection(set(no_disponibles))
     int_blue = blue.intersection(set(no_disponibles))
 
-    print('cordenas verdes..', int_green)
-    # print('cordenas no disponibles..', no_disponibles)
-
     puntos = reduce(lambda acumulador, i: acumulador-random.randint(0, 10), int_green, puntos) 
     puntos = reduce(lambda acumulador, i: acumulador//2 , int_blue, puntos) 
-    '''
-    for element in int_green:
-        #num = random.randint(0, 10)
-        puntos = puntos - 2
-        # print("num aleatorio...", num)
-    for element in int_blue:
-        puntos = puntos // 2
-    print('puntos 2..', puntos)
-    '''
-    print('puntos aux..', puntos)
+
     return puntos
 
           
