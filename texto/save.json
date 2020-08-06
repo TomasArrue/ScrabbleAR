@@ -1,60 +1,36 @@
 {
-    "nombre": "sdasda",
+    "nombre": "yttt",
     "puntos": {
         "puntos_jugador": 0,
-        "puntos_jugador_total": 55,
-        "puntos_npc": 8,
+        "puntos_jugador_total": 15,
+        "puntos_npc": 22,
         "puntos_npc_total": 25
     },
     "atril": {
         "atril_jugador": [
+            "N",
+            "E",
             "G",
-            "Y",
             "S",
-            "O",
-            "B",
-            "M",
-            "E"
+            "D",
+            "E",
+            "N"
         ]
     },
     "atril_rival": {
         "letras_atril_rival": [
+            "M",
             "V",
-            "W",
-            "C",
-            "D",
-            "I",
-            "B",
-            "H"
+            "R",
+            "E",
+            "A",
+            "T",
+            "C"
         ]
     },
     "otros": {
         "lugares": [
             [
-                13,
-                3
-            ],
-            [
-                14,
-                3
-            ],
-            [
-                10,
-                6
-            ],
-            [
-                10,
-                7
-            ],
-            [
-                5,
-                9
-            ],
-            [
-                5,
-                10
-            ],
-            [
                 4,
                 6
             ],
@@ -63,60 +39,44 @@
                 7
             ],
             [
-                4,
-                8
+                0,
+                11
             ],
             [
-                5,
-                8
+                1,
+                11
             ],
             [
                 6,
-                10
+                13
             ],
             [
                 7,
-                10
+                13
             ],
             [
                 8,
-                10
-            ],
-            [
-                5,
-                2
-            ],
-            [
-                5,
-                3
+                13
             ]
         ],
         "letras_usadas": [
-            "V",
-            "A",
-            "T",
-            "A",
-            "S",
-            "R",
-            "D",
+            "Y",
+            "O",
             "C",
-            "U",
-            "D",
-            "P",
+            "F",
+            "W",
             "E",
-            "Z",
-            "P",
-            "G"
+            "B"
         ],
         "dificultad": "Facil",
         "hor": false,
         "ver": false,
         "contador_pistas": 0,
-        "cantidad_de_veces_Repartidas": 0,
+        "cantidad_de_veces_Repartidas": 1,
         "cantidad_de_veces_Repartidas_IA": 0
     },
     "tiempo": {
-        "reloj": 932,
+        "reloj": 8388,
         "fin": 36000
     }
 }

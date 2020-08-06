@@ -103,11 +103,11 @@ def marcadore_puntaje_tiempo():
         [sg.Text('DIFICULTAD',key='que_dificultad')],
         [sg.Text(' ------ TU PUNTAJE ES:', key='tu_puntaje_propio',
                  size=(20, 1), font=("Chalkboard", 10))],
-        [sg.Text('0', key='puntaje_propio', font=("Chalkboard", 10))],
+        [sg.Text('000', key='puntaje_propio', font=("Chalkboard", 10))],
         [sg.Text('PUNTAJE DE JUGADA:', font=("Chalkboard", 10))],
-        [sg.Text('0', key='puntaje_de_jugada', font=("Chalkboard", 10))],
+        [sg.Text('00', key='puntaje_de_jugada', font=("Chalkboard", 10))],
         [sg.Text('PUNTAJE PC:', font=("Chalkboard", 10))],
-        [sg.Text('0', key='puntaje_PC', font=("Chalkboard", 10))],
+        [sg.Text('000', key='puntaje_PC', font=("Chalkboard", 10))],
         [sg.Text('Tiempo', font=('Chalkboard', 15))],
         [sg.Text('00:00', font=('Chalkboard', 15), key='-OUTPUT-')],
         [sg.T(' ' * 5)]
@@ -116,11 +116,11 @@ def marcadore_puntaje_tiempo():
 
 def opciones_pista():
     pistas = [
-        [sg.Text('Pista:')],           
-        [sg.Button(size=(1,1),key='boton_pista', 
+        [sg.Text('Pista:')],
+        [sg.Button(size=(1,1),key='boton_pista',
                    image_filename='./image/pista.png',
                    border_width=1)]]
-    return pistas               
+    return pistas
 
 def layout_general(fichas_rival, opciones_de_inicio, tablero, puntaje_y_tiempo,
                    botones_indieces, fichas, opciones_de_juego, pista):
@@ -141,8 +141,8 @@ def layout_general(fichas_rival, opciones_de_inicio, tablero, puntaje_y_tiempo,
         [sg.Column(fichas, key='atrilFichas', justification='center',
                    visible=False)],
         [sg.Column(opciones_de_juego, key='opcionesJuego',
-                   justification='center', visible=False)],          
-        [sg.Column(pista, key='pista',visible=False)]                      
+                   justification='center', visible=False)],
+        [sg.Column(pista, key='pista',visible=False)]
     ]
     return layout
 
