@@ -14,13 +14,13 @@ def ventan_principal():
         [sg.Button("Comenzar", size=tamanio_Boton_De_Control)],
         [sg.Button("Cargar Partida", size=tamanio_Boton_De_Control)],
         [sg.Button('Configuracion', size=tamanio_Boton_De_Control)],
-        [sg.Button('Ayuda', size=tamanio_Boton_De_Control)],
         [sg.InputCombo(dificultad, default_value='Facil',
                        size=(10, 10), key='dificultad')],
         [sg.Button("TOP", size=tamanio_Boton_De_Control)],
         [sg.Button('Guardar Partida', size=tamanio_Boton_De_Control,
                    visible=False)],
-        [sg.Button('Salir', size=tamanio_Boton_De_Control)]
+        [sg.Button('Salir', size=tamanio_Boton_De_Control)],
+        [sg.Button('Ayuda', size=(5,1), visible=False, pad=((5,0),(60,0)))]
     ]
     return opciones_de_inicio
 
@@ -141,8 +141,8 @@ def layout_general(fichas_rival, opciones_de_inicio, tablero, puntaje_y_tiempo,
         [sg.Column(fichas, key='atrilFichas', justification='center',
                    visible=False)],
         [sg.Column(opciones_de_juego, key='opcionesJuego',
-                   justification='center', visible=False)],
-        [sg.Column(pista, key='pista',visible=False )]                      
+                   justification='center', visible=False)],          
+        [sg.Column(pista, key='pista',visible=False)]                      
     ]
     return layout
 
