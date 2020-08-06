@@ -14,6 +14,7 @@ def ventan_principal():
         [sg.Button("Comenzar", size=tamanio_Boton_De_Control)],
         [sg.Button("Cargar Partida", size=tamanio_Boton_De_Control)],
         [sg.Button('Configuracion', size=tamanio_Boton_De_Control)],
+        [sg.Button('Ayuda', size=tamanio_Boton_De_Control)],
         [sg.InputCombo(dificultad, default_value='Facil',
                        size=(10, 10), key='dificultad')],
         [sg.Button("TOP", size=tamanio_Boton_De_Control)],

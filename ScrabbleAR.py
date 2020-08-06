@@ -5,7 +5,7 @@ import os
 import random
 import json
 import PySimpleGUI as sg
-from funciones import funciones, ia, interfase, ranking, configuracion
+from funciones import funciones, ia, interfase, ranking, configuracion, ayuda
 import time
 from datetime import date
 
@@ -327,6 +327,9 @@ def iniciar_juego():
 
             elif event == "Configuracion":
                 configuracion.configuracion_de_juego()
+
+            elif event == "Ayuda":
+                ayuda.menu()    
 
             elif event == "TOP":
                 ranking.ranking()
